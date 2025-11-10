@@ -1296,6 +1296,7 @@
           <li class="active"><a href="#" data-view="posts"><i class="fas fa-file-alt"></i> المقالات</a></li>
           <li><a href="#" data-view="services"><i class="fas fa-briefcase"></i> الخدمات</a></li>
           <li><a href="#" data-view="projects"><i class="fas fa-folder-open"></i> المشاريع</a></li>
+          <li><a href="#" data-view="pages"><i class="fas fa-file"></i> الصفحات</a></li>
           <li><a href="#" data-view="media"><i class="fas fa-images"></i> مكتبة الصور</a></li>
           <li><a href="#" data-view="components"><i class="fas fa-cubes"></i> مكتبة العناصر</a></li>
           <li><a href="#" data-view="pagebuilder"><i class="fas fa-hammer"></i> Page Builder</a></li>
@@ -1363,6 +1364,25 @@
             </thead>
             <tbody id="projectsTableBody">
               <!-- Projects will be inserted here -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pages View -->
+        <div id="pagesView" class="admin-view">
+          <table class="posts-table" id="pagesTable">
+            <thead>
+              <tr>
+                <th>عنوان الصفحة</th>
+                <th>الرابط (Slug)</th>
+                <th>عدد العناصر</th>
+                <th>التاريخ</th>
+                <th>الحالة</th>
+                <th>الإجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="pagesTableBody">
+              <!-- Pages will be inserted here -->
             </tbody>
           </table>
         </div>
@@ -1692,8 +1712,28 @@
           <div class="page-builder">
             <div class="builder-header">
               <div>
-                <h2>Page Builder - بناء الصفحة الرئيسية</h2>
-                <p>قم بتصميم الصفحة الرئيسية باستخدام السحب والإفلات</p>
+                <h2>Page Builder - <span id="currentPageName">بناء الصفحة</span></h2>
+                <p>قم بتصميم الصفحة باستخدام السحب والإفلات أو الأزرار السريعة</p>
+                <div style="margin-top: 0.5rem;">
+                  <button class="btn btn-secondary btn-sm" onclick="selectPage()">
+                    <i class="fas fa-exchange-alt"></i> اختيار صفحة
+                  </button>
+                  <button class="btn btn-primary btn-sm" onclick="addQuickElement('hero')">
+                    <i class="fas fa-plus"></i> Hero
+                  </button>
+                  <button class="btn btn-primary btn-sm" onclick="addQuickElement('cta')">
+                    <i class="fas fa-plus"></i> CTA
+                  </button>
+                  <button class="btn btn-primary btn-sm" onclick="addQuickElement('features')">
+                    <i class="fas fa-plus"></i> Features
+                  </button>
+                  <button class="btn btn-primary btn-sm" onclick="addQuickElement('testimonials')">
+                    <i class="fas fa-plus"></i> Testimonials
+                  </button>
+                  <button class="btn btn-primary btn-sm" onclick="addQuickElement('stats')">
+                    <i class="fas fa-plus"></i> Stats
+                  </button>
+                </div>
               </div>
               <div class="builder-actions">
                 <button class="btn btn-secondary" onclick="previewPage()">
@@ -2107,6 +2147,68 @@
     </div>
   </div>
 
+  <!-- Page Editor Modal -->
+  <div id="pageModal" class="modal">
+    <div class="modal-overlay" onclick="closePageModal()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="pageModalTitle">إضافة صفحة جديدة</h3>
+        <button class="modal-close" onclick="closePageModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="pageForm" onsubmit="savePage(event)">
+          <input type="hidden" id="pageId">
+
+          <div class="form-group">
+            <label for="pageTitle">عنوان الصفحة <span style="color: var(--error);">*</span></label>
+            <input type="text" id="pageTitle" required placeholder="عن الشركة">
+            <small>سيتم توليد الرابط (slug) تلقائياً من العنوان</small>
+          </div>
+
+          <div class="form-group">
+            <label for="pageSlug">رابط الصفحة (Slug)</label>
+            <input type="text" id="pageSlug" placeholder="about-us">
+            <small>الرابط الذي سيظهر في المتصفح (مثل: example.com/about-us)</small>
+          </div>
+
+          <div class="form-group">
+            <label for="pageMetaTitle">عنوان SEO (Meta Title)</label>
+            <input type="text" id="pageMetaTitle" placeholder="عن شركة تكنولوجيا السعودية">
+            <small>العنوان الذي يظهر في نتائج البحث</small>
+          </div>
+
+          <div class="form-group">
+            <label for="pageMetaDescription">وصف SEO (Meta Description)</label>
+            <textarea id="pageMetaDescription" rows="3" placeholder="تعرف على شركتنا وخدماتنا..."></textarea>
+            <small>الوصف الذي يظهر في نتائج البحث</small>
+          </div>
+
+          <div class="form-group">
+            <label for="pageStatus">حالة الصفحة</label>
+            <select id="pageStatus">
+              <option value="published">منشورة</option>
+              <option value="draft">مسودة</option>
+            </select>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save"></i> حفظ الصفحة
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="openPageBuilder()">
+              <i class="fas fa-hammer"></i> فتح Page Builder
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="closePageModal()">
+              <i class="fas fa-times"></i> إلغاء
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <!-- Section Editor Modal (Page Builder) -->
   <div id="sectionEditorModal" class="modal">
     <div class="modal-overlay" onclick="closeSectionEditor()"></div>
@@ -2297,6 +2399,10 @@
       blogCMS = new BlogCMS();
       blogCMS.init();
 
+      // Initialize Pages Manager
+      pagesManager = new PagesManager();
+      pagesManager.init();
+
       // Navigation
       document.querySelectorAll('.admin-nav a').forEach(link => {
         link.addEventListener('click', function(e) {
@@ -2328,6 +2434,11 @@
             pageTitle.textContent = 'إدارة المشاريع';
             btnNewText.textContent = 'إضافة مشروع جديد';
             btnNewPost.onclick = openProjectModal;
+          } else if (view === 'pages') {
+            pageTitle.textContent = 'إدارة الصفحات';
+            btnNewText.textContent = 'إضافة صفحة جديدة';
+            btnNewPost.onclick = openPageModal;
+            pagesManager.renderPagesList();
           } else if (view === 'media') {
             pageTitle.textContent = 'مكتبة الصور';
             btnNewPost.style.display = 'none';
@@ -2348,6 +2459,12 @@
 
           if (view !== 'media' && view !== 'settings' && view !== 'components' && view !== 'pagebuilder') {
             btnNewPost.style.display = 'flex';
+          }
+
+          // Initialize pages manager when needed
+          if (view === 'pages' && !pagesManager) {
+            pagesManager = new PagesManager();
+            pagesManager.init();
           }
         });
       });

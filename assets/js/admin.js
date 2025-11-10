@@ -3,6 +3,130 @@
  * نظام إدارة المدونة والخدمات الكامل
  */
 
+// ==========================================
+// PAGES MANAGEMENT CLASS
+// ==========================================
+
+class PagesManager {
+  constructor() {
+    this.pages = [];
+    this.currentPageId = null;
+  }
+
+  init() {
+    this.loadPages();
+    this.renderPagesList();
+  }
+
+  loadPages() {
+    const storedPages = localStorage.getItem('techksa_pages');
+    this.pages = storedPages ? JSON.parse(storedPages) : this.getDefaultPages();
+  }
+
+  getDefaultPages() {
+    return [
+      {
+        id: 'home',
+        title: 'الصفحة الرئيسية',
+        slug: 'index',
+        metaTitle: 'شركة تكنولوجيا السعودية - حلول تقنية متكاملة',
+        metaDescription: 'نقدم حلول تقنية متكاملة للشركات في المملكة العربية السعودية',
+        status: 'published',
+        date: new Date().toISOString().split('T')[0],
+        layout: []
+      }
+    ];
+  }
+
+  savePages() {
+    localStorage.setItem('techksa_pages', JSON.stringify(this.pages));
+    this.renderPagesList();
+  }
+
+  renderPagesList() {
+    const tbody = document.getElementById('pagesTableBody');
+    if (!tbody) return;
+
+    if (this.pages.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">لا توجد صفحات. أضف صفحة جديدة!</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = this.pages.map(page => `
+      <tr>
+        <td>${page.title}</td>
+        <td><code>${page.slug}</code></td>
+        <td>${page.layout?.length || 0} عناصر</td>
+        <td>${page.date}</td>
+        <td><span class="badge badge-${page.status === 'published' ? 'success' : 'warning'}">${page.status === 'published' ? 'منشورة' : 'مسودة'}</span></td>
+        <td>
+          <button class="btn-icon" onclick="pagesManager.editPage('${page.id}')" title="تعديل">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn-icon" onclick="pagesManager.openPageBuilder('${page.id}')" title="Page Builder">
+            <i class="fas fa-hammer"></i>
+          </button>
+          ${page.id !== 'home' ? `<button class="btn-icon" onclick="pagesManager.deletePage('${page.id}')" title="حذف">
+            <i class="fas fa-trash"></i>
+          </button>` : ''}
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  editPage(id) {
+    const page = this.pages.find(p => p.id === id);
+    if (!page) return;
+
+    document.getElementById('pageId').value = page.id;
+    document.getElementById('pageTitle').value = page.title;
+    document.getElementById('pageSlug').value = page.slug;
+    document.getElementById('pageMetaTitle').value = page.metaTitle;
+    document.getElementById('pageMetaDescription').value = page.metaDescription;
+    document.getElementById('pageStatus').value = page.status;
+
+    document.getElementById('pageModalTitle').textContent = 'تعديل الصفحة';
+    document.getElementById('pageModal').classList.add('active');
+  }
+
+  deletePage(id) {
+    if (!confirm('هل أنت متأكد من حذف هذه الصفحة؟')) return;
+
+    this.pages = this.pages.filter(p => p.id !== id);
+    this.savePages();
+    showToast('تم حذف الصفحة بنجاح!', 'success');
+  }
+
+  openPageBuilder(id) {
+    this.currentPageId = id;
+    const page = this.pages.find(p => p.id === id);
+
+    if (page) {
+      // Update page builder title
+      document.getElementById('currentPageName').textContent = page.title;
+
+      // Load page layout
+      pageLayout = page.layout || [];
+      renderPageCanvas();
+
+      // Switch to page builder view
+      document.querySelectorAll('.admin-nav li').forEach(li => li.classList.remove('active'));
+      document.querySelector('[data-view="pagebuilder"]').parentElement.classList.add('active');
+
+      document.querySelectorAll('.admin-view').forEach(v => v.classList.remove('active'));
+      document.getElementById('pagebuilderView').classList.add('active');
+
+      document.getElementById('pageTitle').textContent = 'Page Builder';
+      document.getElementById('btnNewPost').style.display = 'none';
+
+      initPageBuilder();
+    }
+  }
+}
+
+// Global instance
+let pagesManager;
+
 class BlogCMS {
   constructor() {
     this.posts = [];
@@ -1454,4 +1578,200 @@ function collectStatItems() {
     item.label = document.querySelector(`.stat-label[data-id="${item.id}"]`)?.value || '';
   });
   return currentStatItems;
+}
+
+// ==========================================
+// PAGE MANAGEMENT FUNCTIONS
+// ==========================================
+
+function openPageModal() {
+  document.getElementById('pageId').value = '';
+  document.getElementById('pageForm').reset();
+  document.getElementById('pageModalTitle').textContent = 'إضافة صفحة جديدة';
+  document.getElementById('pageModal').classList.add('active');
+}
+
+function closePageModal() {
+  document.getElementById('pageModal').classList.remove('active');
+  document.getElementById('pageForm').reset();
+}
+
+function savePage(event) {
+  event.preventDefault();
+
+  const pageId = document.getElementById('pageId').value;
+  const pageData = {
+    id: pageId || 'page-' + Date.now(),
+    title: document.getElementById('pageTitle').value,
+    slug: document.getElementById('pageSlug').value || generateSlug(document.getElementById('pageTitle').value),
+    metaTitle: document.getElementById('pageMetaTitle').value,
+    metaDescription: document.getElementById('pageMetaDescription').value,
+    status: document.getElementById('pageStatus').value,
+    date: new Date().toISOString().split('T')[0],
+    layout: []
+  };
+
+  if (pageId) {
+    // Update existing page
+    const index = pagesManager.pages.findIndex(p => p.id === pageId);
+    if (index !== -1) {
+      pagesManager.pages[index] = { ...pagesManager.pages[index], ...pageData };
+    }
+  } else {
+    // Add new page
+    pagesManager.pages.push(pageData);
+  }
+
+  pagesManager.savePages();
+  closePageModal();
+  showToast('تم حفظ الصفحة بنجاح!', 'success');
+}
+
+function openPageBuilder() {
+  const pageId = document.getElementById('pageId').value;
+  if (pageId) {
+    // Save first then open builder
+    savePage(event);
+    setTimeout(() => {
+      pagesManager.openPageBuilder(pageId);
+    }, 100);
+  } else {
+    showToast('يجب حفظ الصفحة أولاً!', 'warning');
+  }
+}
+
+function selectPage() {
+  if (!pagesManager || pagesManager.pages.length === 0) {
+    showToast('لا توجد صفحات! أضف صفحة جديدة أولاً من قسم الصفحات.', 'warning');
+    return;
+  }
+
+  const pages = pagesManager.pages;
+  const options = pages.map((p, i) => `${i + 1}. ${p.title}`).join('\n');
+  const selection = prompt(`اختر رقم الصفحة:\n\n${options}`);
+
+  if (selection) {
+    const index = parseInt(selection) - 1;
+    if (index >= 0 && index < pages.length) {
+      pagesManager.openPageBuilder(pages[index].id);
+    }
+  }
+}
+
+// Quick add element function
+function addQuickElement(type) {
+  if (!pagesManager || !pagesManager.currentPageId) {
+    showToast('يجب اختيار صفحة أولاً!', 'warning');
+    return;
+  }
+
+  const defaultElements = {
+    hero: {
+      id: Date.now().toString(),
+      type: 'hero',
+      title: 'Hero Section',
+      description: 'قسم رئيسي في الصفحة',
+      content: {
+        title: 'عنوان رئيسي',
+        subtitle: 'نص فرعي يوضح المحتوى',
+        buttonText: 'ابدأ الآن',
+        buttonLink: '#',
+        backgroundImage: '',
+        backgroundColor: 'linear-gradient(135deg, #0C4A2F 0%, #10B981 100%)'
+      }
+    },
+    cta: {
+      id: Date.now().toString(),
+      type: 'cta',
+      title: 'Call to Action',
+      description: 'دعوة لاتخاذ إجراء',
+      content: {
+        title: 'هل لديك مشروع؟',
+        description: 'تواصل معنا الآن',
+        buttonText: 'اتصل بنا',
+        buttonLink: '#contact'
+      }
+    },
+    features: {
+      id: Date.now().toString(),
+      type: 'features',
+      title: 'Features Grid',
+      description: 'عرض الميزات',
+      content: {
+        title: 'خدماتنا',
+        subtitle: 'نقدم خدمات متنوعة',
+        items: []
+      }
+    },
+    testimonials: {
+      id: Date.now().toString(),
+      type: 'testimonials',
+      title: 'Testimonials',
+      description: 'آراء العملاء',
+      content: {
+        title: 'آراء عملائنا',
+        subtitle: 'ماذا يقول عملاؤنا',
+        items: []
+      }
+    },
+    stats: {
+      id: Date.now().toString(),
+      type: 'stats',
+      title: 'Statistics',
+      description: 'الإحصائيات',
+      content: {
+        title: 'إنجازاتنا',
+        subtitle: 'بالأرقام',
+        items: []
+      }
+    }
+  };
+
+  const element = defaultElements[type];
+  if (element) {
+    pageLayout.push(element);
+    renderPageCanvas();
+    showToast(`تم إضافة ${getComponentTypeName(type)} بنجاح!`, 'success');
+  }
+}
+
+// Update savePageLayout to save to current page
+function savePageLayout() {
+  if (!pagesManager || !pagesManager.currentPageId) {
+    showToast('يجب اختيار صفحة أولاً!', 'warning');
+    return;
+  }
+
+  const pageIndex = pagesManager.pages.findIndex(p => p.id === pagesManager.currentPageId);
+  if (pageIndex !== -1) {
+    pagesManager.pages[pageIndex].layout = pageLayout;
+    pagesManager.savePages();
+    showToast('تم حفظ تخطيط الصفحة بنجاح!', 'success');
+  }
+}
+
+// Auto-generate slug from Arabic text
+function generateSlug(text) {
+  // Simple transliteration map
+  const arabicToEnglish = {
+    'ا': 'a', 'أ': 'a', 'إ': 'i', 'آ': 'a', 'ب': 'b', 'ت': 't', 'ث': 'th',
+    'ج': 'j', 'ح': 'h', 'خ': 'kh', 'د': 'd', 'ذ': 'th', 'ر': 'r', 'ز': 'z',
+    'س': 's', 'ش': 'sh', 'ص': 's', 'ض': 'd', 'ط': 't', 'ظ': 'z', 'ع': 'a',
+    'غ': 'gh', 'ف': 'f', 'ق': 'q', 'ك': 'k', 'ل': 'l', 'م': 'm', 'ن': 'n',
+    'ه': 'h', 'و': 'w', 'ي': 'y', 'ة': 'h', 'ى': 'a', 'ء': 'a'
+  };
+
+  let slug = text.toLowerCase();
+
+  // Replace Arabic characters
+  for (const [ar, en] of Object.entries(arabicToEnglish)) {
+    slug = slug.replace(new RegExp(ar, 'g'), en);
+  }
+
+  // Clean up
+  slug = slug.replace(/[^a-z0-9]+/g, '-')  // Replace non-alphanumeric with dash
+    .replace(/^-+|-+$/g, '')  // Remove leading/trailing dashes
+    .replace(/-+/g, '-');  // Replace multiple dashes with single dash
+
+  return slug || 'page';
 }
