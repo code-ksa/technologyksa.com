@@ -1697,6 +1697,54 @@ function buildDynamicFormFields(componentType, content = {}) {
     `;
   }
 
+  // Advanced Settings
+  const advanced = content.advanced || {};
+  html += `
+    <div class="form-group" style="margin-top: 2rem;">
+      <details>
+        <summary style="cursor: pointer; padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-md); font-weight: 600; color: var(--saudi-green); user-select: none;">
+          <i class="fas fa-cog"></i> إعدادات متقدمة
+        </summary>
+        <div style="padding: 1rem; border: 1px solid var(--border-color); border-top: none; border-radius: 0 0 var(--radius-md) var(--radius-md); margin-top: 0;">
+
+          <div class="form-group">
+            <label>CSS Class مخصص</label>
+            <input type="text" id="adv_${componentType}_customClass" class="form-control" value="${advanced.customClass || ''}" placeholder="my-custom-class">
+            <small>أضف CSS classes مخصصة لهذا العنصر</small>
+          </div>
+
+          <div class="form-group">
+            <label>الحركة (Animation)</label>
+            <select id="adv_${componentType}_animation" class="form-control">
+              <option value="">بدون حركة</option>
+              <option value="fade-up" ${advanced.animation === 'fade-up' ? 'selected' : ''}>ظهور من الأسفل</option>
+              <option value="fade-down" ${advanced.animation === 'fade-down' ? 'selected' : ''}>ظهور من الأعلى</option>
+              <option value="fade-left" ${advanced.animation === 'fade-left' ? 'selected' : ''}>ظهور من اليسار</option>
+              <option value="fade-right" ${advanced.animation === 'fade-right' ? 'selected' : ''}>ظهور من اليمين</option>
+              <option value="zoom-in" ${advanced.animation === 'zoom-in' ? 'selected' : ''}>تكبير</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>الخلفية</label>
+            <input type="text" id="adv_${componentType}_bgColor" class="form-control" value="${advanced.bgColor || ''}" placeholder="#ffffff أو transparent">
+          </div>
+
+          <div class="form-group">
+            <label>المسافة العلوية (px)</label>
+            <input type="number" id="adv_${componentType}_marginTop" class="form-control" value="${advanced.marginTop || ''}" min="0" max="200">
+          </div>
+
+          <div class="form-group">
+            <label>المسافة السفلية (px)</label>
+            <input type="number" id="adv_${componentType}_marginBottom" class="form-control" value="${advanced.marginBottom || ''}" min="0" max="200">
+          </div>
+
+        </div>
+      </details>
+    </div>
+  `;
+
   html += '</div>';
   return html;
 }
@@ -1852,6 +1900,23 @@ function collectDynamicFormData(componentType) {
   // Handle items if component has them
   if (componentData.hasItems) {
     content.items = window[`current_${componentType}_items`] || [];
+  }
+
+  // Collect advanced settings
+  const advanced = {};
+  const advFields = ['customClass', 'animation', 'bgColor', 'marginTop', 'marginBottom'];
+
+  advFields.forEach(field => {
+    const fieldId = `adv_${componentType}_${field}`;
+    const element = document.getElementById(fieldId);
+    if (element && element.value) {
+      advanced[field] = element.value;
+    }
+  });
+
+  // Only add advanced if it has values
+  if (Object.keys(advanced).length > 0) {
+    content.advanced = advanced;
   }
 
   return content;
