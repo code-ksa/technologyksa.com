@@ -66,6 +66,12 @@ class PagesManager {
           <button class="btn-icon" onclick="pagesManager.openPageBuilder('${page.id}')" title="Page Builder">
             <i class="fas fa-hammer"></i>
           </button>
+          <button class="btn-icon" onclick="pagesManager.duplicatePage('${page.id}')" title="تكرار">
+            <i class="fas fa-copy"></i>
+          </button>
+          <button class="btn-icon" onclick="pagesManager.addToMenu('${page.id}')" title="إضافة للقائمة">
+            <i class="fas fa-plus-circle"></i>
+          </button>
           ${page.id !== 'home' ? `<button class="btn-icon" onclick="pagesManager.deletePage('${page.id}')" title="حذف">
             <i class="fas fa-trash"></i>
           </button>` : ''}
@@ -95,6 +101,68 @@ class PagesManager {
     this.pages = this.pages.filter(p => p.id !== id);
     this.savePages();
     showToast('تم حذف الصفحة بنجاح!', 'success');
+  }
+
+  duplicatePage(id) {
+    const page = this.pages.find(p => p.id === id);
+    if (!page) return;
+
+    const duplicatedPage = JSON.parse(JSON.stringify(page));
+    duplicatedPage.id = 'page-' + Date.now();
+    duplicatedPage.title = page.title + ' (نسخة)';
+    duplicatedPage.slug = page.slug + '-copy';
+    duplicatedPage.date = new Date().toISOString().split('T')[0];
+
+    this.pages.push(duplicatedPage);
+    this.savePages();
+    showToast('تم تكرار الصفحة بنجاح!', 'success');
+  }
+
+  addToMenu(id) {
+    const page = this.pages.find(p => p.id === id);
+    if (!page) return;
+
+    if (!menusManager) {
+      menusManager = new MenusManager();
+      menusManager.init();
+    }
+
+    // Ask which menu to add to
+    const menus = menusManager.menus;
+    if (menus.length === 0) {
+      if (confirm('لا توجد قوائم! هل تريد إنشاء قائمة جديدة؟')) {
+        openMenuModal();
+      }
+      return;
+    }
+
+    const menuOptions = menus.map((m, i) => `${i + 1}. ${m.name}`).join('\n');
+    const selection = prompt(`اختر رقم القائمة:\n\n${menuOptions}`);
+
+    if (selection) {
+      const index = parseInt(selection) - 1;
+      if (index >= 0 && index < menus.length) {
+        const menu = menus[index];
+
+        // Check if page already in menu
+        if (menu.items.some(item => item.pageId === page.id)) {
+          showToast('الصفحة موجودة بالفعل في هذه القائمة!', 'warning');
+          return;
+        }
+
+        // Add to menu
+        menu.items.push({
+          id: 'item-' + Date.now(),
+          title: page.title,
+          url: page.slug + '.html',
+          type: 'page',
+          pageId: page.id
+        });
+
+        menusManager.saveMenus();
+        showToast('تم إضافة الصفحة إلى القائمة بنجاح!', 'success');
+      }
+    }
   }
 
   openPageBuilder(id) {
@@ -293,11 +361,51 @@ class MenusManager {
             ${item.url} ${item.type === 'page' ? '(صفحة)' : '(رابط مخصص)'}
           </small>
         </div>
+        ${item.type === 'page' && item.pageId ? `
+          <button type="button" class="btn-icon" onclick="menusManager.editPageFromMenu('${item.pageId}')" title="تعديل الصفحة">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button type="button" class="btn-icon" onclick="menusManager.openPageBuilderFromMenu('${item.pageId}')" title="Page Builder">
+            <i class="fas fa-hammer"></i>
+          </button>
+        ` : ''}
+        <button type="button" class="btn-icon" onclick="menusManager.editMenuItem(${index})" title="تعديل العنصر">
+          <i class="fas fa-pencil-alt"></i>
+        </button>
         <button type="button" class="btn-icon" onclick="menusManager.removeMenuItem(${index})" title="حذف">
           <i class="fas fa-trash"></i>
         </button>
       </div>
     `).join('');
+  }
+
+  editPageFromMenu(pageId) {
+    if (pagesManager) {
+      pagesManager.editPage(pageId);
+    }
+  }
+
+  openPageBuilderFromMenu(pageId) {
+    if (pagesManager) {
+      // Close menu modal first
+      closeMenuModal();
+      // Open page builder
+      pagesManager.openPageBuilder(pageId);
+    }
+  }
+
+  editMenuItem(index) {
+    const item = this.currentMenuItems[index];
+    if (!item) return;
+
+    const newTitle = prompt('عنوان العنصر:', item.title);
+    const newUrl = prompt('رابط العنصر:', item.url);
+
+    if (newTitle && newUrl) {
+      this.currentMenuItems[index].title = newTitle;
+      this.currentMenuItems[index].url = newUrl;
+      this.renderMenuItems();
+    }
   }
 
   removeMenuItem(index) {
@@ -1226,16 +1334,19 @@ function renderPageCanvas() {
           </div>
         </div>
         <div class="section-actions">
-          <button class="btn btn-secondary" onclick="moveSection(${index}, 'up')" ${index === 0 ? 'disabled' : ''}>
+          <button class="btn btn-secondary" onclick="moveSection(${index}, 'up')" ${index === 0 ? 'disabled' : ''} title="نقل لأعلى">
             <i class="fas fa-arrow-up"></i>
           </button>
-          <button class="btn btn-secondary" onclick="moveSection(${index}, 'down')" ${index === pageLayout.length - 1 ? 'disabled' : ''}>
+          <button class="btn btn-secondary" onclick="moveSection(${index}, 'down')" ${index === pageLayout.length - 1 ? 'disabled' : ''} title="نقل لأسفل">
             <i class="fas fa-arrow-down"></i>
           </button>
-          <button class="btn btn-primary" onclick="editSection(${index})">
+          <button class="btn btn-secondary" onclick="duplicateSection(${index})" title="تكرار العنصر">
+            <i class="fas fa-copy"></i>
+          </button>
+          <button class="btn btn-primary" onclick="editSection(${index})" title="تعديل">
             <i class="fas fa-edit"></i> تعديل
           </button>
-          <button class="btn btn-danger" onclick="deleteSection(${index})">
+          <button class="btn btn-danger" onclick="deleteSection(${index})" title="حذف">
             <i class="fas fa-trash"></i>
           </button>
         </div>
@@ -1358,6 +1469,24 @@ function moveSection(index, direction) {
     [pageLayout[index], pageLayout[index + 1]] = [pageLayout[index + 1], pageLayout[index]];
   }
   renderPageCanvas();
+}
+
+function duplicateSection(index) {
+  const section = pageLayout[index];
+  if (!section) return;
+
+  // Deep clone the section
+  const duplicatedSection = JSON.parse(JSON.stringify(section));
+
+  // Update title
+  duplicatedSection.title = section.title + ' (نسخة)';
+  duplicatedSection.id = Date.now().toString();
+
+  // Insert after the original
+  pageLayout.splice(index + 1, 0, duplicatedSection);
+
+  renderPageCanvas();
+  showToast('تم تكرار العنصر بنجاح!', 'success');
 }
 
 function editSection(index) {
@@ -1977,6 +2106,48 @@ function addCustomMenuItem() {
 
   menusManager.renderMenuItems();
   showToast('تم إضافة العنصر!', 'success');
+}
+
+function openQuickPageModal() {
+  const title = prompt('أدخل عنوان الصفحة الجديدة:');
+  if (!title) return;
+
+  const slug = generateSlug(title);
+
+  if (!pagesManager) {
+    pagesManager = new PagesManager();
+    pagesManager.init();
+  }
+
+  // Create quick page
+  const pageData = {
+    id: 'page-' + Date.now(),
+    title: title,
+    slug: slug,
+    metaTitle: title,
+    metaDescription: '',
+    status: 'published',
+    date: new Date().toISOString().split('T')[0],
+    layout: []
+  };
+
+  pagesManager.pages.push(pageData);
+  pagesManager.savePages();
+
+  // Add to menu automatically
+  if (menusManager) {
+    menusManager.currentMenuItems.push({
+      id: 'item-' + Date.now(),
+      title: title,
+      url: slug + '.html',
+      type: 'page',
+      pageId: pageData.id
+    });
+    menusManager.loadAvailablePages();
+    menusManager.renderMenuItems();
+  }
+
+  showToast('تم إضافة الصفحة بنجاح!', 'success');
 }
 
 function loadMenusIntoFooterSelects() {

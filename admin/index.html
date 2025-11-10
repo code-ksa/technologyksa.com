@@ -2385,9 +2385,14 @@
             </label>
 
             <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
-              <p style="margin-bottom: 1rem; color: var(--text-secondary); font-size: 0.9rem;">
-                اختر الصفحات التي تريد إضافتها للقائمة:
-              </p>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <p style="margin: 0; color: var(--text-secondary); font-size: 0.9rem;">
+                  اختر الصفحات التي تريد إضافتها للقائمة:
+                </p>
+                <button type="button" class="btn btn-primary btn-sm" onclick="openQuickPageModal()">
+                  <i class="fas fa-plus"></i> إضافة صفحة جديدة
+                </button>
+              </div>
               <div id="availablePages" style="display: grid; gap: 0.5rem;">
                 <!-- Available pages will be inserted here as checkboxes -->
               </div>
