@@ -442,7 +442,13 @@ function loadSettings() {
     companyYear: '2010',
     companyCountry: 'المملكة العربية السعودية',
     companyAbout: 'نحن شركة رائدة في تقديم الحلول التقنية المتكاملة في المملكة العربية السعودية، نساعد الشركات على التحول الرقمي وتحقيق أهدافها التجارية.',
-    footerCopyright: `© ${new Date().getFullYear()} تكنولوجي السعودية. جميع الحقوق محفوظة.`
+    footerCopyright: `© ${new Date().getFullYear()} تكنولوجي السعودية. جميع الحقوق محفوظة.`,
+    headerStyle: 'default',
+    headerColor: '#0C4A2F',
+    footerStyle: 'default',
+    footerColor: '#0C4A2F',
+    showBlogSidebar: 'yes',
+    sidebarPosition: 'right'
   };
 
   // Merge defaults with existing settings
@@ -470,6 +476,14 @@ function loadSettings() {
   document.getElementById('companyCountry').value = mergedSettings.companyCountry;
   document.getElementById('companyAbout').value = mergedSettings.companyAbout;
   document.getElementById('footerCopyright').value = mergedSettings.footerCopyright;
+
+  // Layout Settings
+  document.getElementById('headerStyle').value = mergedSettings.headerStyle;
+  document.getElementById('headerColor').value = mergedSettings.headerColor;
+  document.getElementById('footerStyle').value = mergedSettings.footerStyle;
+  document.getElementById('footerColor').value = mergedSettings.footerColor;
+  document.getElementById('showBlogSidebar').value = mergedSettings.showBlogSidebar;
+  document.getElementById('sidebarPosition').value = mergedSettings.sidebarPosition;
 }
 
 function saveSettings() {
@@ -493,7 +507,13 @@ function saveSettings() {
     companyYear: document.getElementById('companyYear').value,
     companyCountry: document.getElementById('companyCountry').value,
     companyAbout: document.getElementById('companyAbout').value,
-    footerCopyright: document.getElementById('footerCopyright').value
+    footerCopyright: document.getElementById('footerCopyright').value,
+    headerStyle: document.getElementById('headerStyle').value,
+    headerColor: document.getElementById('headerColor').value,
+    footerStyle: document.getElementById('footerStyle').value,
+    footerColor: document.getElementById('footerColor').value,
+    showBlogSidebar: document.getElementById('showBlogSidebar').value,
+    sidebarPosition: document.getElementById('sidebarPosition').value
   };
 
   localStorage.setItem('techksa_site_settings', JSON.stringify(settings));
@@ -895,8 +915,129 @@ function moveSection(index, direction) {
 }
 
 function editSection(index) {
-  // TODO: Implement section editor modal
-  showToast('سيتم إضافة محرر العناصر قريباً!', 'info');
+  const section = pageLayout[index];
+  if (!section) return;
+
+  // Set current section index and type
+  document.getElementById('sectionIndex').value = index;
+  document.getElementById('sectionType').value = section.type;
+
+  // Set basic info
+  document.getElementById('sectionTitle').value = section.title;
+  document.getElementById('sectionDescription').value = section.description || '';
+
+  // Hide all field groups
+  document.querySelectorAll('.section-fields').forEach(field => {
+    field.style.display = 'none';
+  });
+
+  // Show and populate fields based on type
+  const content = section.content || {};
+
+  switch(section.type) {
+    case 'hero':
+      document.getElementById('heroFields').style.display = 'block';
+      document.getElementById('heroTitle').value = content.title || '';
+      document.getElementById('heroSubtitle').value = content.subtitle || '';
+      document.getElementById('heroButtonText').value = content.buttonText || '';
+      document.getElementById('heroButtonLink').value = content.buttonLink || '';
+      document.getElementById('heroBackgroundImage').value = content.backgroundImage || '';
+      document.getElementById('heroBackgroundColor').value = content.backgroundColor || '';
+      break;
+
+    case 'cta':
+      document.getElementById('ctaFields').style.display = 'block';
+      document.getElementById('ctaTitle').value = content.title || '';
+      document.getElementById('ctaDescription').value = content.description || '';
+      document.getElementById('ctaButtonText').value = content.buttonText || '';
+      document.getElementById('ctaButtonLink').value = content.buttonLink || '';
+      break;
+
+    case 'features':
+      document.getElementById('featuresFields').style.display = 'block';
+      break;
+
+    case 'testimonials':
+      document.getElementById('testimonialsFields').style.display = 'block';
+      break;
+
+    case 'stats':
+      document.getElementById('statsFields').style.display = 'block';
+      break;
+  }
+
+  // Update modal title
+  document.getElementById('sectionModalTitle').textContent = `تحرير ${section.title}`;
+
+  // Open modal
+  document.getElementById('sectionEditorModal').classList.add('active');
+}
+
+function closeSectionEditor() {
+  document.getElementById('sectionEditorModal').classList.remove('active');
+  document.getElementById('sectionForm').reset();
+}
+
+function saveSectionEdit(event) {
+  event.preventDefault();
+
+  const index = parseInt(document.getElementById('sectionIndex').value);
+  const type = document.getElementById('sectionType').value;
+
+  // Update basic info
+  pageLayout[index].title = document.getElementById('sectionTitle').value;
+  pageLayout[index].description = document.getElementById('sectionDescription').value;
+
+  // Update content based on type
+  let content = {};
+
+  switch(type) {
+    case 'hero':
+      content = {
+        title: document.getElementById('heroTitle').value,
+        subtitle: document.getElementById('heroSubtitle').value,
+        buttonText: document.getElementById('heroButtonText').value,
+        buttonLink: document.getElementById('heroButtonLink').value,
+        backgroundImage: document.getElementById('heroBackgroundImage').value,
+        backgroundColor: document.getElementById('heroBackgroundColor').value
+      };
+      break;
+
+    case 'cta':
+      content = {
+        title: document.getElementById('ctaTitle').value,
+        description: document.getElementById('ctaDescription').value,
+        buttonText: document.getElementById('ctaButtonText').value,
+        buttonLink: document.getElementById('ctaButtonLink').value
+      };
+      break;
+
+    case 'features':
+      // TODO: Implement features content
+      content = pageLayout[index].content || {};
+      break;
+
+    case 'testimonials':
+      // TODO: Implement testimonials content
+      content = pageLayout[index].content || {};
+      break;
+
+    case 'stats':
+      // TODO: Implement stats content
+      content = pageLayout[index].content || {};
+      break;
+  }
+
+  pageLayout[index].content = content;
+
+  // Re-render canvas
+  renderPageCanvas();
+
+  // Close modal
+  closeSectionEditor();
+
+  // Show success message
+  showToast('تم تحديث العنصر بنجاح!', 'success');
 }
 
 function deleteSection(index) {

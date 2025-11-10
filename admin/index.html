@@ -1513,6 +1513,58 @@
               </div>
             </div>
 
+            <!-- Layout Settings -->
+            <div class="settings-section">
+              <h3 class="settings-heading">إعدادات التخطيط والمظهر</h3>
+              <div class="settings-grid">
+                <div class="form-group">
+                  <label for="headerStyle">نمط الهيدر (Header)</label>
+                  <select id="headerStyle" class="form-input">
+                    <option value="default">الافتراضي</option>
+                    <option value="transparent">شفاف</option>
+                    <option value="fixed">ثابت</option>
+                    <option value="minimal">بسيط</option>
+                  </select>
+                  <small>نمط عرض الهيدر في جميع صفحات الموقع</small>
+                </div>
+                <div class="form-group">
+                  <label for="headerColor">لون الهيدر</label>
+                  <input type="color" id="headerColor" class="form-input" value="#0C4A2F">
+                  <small>اللون الأساسي للهيدر</small>
+                </div>
+                <div class="form-group">
+                  <label for="footerStyle">نمط الفوتر (Footer)</label>
+                  <select id="footerStyle" class="form-input">
+                    <option value="default">الافتراضي</option>
+                    <option value="minimal">بسيط</option>
+                    <option value="detailed">مفصّل</option>
+                  </select>
+                  <small>نمط عرض الفوتر في جميع الصفحات</small>
+                </div>
+                <div class="form-group">
+                  <label for="footerColor">لون الفوتر</label>
+                  <input type="color" id="footerColor" class="form-input" value="#0C4A2F">
+                  <small>اللون الأساسي للفوتر</small>
+                </div>
+                <div class="form-group">
+                  <label for="showBlogSidebar">عرض Sidebar في المدونة</label>
+                  <select id="showBlogSidebar" class="form-input">
+                    <option value="yes">نعم</option>
+                    <option value="no">لا</option>
+                  </select>
+                  <small>هل تريد عرض الشريط الجانبي في صفحات المدونة؟</small>
+                </div>
+                <div class="form-group">
+                  <label for="sidebarPosition">موقع Sidebar</label>
+                  <select id="sidebarPosition" class="form-input">
+                    <option value="right">يمين</option>
+                    <option value="left">يسار</option>
+                  </select>
+                  <small>موقع الشريط الجانبي في المدونة</small>
+                </div>
+              </div>
+            </div>
+
             <!-- Action Buttons -->
             <div class="settings-actions">
               <button class="btn btn-primary btn-lg" onclick="saveSettings()">
@@ -1914,6 +1966,129 @@
         <div class="media-grid" id="imageSelectorGrid">
           <!-- Images will be inserted here -->
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section Editor Modal (Page Builder) -->
+  <div id="sectionEditorModal" class="modal">
+    <div class="modal-overlay" onclick="closeSectionEditor()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="sectionModalTitle">تحرير العنصر</h3>
+        <button class="modal-close" onclick="closeSectionEditor()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="sectionForm" onsubmit="saveSectionEdit(event)">
+          <input type="hidden" id="sectionIndex">
+          <input type="hidden" id="sectionType">
+
+          <div class="form-group">
+            <label for="sectionTitle">عنوان العنصر <span style="color: var(--error);">*</span></label>
+            <input type="text" id="sectionTitle" required placeholder="أدخل عنوان العنصر">
+          </div>
+
+          <div class="form-group">
+            <label for="sectionDescription">وصف العنصر</label>
+            <textarea id="sectionDescription" rows="2" placeholder="وصف مختصر للعنصر"></textarea>
+          </div>
+
+          <!-- Hero Section Fields -->
+          <div id="heroFields" class="section-fields" style="display: none;">
+            <h4 style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
+              <i class="fas fa-image"></i> محتوى Hero Section
+            </h4>
+            <div class="form-group">
+              <label for="heroTitle">العنوان الرئيسي <span style="color: var(--error);">*</span></label>
+              <input type="text" id="heroTitle" placeholder="عنوان جذاب يظهر في الأعلى">
+            </div>
+            <div class="form-group">
+              <label for="heroSubtitle">النص الفرعي</label>
+              <textarea id="heroSubtitle" rows="3" placeholder="نص يوضح الخدمة أو المنتج"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="heroButtonText">نص الزر</label>
+              <input type="text" id="heroButtonText" placeholder="ابدأ الآن">
+            </div>
+            <div class="form-group">
+              <label for="heroButtonLink">رابط الزر</label>
+              <input type="text" id="heroButtonLink" placeholder="#contact">
+            </div>
+            <div class="form-group">
+              <label for="heroBackgroundImage">رابط صورة الخلفية</label>
+              <input type="text" id="heroBackgroundImage" placeholder="https://...">
+            </div>
+            <div class="form-group">
+              <label for="heroBackgroundColor">لون/تدرج الخلفية</label>
+              <input type="text" id="heroBackgroundColor" placeholder="linear-gradient(135deg, #0C4A2F 0%, #10B981 100%)">
+              <small>يمكنك استخدام لون أو gradient CSS</small>
+            </div>
+          </div>
+
+          <!-- CTA Fields -->
+          <div id="ctaFields" class="section-fields" style="display: none;">
+            <h4 style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
+              <i class="fas fa-bullhorn"></i> محتوى Call to Action
+            </h4>
+            <div class="form-group">
+              <label for="ctaTitle">العنوان <span style="color: var(--error);">*</span></label>
+              <input type="text" id="ctaTitle" placeholder="هل لديك مشروع؟">
+            </div>
+            <div class="form-group">
+              <label for="ctaDescription">الوصف</label>
+              <textarea id="ctaDescription" rows="3" placeholder="تواصل معنا الآن واحصل على استشارة مجانية"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="ctaButtonText">نص الزر <span style="color: var(--error);">*</span></label>
+              <input type="text" id="ctaButtonText" placeholder="تواصل معنا">
+            </div>
+            <div class="form-group">
+              <label for="ctaButtonLink">رابط الزر</label>
+              <input type="text" id="ctaButtonLink" placeholder="#contact">
+            </div>
+          </div>
+
+          <!-- Features Fields -->
+          <div id="featuresFields" class="section-fields" style="display: none;">
+            <h4 style="color: var(--text-primary); margin-bottom: 1rem;">
+              <i class="fas fa-th"></i> محتوى Features Grid
+            </h4>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">
+              سيتم إضافة محرر Features Grid في التحديثات القادمة
+            </p>
+          </div>
+
+          <!-- Testimonials Fields -->
+          <div id="testimonialsFields" class="section-fields" style="display: none;">
+            <h4 style="color: var(--text-primary); margin-bottom: 1rem;">
+              <i class="fas fa-comments"></i> محتوى Testimonials
+            </h4>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">
+              سيتم إضافة محرر Testimonials في التحديثات القادمة
+            </p>
+          </div>
+
+          <!-- Statistics Fields -->
+          <div id="statsFields" class="section-fields" style="display: none;">
+            <h4 style="color: var(--text-primary); margin-bottom: 1rem;">
+              <i class="fas fa-chart-bar"></i> محتوى Statistics
+            </h4>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">
+              سيتم إضافة محرر Statistics في التحديثات القادمة
+            </p>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save"></i> حفظ التعديلات
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="closeSectionEditor()">
+              <i class="fas fa-times"></i> إلغاء
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
