@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="مدونة تكنولوجي السعودية - أحدث المقالات والنصائح في التكنولوجيا والتسويق الرقمي وتطوير الويب">
+    <meta name="keywords" content="مدونة تقنية، تسويق رقمي، تطوير ويب، السعودية، تكنولوجيا">
+    <meta name="author" content="تكنولوجي السعودية">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="المدونة - تكنولوجي السعودية">
+    <meta property="og:description" content="اكتشف أحدث المقالات والنصائح في عالم التكنولوجيا والتسويق الرقمي">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.technologyksa.com/ar/blog/">
+    <meta property="og:image" content="https://www.technologyksa.com/assets/images/og-blog.jpg">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="المدونة - تكنولوجي السعودية">
+    <meta name="twitter:description" content="اكتشف أحدث المقالات والنصائح في عالم التكنولوجيا والتسويق الرقمي">
+
+    <title>المدونة - تكنولوجي السعودية | Technology KSA Blog</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+    <link rel="apple-touch-icon" href="../../assets/images/apple-touch-icon.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- AOS Animation -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/rtl.css">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "name": "مدونة تكنولوجي السعودية",
+      "description": "أحدث المقالات والنصائح في التكنولوجيا والتسويق الرقمي",
+      "url": "https://www.technologyksa.com/ar/blog/",
+      "publisher": {
+        "@type": "Organization",
+        "name": "تكنولوجي السعودية",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.technologyksa.com/assets/images/logo.svg"
+        }
+      }
+    }
+    </script>
+
+    <style>
+        /* Blog Listing Specific Styles */
+        .blog-header {
+            background: linear-gradient(135deg, var(--saudi-green) 0%, var(--saudi-green-light) 100%);
+            padding: 8rem 0 4rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blog-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .blog-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .blog-header p {
+            font-size: 1.25rem;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+
+        .blog-filters {
+            background: white;
+            padding: 2rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 80px;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        [data-theme="dark"] .blog-filters {
+            background: var(--dark-surface);
+            border-bottom-color: var(--dark-border);
+        }
+
+        .filters-container {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .search-box input {
+            background: var(--dark-card);
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        .search-box input:focus {
+            border-color: var(--saudi-green);
+            box-shadow: 0 0 0 3px rgba(12, 74, 47, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .category-filters {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.25rem;
+            border: 2px solid var(--border-color);
+            background: transparent;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        [data-theme="dark"] .filter-btn {
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        .filter-btn:hover {
+            border-color: var(--saudi-green);
+            color: var(--saudi-green);
+        }
+
+        .filter-btn.active {
+            background: var(--saudi-green);
+            color: white;
+            border-color: var(--saudi-green);
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2.5rem;
+            padding: 4rem 0;
+        }
+
+        .blog-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        [data-theme="dark"] .blog-card {
+            background: var(--dark-card);
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        .blog-card-image {
+            width: 100%;
+            height: 240px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .blog-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .blog-card:hover .blog-card-image img {
+            transform: scale(1.1);
+        }
+
+        .blog-card-category {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--saudi-green);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .blog-card-content {
+            padding: 1.75rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-card-meta {
+            display: flex;
+            gap: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+
+        .blog-card-meta i {
+            color: var(--saudi-green);
+            margin-left: 0.4rem;
+        }
+
+        .blog-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            line-height: 1.4;
+        }
+
+        [data-theme="dark"] .blog-card h3 {
+            color: var(--dark-text);
+        }
+
+        .blog-card-excerpt {
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            flex: 1;
+        }
+
+        .blog-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        [data-theme="dark"] .blog-card-footer {
+            border-top-color: var(--dark-border);
+        }
+
+        .blog-card-author {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .author-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: var(--saudi-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .read-more {
+            color: var(--saudi-green);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: gap 0.3s ease;
+        }
+
+        .read-more:hover {
+            gap: 0.75rem;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 3rem 0;
+        }
+
+        .pagination button {
+            padding: 0.75rem 1.25rem;
+            border: 2px solid var(--border-color);
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        [data-theme="dark"] .pagination button {
+            background: var(--dark-card);
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        .pagination button:hover:not(:disabled) {
+            border-color: var(--saudi-green);
+            color: var(--saudi-green);
+        }
+
+        .pagination button.active {
+            background: var(--saudi-green);
+            color: white;
+            border-color: var(--saudi-green);
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .no-results i {
+            font-size: 4rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .no-results h3 {
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        [data-theme="dark"] .no-results h3 {
+            color: var(--dark-text);
+        }
+
+        .no-results p {
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 768px) {
+            .blog-header h1 {
+                font-size: 2rem;
+            }
+
+            .blog-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .filters-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .category-filters {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="../../" class="logo">
+                    <i class="fas fa-code"></i>
+                    <span>تكنولوجي <span class="ksa-text">السعودية</span></span>
+                </a>
+
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="القائمة">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <div class="nav-menu" id="navMenu">
+                    <a href="../../" class="nav-link">الرئيسية</a>
+                    <a href="../about.html" class="nav-link">من نحن</a>
+                    <div class="nav-dropdown">
+                        <a href="../services/" class="nav-link">
+                            خدماتنا <i class="fas fa-chevron-down"></i>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="../services/web-development.html" class="dropdown-item">
+                                <i class="fas fa-code"></i>
+                                <div>
+                                    <strong>تطوير المواقع</strong>
+                                    <span>مواقع احترافية متجاوبة</span>
+                                </div>
+                            </a>
+                            <a href="../services/mobile-apps.html" class="dropdown-item">
+                                <i class="fas fa-mobile-alt"></i>
+                                <div>
+                                    <strong>تطبيقات الجوال</strong>
+                                    <span>iOS و Android</span>
+                                </div>
+                            </a>
+                            <a href="../services/digital-marketing.html" class="dropdown-item">
+                                <i class="fas fa-chart-line"></i>
+                                <div>
+                                    <strong>التسويق الرقمي</strong>
+                                    <span>SEO و الإعلانات</span>
+                                </div>
+                            </a>
+                            <a href="../services/erp-systems.html" class="dropdown-item">
+                                <i class="fas fa-network-wired"></i>
+                                <div>
+                                    <strong>أنظمة ERP</strong>
+                                    <span>حلول إدارة متكاملة</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <a href="./" class="nav-link active">المدونة</a>
+                    <a href="../contact.html" class="nav-link">تواصل معنا</a>
+
+                    <div class="nav-actions">
+                        <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                        <button class="search-toggle" id="searchToggle" aria-label="البحث">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <div class="language-switcher">
+                            <button class="lang-btn" id="langBtn">
+                                <i class="fas fa-globe"></i>
+                                <span>EN</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Blog Header -->
+    <header class="blog-header">
+        <div class="container">
+            <h1 data-aos="fade-up">مدونة تكنولوجي السعودية</h1>
+            <p data-aos="fade-up" data-aos-delay="100">اكتشف أحدث المقالات والنصائح في عالم التكنولوجيا والتسويق الرقمي</p>
+        </div>
+    </header>
+
+    <!-- Blog Filters -->
+    <section class="blog-filters">
+        <div class="container">
+            <div class="filters-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="blogSearch" placeholder="ابحث في المدونة...">
+                </div>
+                <div class="category-filters">
+                    <button class="filter-btn active" data-category="all">الكل</button>
+                    <button class="filter-btn" data-category="تسويق رقمي">تسويق رقمي</button>
+                    <button class="filter-btn" data-category="تطوير ويب">تطوير ويب</button>
+                    <button class="filter-btn" data-category="تطبيقات جوال">تطبيقات جوال</button>
+                    <button class="filter-btn" data-category="أمن سيبراني">أمن سيبراني</button>
+                    <button class="filter-btn" data-category="تقنية">تقنية</button>
+                    <button class="filter-btn" data-category="استشارات">استشارات</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Grid -->
+    <section class="blog-section">
+        <div class="container">
+            <div class="blog-grid" id="blogGrid">
+                <!-- Blog posts will be loaded here dynamically -->
+            </div>
+
+            <!-- No Results -->
+            <div class="no-results" id="noResults" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3>لم يتم العثور على نتائج</h3>
+                <p>جرب البحث بكلمات مفتاحية أخرى أو اختر تصنيفاً مختلفاً</p>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination">
+                <!-- Pagination will be generated dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-col">
+                        <div class="footer-logo">
+                            <i class="fas fa-code"></i>
+                            <span>تكنولوجي <span class="ksa-text">السعودية</span></span>
+                        </div>
+                        <p class="footer-desc">
+                            نحن شركة رائدة في تقديم الحلول التقنية المتكاملة في المملكة العربية السعودية،
+                            نساعد الشركات على التحول الرقمي وتحقيق أهدافها التجارية.
+                        </p>
+                        <div class="social-links">
+                            <a href="#" aria-label="تويتر"><i class="fab fa-twitter"></i></a>
+                            <a href="#" aria-label="لينكد إن"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" aria-label="إنستغرام"><i class="fab fa-instagram"></i></a>
+                            <a href="#" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4>خدماتنا</h4>
+                        <ul class="footer-links">
+                            <li><a href="../services/web-development.html">تطوير المواقع</a></li>
+                            <li><a href="../services/mobile-apps.html">تطبيقات الجوال</a></li>
+                            <li><a href="../services/digital-marketing.html">التسويق الرقمي</a></li>
+                            <li><a href="../services/erp-systems.html">أنظمة ERP</a></li>
+                            <li><a href="../services/cybersecurity.html">الأمن السيبراني</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4>روابط سريعة</h4>
+                        <ul class="footer-links">
+                            <li><a href="../about.html">من نحن</a></li>
+                            <li><a href="../services/">خدماتنا</a></li>
+                            <li><a href="./">المدونة</a></li>
+                            <li><a href="../contact.html">تواصل معنا</a></li>
+                            <li><a href="../privacy-policy.html">سياسة الخصوصية</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4>تواصل معنا</h4>
+                        <ul class="footer-contact">
+                            <li>
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>الرياض، المملكة العربية السعودية</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-phone"></i>
+                                <span dir="ltr">+966 50 123 4567</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-envelope"></i>
+                                <span>info@technologyksa.com</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2025 تكنولوجي السعودية. جميع الحقوق محفوظة.</p>
+                    <div class="footer-bottom-links">
+                        <a href="../privacy-policy.html">سياسة الخصوصية</a>
+                        <a href="../terms.html">الشروط والأحكام</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/language.js"></script>
+    <script src="../../assets/js/theme.js"></script>
+
+    <script>
+        // Blog Listing Page Script
+        class BlogListing {
+            constructor() {
+                this.posts = this.loadPosts();
+                this.currentPage = 1;
+                this.postsPerPage = 9;
+                this.currentCategory = 'all';
+                this.searchQuery = '';
+
+                this.init();
+            }
+
+            loadPosts() {
+                // Load posts from localStorage
+                const stored = localStorage.getItem('techksa_blog_posts');
+                let posts = stored ? JSON.parse(stored) : [];
+
+                // Add default post if no posts exist
+                if (posts.length === 0) {
+                    posts = [{
+                        id: 'digital-marketing-strategies-2025',
+                        title: 'استراتيجيات التسويق الرقمي 2025: دليل شامل للشركات السعودية',
+                        slug: 'digital-marketing-strategies-2025',
+                        category: 'تسويق رقمي',
+                        excerpt: 'اكتشف أحدث استراتيجيات التسويق الرقمي التي تساعد شركتك على التميز في السوق السعودي وتحقيق أهدافك التسويقية بفعالية في عام 2025.',
+                        content: '',
+                        featuredImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop',
+                        imageAlt: 'استراتيجيات التسويق الرقمي',
+                        metaTitle: 'استراتيجيات التسويق الرقمي 2025 للشركات السعودية',
+                        metaDescription: 'دليل شامل لأحدث استراتيجيات التسويق الرقمي في السعودية',
+                        author: 'فريق تكنولوجي السعودية',
+                        status: 'published',
+                        date: '2025-01-15',
+                        readTime: '8'
+                    }];
+                }
+
+                // Filter only published posts and sort by date
+                return posts
+                    .filter(post => post.status === 'published')
+                    .sort((a, b) => new Date(b.date) - new Date(a.date));
+            }
+
+            init() {
+                this.renderPosts();
+                this.setupFilters();
+                this.setupSearch();
+                this.setupPagination();
+            }
+
+            setupFilters() {
+                const filterBtns = document.querySelectorAll('.filter-btn');
+                filterBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        filterBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        this.currentCategory = btn.dataset.category;
+                        this.currentPage = 1;
+                        this.renderPosts();
+                    });
+                });
+            }
+
+            setupSearch() {
+                const searchInput = document.getElementById('blogSearch');
+                searchInput.addEventListener('input', (e) => {
+                    this.searchQuery = e.target.value.toLowerCase();
+                    this.currentPage = 1;
+                    this.renderPosts();
+                });
+            }
+
+            getFilteredPosts() {
+                let filtered = this.posts;
+
+                // Filter by category
+                if (this.currentCategory !== 'all') {
+                    filtered = filtered.filter(post => post.category === this.currentCategory);
+                }
+
+                // Filter by search query
+                if (this.searchQuery) {
+                    filtered = filtered.filter(post =>
+                        post.title.toLowerCase().includes(this.searchQuery) ||
+                        post.excerpt.toLowerCase().includes(this.searchQuery) ||
+                        post.category.toLowerCase().includes(this.searchQuery)
+                    );
+                }
+
+                return filtered;
+            }
+
+            renderPosts() {
+                const blogGrid = document.getElementById('blogGrid');
+                const noResults = document.getElementById('noResults');
+                const filtered = this.getFilteredPosts();
+
+                // Calculate pagination
+                const start = (this.currentPage - 1) * this.postsPerPage;
+                const end = start + this.postsPerPage;
+                const paginatedPosts = filtered.slice(start, end);
+
+                if (paginatedPosts.length === 0) {
+                    blogGrid.innerHTML = '';
+                    noResults.style.display = 'block';
+                    document.getElementById('pagination').innerHTML = '';
+                    return;
+                }
+
+                noResults.style.display = 'none';
+
+                blogGrid.innerHTML = paginatedPosts.map(post => this.createPostCard(post)).join('');
+                this.renderPagination(filtered.length);
+
+                // Reinitialize AOS
+                if (typeof AOS !== 'undefined') {
+                    AOS.refresh();
+                }
+            }
+
+            createPostCard(post) {
+                const authorInitial = post.author.charAt(0);
+                return `
+                    <article class="blog-card" data-aos="fade-up">
+                        <div class="blog-card-image">
+                            <img src="${post.featuredImage}" alt="${post.imageAlt || post.title}" loading="lazy">
+                            <span class="blog-card-category">${post.category}</span>
+                        </div>
+                        <div class="blog-card-content">
+                            <div class="blog-card-meta">
+                                <span><i class="far fa-calendar"></i>${this.formatDate(post.date)}</span>
+                                <span><i class="far fa-clock"></i>${post.readTime} دقائق</span>
+                            </div>
+                            <h3>${post.title}</h3>
+                            <p class="blog-card-excerpt">${post.excerpt}</p>
+                            <div class="blog-card-footer">
+                                <div class="blog-card-author">
+                                    <div class="author-avatar">${authorInitial}</div>
+                                    <span>${post.author}</span>
+                                </div>
+                                <a href="posts/${post.slug}.html" class="read-more">
+                                    اقرأ المزيد <i class="fas fa-arrow-left"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                `;
+            }
+
+            formatDate(dateString) {
+                const date = new Date(dateString);
+                const months = ['يناير', 'فبراير', 'مارس', 'إبريل', 'مايو', 'يونيو',
+                               'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+                return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+            }
+
+            renderPagination(totalPosts) {
+                const totalPages = Math.ceil(totalPosts / this.postsPerPage);
+                const pagination = document.getElementById('pagination');
+
+                if (totalPages <= 1) {
+                    pagination.innerHTML = '';
+                    return;
+                }
+
+                let html = '<button class="prev-btn" ' + (this.currentPage === 1 ? 'disabled' : '') + '><i class="fas fa-chevron-right"></i></button>';
+
+                for (let i = 1; i <= totalPages; i++) {
+                    html += `<button class="page-btn ${i === this.currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
+                }
+
+                html += '<button class="next-btn" ' + (this.currentPage === totalPages ? 'disabled' : '') + '><i class="fas fa-chevron-left"></i></button>';
+
+                pagination.innerHTML = html;
+            }
+
+            setupPagination() {
+                const pagination = document.getElementById('pagination');
+                pagination.addEventListener('click', (e) => {
+                    const target = e.target.closest('button');
+                    if (!target) return;
+
+                    if (target.classList.contains('prev-btn') && this.currentPage > 1) {
+                        this.currentPage--;
+                    } else if (target.classList.contains('next-btn')) {
+                        const totalPages = Math.ceil(this.getFilteredPosts().length / this.postsPerPage);
+                        if (this.currentPage < totalPages) {
+                            this.currentPage++;
+                        }
+                    } else if (target.classList.contains('page-btn')) {
+                        this.currentPage = parseInt(target.dataset.page);
+                    }
+
+                    this.renderPosts();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        }
+
+        // Initialize blog listing when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new BlogListing();
+        });
+    </script>
+</body>
+</html>
