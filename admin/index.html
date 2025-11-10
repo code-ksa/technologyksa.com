@@ -1401,6 +1401,9 @@
               <button class="component-tab" data-tab="features">Features Grid</button>
               <button class="component-tab" data-tab="testimonials">Testimonials</button>
               <button class="component-tab" data-tab="stats">Statistics</button>
+              <button class="component-tab" data-tab="contact">Contact Form</button>
+              <button class="component-tab" data-tab="team">Team Members</button>
+              <button class="component-tab" data-tab="pricing">Pricing Tables</button>
             </div>
 
             <!-- Hero Sections Tab -->
@@ -1460,6 +1463,42 @@
               </div>
               <div class="components-grid" id="statsComponentsGrid">
                 <!-- Stats components will be loaded here -->
+              </div>
+            </div>
+
+            <!-- Contact Form Tab -->
+            <div class="component-tab-content" data-content="contact">
+              <div class="component-actions">
+                <button class="btn btn-primary" onclick="openComponentModal('contact')">
+                  <i class="fas fa-plus"></i> إضافة Contact Form جديد
+                </button>
+              </div>
+              <div class="components-grid" id="contactComponentsGrid">
+                <!-- Contact components will be loaded here -->
+              </div>
+            </div>
+
+            <!-- Team Members Tab -->
+            <div class="component-tab-content" data-content="team">
+              <div class="component-actions">
+                <button class="btn btn-primary" onclick="openComponentModal('team')">
+                  <i class="fas fa-plus"></i> إضافة Team Section جديد
+                </button>
+              </div>
+              <div class="components-grid" id="teamComponentsGrid">
+                <!-- Team components will be loaded here -->
+              </div>
+            </div>
+
+            <!-- Pricing Tables Tab -->
+            <div class="component-tab-content" data-content="pricing">
+              <div class="component-actions">
+                <button class="btn btn-primary" onclick="openComponentModal('pricing')">
+                  <i class="fas fa-plus"></i> إضافة Pricing Table جديد
+                </button>
+              </div>
+              <div class="components-grid" id="pricingComponentsGrid">
+                <!-- Pricing components will be loaded here -->
               </div>
             </div>
           </div>
@@ -1721,6 +1760,33 @@
                       Statistics
                     </h4>
                     <div id="statsComponents" class="draggable-components"></div>
+                  </div>
+
+                  <!-- Contact Form -->
+                  <div class="component-category">
+                    <h4 class="category-title">
+                      <i class="fas fa-envelope"></i>
+                      Contact Form
+                    </h4>
+                    <div id="contactComponents" class="draggable-components"></div>
+                  </div>
+
+                  <!-- Team Members -->
+                  <div class="component-category">
+                    <h4 class="category-title">
+                      <i class="fas fa-users"></i>
+                      Team Members
+                    </h4>
+                    <div id="teamComponents" class="draggable-components"></div>
+                  </div>
+
+                  <!-- Pricing Tables -->
+                  <div class="component-category">
+                    <h4 class="category-title">
+                      <i class="fas fa-tags"></i>
+                      Pricing Tables
+                    </h4>
+                    <div id="pricingComponents" class="draggable-components"></div>
                   </div>
                 </div>
               </div>

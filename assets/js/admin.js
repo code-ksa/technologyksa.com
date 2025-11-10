@@ -644,7 +644,10 @@ function getComponentTypeName(type) {
     cta: 'Call to Action',
     features: 'Features Grid',
     testimonials: 'Testimonials',
-    stats: 'Statistics'
+    stats: 'Statistics',
+    contact: 'Contact Form',
+    team: 'Team Members',
+    pricing: 'Pricing Table'
   };
   return names[type] || type;
 }
@@ -655,7 +658,10 @@ function getComponentIcon(type) {
     cta: 'bullhorn',
     features: 'th',
     testimonials: 'comments',
-    stats: 'chart-bar'
+    stats: 'chart-bar',
+    contact: 'envelope',
+    team: 'users',
+    pricing: 'tags'
   };
   return icons[type] || 'cube';
 }
@@ -715,12 +721,64 @@ function createSampleComponents() {
     }
   ];
 
+  const sampleContact = [
+    {
+      id: 'contact-1',
+      title: 'Contact Form - Standard',
+      description: 'نموذج تواصل قياسي مع الحقول الأساسية',
+      preview: null,
+      content: {
+        title: 'تواصل معنا',
+        subtitle: 'نسعد بالرد على استفساراتكم',
+        fields: ['name', 'email', 'phone', 'message'],
+        submitText: 'إرسال'
+      }
+    }
+  ];
+
+  const sampleTeam = [
+    {
+      id: 'team-1',
+      title: 'Team Section - Grid',
+      description: 'عرض أعضاء الفريق في شبكة منظمة',
+      preview: null,
+      content: {
+        title: 'فريق العمل',
+        subtitle: 'تعرف على خبرائنا',
+        members: []
+      }
+    }
+  ];
+
+  const samplePricing = [
+    {
+      id: 'pricing-1',
+      title: 'Pricing Table - 3 Columns',
+      description: 'جدول أسعار بثلاثة خطط',
+      preview: null,
+      content: {
+        title: 'خطط الأسعار',
+        subtitle: 'اختر الباقة المناسبة لك',
+        plans: []
+      }
+    }
+  ];
+
   // Save samples if nothing exists
   if (!localStorage.getItem('techksa_components_hero')) {
     localStorage.setItem('techksa_components_hero', JSON.stringify(sampleHero));
   }
   if (!localStorage.getItem('techksa_components_cta')) {
     localStorage.setItem('techksa_components_cta', JSON.stringify(sampleCTA));
+  }
+  if (!localStorage.getItem('techksa_components_contact')) {
+    localStorage.setItem('techksa_components_contact', JSON.stringify(sampleContact));
+  }
+  if (!localStorage.getItem('techksa_components_team')) {
+    localStorage.setItem('techksa_components_team', JSON.stringify(sampleTeam));
+  }
+  if (!localStorage.getItem('techksa_components_pricing')) {
+    localStorage.setItem('techksa_components_pricing', JSON.stringify(samplePricing));
   }
 }
 
@@ -737,6 +795,9 @@ function initPageBuilder() {
   loadPageComponents('features', 'featuresComponents');
   loadPageComponents('testimonials', 'testimonialsComponents');
   loadPageComponents('stats', 'statsComponents');
+  loadPageComponents('contact', 'contactComponents');
+  loadPageComponents('team', 'teamComponents');
+  loadPageComponents('pricing', 'pricingComponents');
 
   // Load saved page layout
   loadPageLayout();
