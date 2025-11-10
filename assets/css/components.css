@@ -1,0 +1,435 @@
+/**
+ * Components CSS - Sidebar, Sticky Elements, and Reusable Components
+ */
+
+/* ==========================================
+   SIDEBAR COMPONENT
+   ========================================== */
+
+.sidebar {
+  position: sticky;
+  top: 100px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  padding: 0;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+[data-theme="dark"] .sidebar::-webkit-scrollbar-thumb {
+  background: var(--dark-border);
+}
+
+.sidebar-widget {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  margin-bottom: 2rem;
+}
+
+[data-theme="dark"] .sidebar-widget {
+  background: var(--dark-card);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.sidebar-widget-title {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--saudi-green);
+  position: relative;
+}
+
+[data-theme="dark"] .sidebar-widget-title {
+  color: var(--dark-text);
+}
+
+/* Search Widget */
+.sidebar-search-form {
+  position: relative;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.sidebar-search-form input {
+  flex: 1;
+  padding: 0.875rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 50px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .sidebar-search-form input {
+  background: var(--dark-surface);
+  border-color: var(--dark-border);
+  color: var(--dark-text);
+}
+
+.sidebar-search-form input:focus {
+  border-color: var(--saudi-green);
+  box-shadow: 0 0 0 3px rgba(12, 74, 47, 0.1);
+  outline: none;
+}
+
+.sidebar-search-form button {
+  background: var(--saudi-green);
+  color: white;
+  border: none;
+  padding: 0 1.5rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.sidebar-search-form button:hover {
+  background: var(--saudi-green-light);
+  transform: scale(1.05);
+}
+
+/* Categories Widget */
+.sidebar-categories {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-categories li {
+  border-bottom: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .sidebar-categories li {
+  border-bottom-color: var(--dark-border);
+}
+
+.sidebar-categories li:last-child {
+  border-bottom: none;
+}
+
+.sidebar-categories a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem 0;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .sidebar-categories a {
+  color: var(--dark-text-secondary);
+}
+
+.sidebar-categories a:hover {
+  color: var(--saudi-green);
+  padding-right: 0.5rem;
+}
+
+.sidebar-categories .count {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+/* Recent Posts Widget */
+.sidebar-recent-posts {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-recent-posts li {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .sidebar-recent-posts li {
+  border-bottom-color: var(--dark-border);
+}
+
+.sidebar-recent-posts li:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.sidebar-recent-posts a {
+  display: flex;
+  gap: 1rem;
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .sidebar-recent-posts a {
+  color: var(--dark-text);
+}
+
+.sidebar-recent-posts a:hover {
+  transform: translateX(-5px);
+}
+
+.sidebar-recent-posts img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.recent-post-content {
+  flex: 1;
+}
+
+.recent-post-content h4 {
+  font-size: 0.95rem;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.recent-post-content .date {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Tags Widget */
+.sidebar-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.sidebar-tags .tag {
+  background: rgba(12, 74, 47, 0.1);
+  color: var(--saudi-green);
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .sidebar-tags .tag {
+  background: rgba(12, 74, 47, 0.3);
+}
+
+.sidebar-tags .tag:hover {
+  background: var(--saudi-green);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* CTA Widget */
+.sidebar-cta {
+  background: linear-gradient(135deg, var(--saudi-green), var(--saudi-green-light));
+  color: white;
+}
+
+.sidebar-cta-content {
+  text-align: center;
+}
+
+.sidebar-cta-content i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+  opacity: 0.9;
+}
+
+.sidebar-cta-content h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: white;
+}
+
+.sidebar-cta-content p {
+  margin-bottom: 1.5rem;
+  opacity: 0.95;
+  line-height: 1.6;
+}
+
+.sidebar-cta .btn {
+  background: white;
+  color: var(--saudi-green);
+  width: 100%;
+  justify-content: center;
+}
+
+.sidebar-cta .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+/* ==========================================
+   BLOG LAYOUT WITH SIDEBAR
+   ========================================== */
+
+.blog-layout {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 3rem;
+  align-items: start;
+}
+
+.blog-main-content {
+  min-width: 0; /* Prevents grid blowout */
+}
+
+/* ==========================================
+   STICKY FILTERS (Blog Page)
+   ========================================== */
+
+.blog-filters,
+.portfolio-filters,
+.services-filters {
+  position: sticky;
+  top: 80px;
+  z-index: 100;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  border-bottom: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .blog-filters,
+[data-theme="dark"] .portfolio-filters,
+[data-theme="dark"] .services-filters {
+  background: var(--dark-surface);
+  border-bottom-color: var(--dark-border);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.blog-filters.scrolled,
+.portfolio-filters.scrolled,
+.services-filters.scrolled {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+   ========================================== */
+
+@media (max-width: 1024px) {
+  .blog-layout {
+    grid-template-columns: 1fr 300px;
+    gap: 2rem;
+  }
+
+  .sidebar {
+    top: 90px;
+  }
+}
+
+@media (max-width: 768px) {
+  .blog-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .sidebar {
+    position: static;
+    max-height: none;
+  }
+
+  .sidebar-widget {
+    margin-bottom: 1.5rem;
+  }
+
+  .blog-filters,
+  .portfolio-filters,
+  .services-filters {
+    top: 70px;
+  }
+}
+
+/* ==========================================
+   COMPONENT ANIMATIONS
+   ========================================== */
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.sidebar-widget {
+  animation: slideInRight 0.5s ease forwards;
+}
+
+.sidebar-widget:nth-child(1) { animation-delay: 0.1s; }
+.sidebar-widget:nth-child(2) { animation-delay: 0.2s; }
+.sidebar-widget:nth-child(3) { animation-delay: 0.3s; }
+.sidebar-widget:nth-child(4) { animation-delay: 0.4s; }
+
+/* ==========================================
+   LOADING COMPONENT PLACEHOLDERS
+   ========================================== */
+
+.component-loading {
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+.component-loading i {
+  font-size: 2rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================
+   UTILITY CLASSES FOR COMPONENTS
+   ========================================== */
+
+.sticky-top {
+  position: sticky;
+  top: 100px;
+}
+
+.btn-block {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mb-0 { margin-bottom: 0; }
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+.mb-4 { margin-bottom: 2rem; }
