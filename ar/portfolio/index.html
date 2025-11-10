@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="أعمالنا - تكنولوجي السعودية | مشاريع ناجحة في تطوير المواقع والتطبيقات والتسويق الرقمي">
+    <meta name="keywords" content="مشاريع، أعمالنا، معرض أعمال، السعودية">
+    <meta name="author" content="تكنولوجي السعودية">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="أعمالنا - تكنولوجي السعودية">
+    <meta property="og:description" content="استعرض مشاريعنا الناجحة في مختلف المجالات التقنية">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.technologyksa.com/ar/portfolio/">
+    <meta property="og:image" content="https://www.technologyksa.com/assets/images/og-portfolio.jpg">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="أعمالنا - تكنولوجي السعودية">
+    <meta name="twitter:description" content="مشاريع ناجحة نفتخر بإنجازها">
+
+    <title>أعمالنا - تكنولوجي السعودية | Our Portfolio</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+    <link rel="apple-touch-icon" href="../../assets/images/apple-touch-icon.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- AOS Animation -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/rtl.css">
+
+    <style>
+        .portfolio-header {
+            background: linear-gradient(135deg, var(--saudi-green) 0%, var(--saudi-green-light) 100%);
+            padding: 8rem 0 4rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portfolio-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .portfolio-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .portfolio-header p {
+            font-size: 1.25rem;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+
+        .portfolio-filters {
+            background: white;
+            padding: 2rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 80px;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        [data-theme="dark"] .portfolio-filters {
+            background: var(--dark-surface);
+            border-bottom-color: var(--dark-border);
+        }
+
+        .filters-container {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .search-box input {
+            background: var(--dark-card);
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        .search-box input:focus {
+            border-color: var(--saudi-green);
+            box-shadow: 0 0 0 3px rgba(12, 74, 47, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .category-filters {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.25rem;
+            border: 2px solid var(--border-color);
+            background: transparent;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        [data-theme="dark"] .filter-btn {
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        .filter-btn:hover {
+            border-color: var(--saudi-green);
+            color: var(--saudi-green);
+        }
+
+        .filter-btn.active {
+            background: var(--saudi-green);
+            color: white;
+            border-color: var(--saudi-green);
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2.5rem;
+            padding: 4rem 0;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        [data-theme="dark"] .project-card {
+            background: var(--dark-card);
+            border-color: var(--dark-border);
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+            border-color: var(--saudi-green);
+        }
+
+        .project-card-image {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+        }
+
+        [data-theme="dark"] .project-card-image {
+            background: linear-gradient(135deg, var(--dark-card), var(--dark-surface));
+        }
+
+        .project-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .project-card:hover .project-card-image img {
+            transform: scale(1.1);
+        }
+
+        .project-card-image .placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: rgba(0,0,0,0.1);
+        }
+
+        .project-card-category {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--saudi-green);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .project-card-content {
+            padding: 2rem;
+        }
+
+        .project-card-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .project-card-content h3 {
+            color: var(--dark-text);
+        }
+
+        .project-card-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        [data-theme="dark"] .project-card-description {
+            color: var(--dark-text-secondary);
+        }
+
+        .project-card-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-tag {
+            background: rgba(12, 74, 47, 0.1);
+            color: var(--saudi-green);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+        }
+
+        [data-theme="dark"] .project-tag {
+            background: rgba(12, 74, 47, 0.3);
+        }
+
+        .project-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        [data-theme="dark"] .project-card-footer {
+            border-top-color: var(--dark-border);
+        }
+
+        .view-project {
+            color: var(--saudi-green);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: gap 0.3s ease;
+        }
+
+        .view-project:hover {
+            gap: 0.75rem;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 5rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .no-results i {
+            font-size: 4rem;
+            color: var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .no-results h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .no-results h3 {
+            color: var(--dark-text);
+        }
+
+        @media (max-width: 768px) {
+            .portfolio-header h1 {
+                font-size: 2rem;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .filters-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .category-filters {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="../../" class="logo">
+                    <i class="fas fa-code"></i>
+                    <span>تكنولوجي <span class="ksa-text">السعودية</span></span>
+                </a>
+
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="القائمة">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <div class="nav-menu" id="navMenu">
+                    <a href="../../" class="nav-link">الرئيسية</a>
+                    <a href="../about.html" class="nav-link">من نحن</a>
+                    <a href="../services/" class="nav-link">خدماتنا</a>
+                    <a href="./" class="nav-link active">أعمالنا</a>
+                    <a href="../blog/" class="nav-link">المدونة</a>
+                    <a href="../contact.html" class="nav-link">تواصل معنا</a>
+
+                    <div class="nav-actions">
+                        <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                        <button class="search-toggle" id="searchToggle" aria-label="البحث">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <div class="language-switcher">
+                            <button class="lang-btn" id="langBtn">
+                                <i class="fas fa-globe"></i>
+                                <span>EN</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Portfolio Header -->
+    <header class="portfolio-header">
+        <div class="container">
+            <h1 data-aos="fade-up">مشاريع نفتخر بإنجازها</h1>
+            <p data-aos="fade-up" data-aos-delay="100">استعرض مجموعة من أفضل مشاريعنا الناجحة في مختلف المجالات</p>
+        </div>
+    </header>
+
+    <!-- Portfolio Filters -->
+    <section class="portfolio-filters">
+        <div class="container">
+            <div class="filters-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="portfolioSearch" placeholder="ابحث عن مشروع...">
+                </div>
+                <div class="category-filters">
+                    <button class="filter-btn active" data-category="all">الكل</button>
+                    <button class="filter-btn" data-category="مواقع">مواقع إلكترونية</button>
+                    <button class="filter-btn" data-category="تطبيقات">تطبيقات جوال</button>
+                    <button class="filter-btn" data-category="هوية">هوية تجارية</button>
+                    <button class="filter-btn" data-category="تجارة">تجارة إلكترونية</button>
+                    <button class="filter-btn" data-category="تصميم">تصميم</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Grid -->
+    <section class="portfolio-section">
+        <div class="container">
+            <div class="portfolio-grid" id="portfolioGrid">
+                <!-- Projects will be loaded here dynamically -->
+            </div>
+
+            <!-- No Results -->
+            <div class="no-results" id="noResults" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3>لم يتم العثور على نتائج</h3>
+                <p>جرب البحث بكلمات مفتاحية أخرى أو اختر تصنيفاً مختلفاً</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-col">
+                        <div class="footer-logo">
+                            <i class="fas fa-code"></i>
+                            <span>تكنولوجي <span class="ksa-text">السعودية</span></span>
+                        </div>
+                        <p class="footer-desc">
+                            نحن شركة رائدة في تقديم الحلول التقنية المتكاملة في المملكة العربية السعودية،
+                            نساعد الشركات على التحول الرقمي وتحقيق أهدافها التجارية.
+                        </p>
+                        <div class="social-links">
+                            <a href="#" aria-label="تويتر"><i class="fab fa-twitter"></i></a>
+                            <a href="#" aria-label="لينكد إن"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" aria-label="إنستغرام"><i class="fab fa-instagram"></i></a>
+                            <a href="#" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4>خدماتنا</h4>
+                        <ul class="footer-links">
+                            <li><a href="../services/web-development.html">تطوير المواقع</a></li>
+                            <li><a href="../services/mobile-apps.html">تطبيقات الجوال</a></li>
+                            <li><a href="../services/digital-marketing.html">التسويق الرقمي</a></li>
+                            <li><a href="../services/erp-systems.html">أنظمة ERP</a></li>
+                            <li><a href="../services/cybersecurity.html">الأمن السيبراني</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4>روابط سريعة</h4>
+                        <ul class="footer-links">
+                            <li><a href="../about.html">من نحن</a></li>
+                            <li><a href="../services/">خدماتنا</a></li>
+                            <li><a href="../blog/">المدونة</a></li>
+                            <li><a href="../contact.html">تواصل معنا</a></li>
+                            <li><a href="../privacy-policy.html">سياسة الخصوصية</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4>تواصل معنا</h4>
+                        <ul class="footer-contact">
+                            <li>
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>الرياض، المملكة العربية السعودية</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-phone"></i>
+                                <span dir="ltr">+966 50 123 4567</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-envelope"></i>
+                                <span>info@technologyksa.com</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2025 تكنولوجي السعودية. جميع الحقوق محفوظة.</p>
+                    <div class="footer-bottom-links">
+                        <a href="../privacy-policy.html">سياسة الخصوصية</a>
+                        <a href="../terms.html">الشروط والأحكام</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/language.js"></script>
+    <script src="../../assets/js/theme.js"></script>
+
+    <script>
+        // Portfolio Listing Page Script
+        class PortfolioListing {
+            constructor() {
+                this.projects = this.loadProjects();
+                this.currentCategory = 'all';
+                this.searchQuery = '';
+
+                this.init();
+            }
+
+            loadProjects() {
+                // Load projects from localStorage
+                const stored = localStorage.getItem('techksa_projects');
+                let projects = stored ? JSON.parse(stored) : [];
+
+                // Add default projects if no projects exist
+                if (projects.length === 0) {
+                    projects = this.getDefaultProjects();
+                }
+
+                return projects;
+            }
+
+            getDefaultProjects() {
+                return [
+                    {
+                        id: 'ecommerce-platform',
+                        title: 'منصة تجارة إلكترونية متكاملة',
+                        slug: 'ecommerce-platform',
+                        category: 'تجارة',
+                        description: 'منصة تجارة إلكترونية شاملة مع نظام إدارة متقدم وبوابات دفع متعددة',
+                        image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop',
+                        tags: ['React', 'Node.js', 'MongoDB', 'Stripe'],
+                        client: 'شركة التجارة الحديثة',
+                        date: '2024-12-01'
+                    },
+                    {
+                        id: 'delivery-app',
+                        title: 'تطبيق توصيل ذكي',
+                        slug: 'delivery-app',
+                        category: 'تطبيقات',
+                        description: 'تطبيق توصيل طلبات مع تتبع مباشر وإشعارات فورية',
+                        image: 'https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=600&h=400&fit=crop',
+                        tags: ['React Native', 'Firebase', 'Google Maps'],
+                        client: 'شركة التوصيل السريع',
+                        date: '2024-11-15'
+                    },
+                    {
+                        id: 'corporate-website',
+                        title: 'موقع شركة استشارية',
+                        slug: 'corporate-website',
+                        category: 'مواقع',
+                        description: 'موقع مؤسسي احترافي متعدد اللغات مع نظام إدارة محتوى',
+                        image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=400&fit=crop',
+                        tags: ['WordPress', 'PHP', 'SEO'],
+                        client: 'الاستشارات المتقدمة',
+                        date: '2024-10-20'
+                    },
+                    {
+                        id: 'brand-identity',
+                        title: 'هوية بصرية متكاملة',
+                        slug: 'brand-identity',
+                        category: 'هوية',
+                        description: 'تصميم هوية بصرية شاملة تشمل الشعار والألوان والدليل الإرشادي',
+                        image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&h=400&fit=crop',
+                        tags: ['Branding', 'Illustrator', 'Photoshop'],
+                        client: 'العلامة الإبداعية',
+                        date: '2024-09-10'
+                    },
+                    {
+                        id: 'learning-platform',
+                        title: 'منصة تعليم إلكتروني',
+                        slug: 'learning-platform',
+                        category: 'مواقع',
+                        description: 'نظام إدارة تعليم متكامل مع فصول افتراضية وتقييمات تفاعلية',
+                        image: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=600&h=400&fit=crop',
+                        tags: ['Laravel', 'Vue.js', 'WebRTC'],
+                        client: 'أكاديمية المعرفة',
+                        date: '2024-08-05'
+                    },
+                    {
+                        id: 'healthcare-app',
+                        title: 'تطبيق رعاية صحية',
+                        slug: 'healthcare-app',
+                        category: 'تطبيقات',
+                        description: 'تطبيق حجز مواعيد طبية مع إدارة السجلات الصحية',
+                        image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&h=400&fit=crop',
+                        tags: ['Flutter', 'Firebase', 'HealthKit'],
+                        client: 'مركز الصحة الشاملة',
+                        date: '2024-07-18'
+                    }
+                ];
+            }
+
+            init() {
+                this.renderProjects();
+                this.setupFilters();
+                this.setupSearch();
+            }
+
+            setupFilters() {
+                const filterBtns = document.querySelectorAll('.filter-btn');
+                filterBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        filterBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        this.currentCategory = btn.dataset.category;
+                        this.renderProjects();
+                    });
+                });
+            }
+
+            setupSearch() {
+                const searchInput = document.getElementById('portfolioSearch');
+                searchInput.addEventListener('input', (e) => {
+                    this.searchQuery = e.target.value.toLowerCase();
+                    this.renderProjects();
+                });
+            }
+
+            getFilteredProjects() {
+                let filtered = this.projects;
+
+                // Filter by category
+                if (this.currentCategory !== 'all') {
+                    filtered = filtered.filter(project => project.category === this.currentCategory);
+                }
+
+                // Filter by search query
+                if (this.searchQuery) {
+                    filtered = filtered.filter(project =>
+                        project.title.toLowerCase().includes(this.searchQuery) ||
+                        project.description.toLowerCase().includes(this.searchQuery) ||
+                        project.category.toLowerCase().includes(this.searchQuery) ||
+                        (project.tags && project.tags.some(tag => tag.toLowerCase().includes(this.searchQuery)))
+                    );
+                }
+
+                return filtered;
+            }
+
+            renderProjects() {
+                const portfolioGrid = document.getElementById('portfolioGrid');
+                const noResults = document.getElementById('noResults');
+                const filtered = this.getFilteredProjects();
+
+                if (filtered.length === 0) {
+                    portfolioGrid.innerHTML = '';
+                    noResults.style.display = 'block';
+                    return;
+                }
+
+                noResults.style.display = 'none';
+
+                portfolioGrid.innerHTML = filtered.map(project => this.createProjectCard(project)).join('');
+
+                // Reinitialize AOS
+                if (typeof AOS !== 'undefined') {
+                    AOS.refresh();
+                }
+            }
+
+            createProjectCard(project) {
+                const tags = project.tags && project.tags.length > 0
+                    ? project.tags.slice(0, 3).map(tag => `<span class="project-tag">${tag}</span>`).join('')
+                    : '';
+
+                const imageHTML = project.image
+                    ? `<img src="${project.image}" alt="${project.title}" loading="lazy">`
+                    : `<div class="placeholder"><i class="fas fa-image"></i></div>`;
+
+                return `
+                    <div class="project-card" data-aos="fade-up">
+                        <div class="project-card-image">
+                            ${imageHTML}
+                            <span class="project-card-category">${project.category}</span>
+                        </div>
+                        <div class="project-card-content">
+                            <h3>${project.title}</h3>
+                            <p class="project-card-description">${project.description}</p>
+                            ${tags ? `<div class="project-card-tags">${tags}</div>` : ''}
+                            <div class="project-card-footer">
+                                <a href="project.html?id=${project.id}" class="view-project">
+                                    عرض المشروع <i class="fas fa-arrow-left"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize portfolio listing when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new PortfolioListing();
+        });
+    </script>
+</body>
+</html>

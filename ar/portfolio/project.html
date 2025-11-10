@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="تفاصيل المشروع - تكنولوجي السعودية">
+    <meta name="keywords" content="مشروع، معرض أعمال، السعودية">
+    <meta name="author" content="تكنولوجي السعودية">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="">
+    <meta property="og:title" content="">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="">
+
+    <title>المشروع - تكنولوجي السعودية</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+    <link rel="apple-touch-icon" href="../../assets/images/apple-touch-icon.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- AOS Animation -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/rtl.css">
+
+    <style>
+        .project-hero {
+            padding: 8rem 0 4rem;
+            background: linear-gradient(135deg, var(--saudi-green) 0%, var(--saudi-green-light) 100%);
+            color: white;
+        }
+
+        .project-hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .project-category-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .project-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-hero-description {
+            font-size: 1.25rem;
+            opacity: 0.95;
+            line-height: 1.8;
+        }
+
+        .project-meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .project-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .project-meta-item i {
+            font-size: 1.25rem;
+        }
+
+        .project-featured-image {
+            margin-top: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        .project-featured-image img {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .project-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 1.5rem 4rem;
+        }
+
+        .project-section {
+            margin-bottom: 4rem;
+        }
+
+        .project-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        [data-theme="dark"] .project-section h2 {
+            color: var(--dark-text);
+        }
+
+        .project-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--saudi-green);
+        }
+
+        .project-description {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        [data-theme="dark"] .project-description {
+            color: var(--dark-text-secondary);
+        }
+
+        .project-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        [data-theme="dark"] .stat-card {
+            background: var(--dark-card);
+        }
+
+        .stat-card i {
+            font-size: 2.5rem;
+            color: var(--saudi-green);
+            margin-bottom: 1rem;
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .stat-card h3 {
+            color: var(--dark-text);
+        }
+
+        .stat-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        [data-theme="dark"] .stat-card p {
+            color: var(--dark-text-secondary);
+        }
+
+        .technologies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .tech-tag {
+            background: linear-gradient(135deg, var(--saudi-green), var(--saudi-green-light));
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .features-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features-list li {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+        }
+
+        [data-theme="dark"] .features-list li {
+            border-bottom-color: var(--dark-border);
+        }
+
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+
+        .features-list li i {
+            color: var(--saudi-green);
+            font-size: 1.25rem;
+            margin-top: 0.25rem;
+        }
+
+        .features-list li span {
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        [data-theme="dark"] .features-list li span {
+            color: var(--dark-text);
+        }
+
+        .project-cta {
+            background: var(--saudi-green);
+            color: white;
+            padding: 3rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .project-cta h2 {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-cta h2::after {
+            display: none;
+        }
+
+        .project-cta p {
+            font-size: 1.125rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-cta {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cta-primary {
+            background: white;
+            color: var(--saudi-green);
+        }
+
+        .btn-cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .btn-cta-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-cta-secondary:hover {
+            background: white;
+            color: var(--saudi-green);
+        }
+
+        .not-found {
+            text-align: center;
+            padding: 5rem 2rem;
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .not-found i {
+            font-size: 5rem;
+            color: var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .not-found h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .not-found h1 {
+            color: var(--dark-text);
+        }
+
+        .not-found p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        [data-theme="dark"] .not-found p {
+            color: var(--dark-text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .project-hero h1 {
+                font-size: 2rem;
+            }
+
+            .project-meta {
+                gap: 1rem;
+            }
+
+            .project-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="../../" class="logo">
+                    <i class="fas fa-code"></i>
+                    <span>تكنولوجي <span class="ksa-text">السعودية</span></span>
+                </a>
+
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="القائمة">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <div class="nav-menu" id="navMenu">
+                    <a href="../../" class="nav-link">الرئيسية</a>
+                    <a href="../about.html" class="nav-link">من نحن</a>
+                    <a href="../services/" class="nav-link">خدماتنا</a>
+                    <a href="./" class="nav-link active">أعمالنا</a>
+                    <a href="../blog/" class="nav-link">المدونة</a>
+                    <a href="../contact.html" class="nav-link">تواصل معنا</a>
+
+                    <div class="nav-actions">
+                        <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                        <div class="language-switcher">
+                            <button class="lang-btn" id="langBtn">
+                                <i class="fas fa-globe"></i>
+                                <span>EN</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Project Content (will be populated by JavaScript) -->
+    <div id="projectContainer">
+        <!-- Content will be loaded here -->
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-col">
+                        <div class="footer-logo">
+                            <i class="fas fa-code"></i>
+                            <span>تكنولوجي <span class="ksa-text">السعودية</span></span>
+                        </div>
+                        <p class="footer-desc">
+                            نحن شركة رائدة في تقديم الحلول التقنية المتكاملة في المملكة العربية السعودية،
+                            نساعد الشركات على التحول الرقمي وتحقيق أهدافها التجارية.
+                        </p>
+                        <div class="social-links">
+                            <a href="#" aria-label="تويتر"><i class="fab fa-twitter"></i></a>
+                            <a href="#" aria-label="لينكد إن"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" aria-label="إنستغرام"><i class="fab fa-instagram"></i></a>
+                            <a href="#" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4>خدماتنا</h4>
+                        <ul class="footer-links">
+                            <li><a href="../services/web-development.html">تطوير المواقع</a></li>
+                            <li><a href="../services/mobile-apps.html">تطبيقات الجوال</a></li>
+                            <li><a href="../services/digital-marketing.html">التسويق الرقمي</a></li>
+                            <li><a href="../services/erp-systems.html">أنظمة ERP</a></li>
+                            <li><a href="../services/cybersecurity.html">الأمن السيبراني</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4>روابط سريعة</h4>
+                        <ul class="footer-links">
+                            <li><a href="../about.html">من نحن</a></li>
+                            <li><a href="../services/">خدماتنا</a></li>
+                            <li><a href="../blog/">المدونة</a></li>
+                            <li><a href="../contact.html">تواصل معنا</a></li>
+                            <li><a href="../privacy-policy.html">سياسة الخصوصية</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4>تواصل معنا</h4>
+                        <ul class="footer-contact">
+                            <li>
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>الرياض، المملكة العربية السعودية</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-phone"></i>
+                                <span dir="ltr">+966 50 123 4567</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-envelope"></i>
+                                <span>info@technologyksa.com</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2025 تكنولوجي السعودية. جميع الحقوق محفوظة.</p>
+                    <div class="footer-bottom-links">
+                        <a href="../privacy-policy.html">سياسة الخصوصية</a>
+                        <a href="../terms.html">الشروط والأحكام</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/language.js"></script>
+    <script src="../../assets/js/theme.js"></script>
+
+    <script>
+        // Project Display Page Script
+        class ProjectDisplay {
+            constructor() {
+                this.projectId = this.getProjectIdFromURL();
+                this.project = null;
+                this.init();
+            }
+
+            getProjectIdFromURL() {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get('id');
+            }
+
+            init() {
+                if (!this.projectId) {
+                    this.showNotFound();
+                    return;
+                }
+
+                this.loadProject();
+            }
+
+            loadProject() {
+                // Load projects from localStorage
+                const stored = localStorage.getItem('techksa_projects');
+                let projects = stored ? JSON.parse(stored) : [];
+
+                // Add default projects if empty
+                if (projects.length === 0) {
+                    projects = this.getDefaultProjects();
+                }
+
+                // Find the project
+                this.project = projects.find(p => p.id === this.projectId);
+
+                if (this.project) {
+                    this.displayProject();
+                } else {
+                    this.showNotFound();
+                }
+            }
+
+            getDefaultProjects() {
+                return [
+                    {
+                        id: 'ecommerce-platform',
+                        title: 'منصة تجارة إلكترونية متكاملة',
+                        slug: 'ecommerce-platform',
+                        category: 'تجارة',
+                        description: 'منصة تجارة إلكترونية شاملة مع نظام إدارة متقدم وبوابات دفع متعددة. تم تطويرها لتلبية احتياجات الأعمال التجارية الحديثة مع تجربة مستخدم متميزة وأداء عالي.',
+                        image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&h=600&fit=crop',
+                        tags: ['React', 'Node.js', 'MongoDB', 'Stripe'],
+                        client: 'شركة التجارة الحديثة',
+                        date: '2024-12-01',
+                        duration: '6 أشهر',
+                        features: [
+                            'واجهة مستخدم حديثة وسهلة الاستخدام',
+                            'نظام إدارة منتجات متقدم',
+                            'بوابات دفع متعددة (Stripe, PayPal)',
+                            'نظام تتبع الطلبات',
+                            'لوحة تحكم تحليلية شاملة',
+                            'تكامل مع أنظمة الشحن',
+                            'تطبيق جوال مصاحب',
+                            'نظام إشعارات ذكي'
+                        ],
+                        stats: [
+                            { icon: 'fas fa-users', value: '50,000+', label: 'مستخدم نشط' },
+                            { icon: 'fas fa-shopping-cart', value: '200K+', label: 'معاملة شهرياً' },
+                            { icon: 'fas fa-chart-line', value: '300%', label: 'نمو المبيعات' }
+                        ]
+                    }
+                ];
+            }
+
+            displayProject() {
+                const container = document.getElementById('projectContainer');
+
+                // Update page meta
+                document.title = `${this.project.title} - تكنولوجي السعودية`;
+                document.querySelector('meta[name="description"]').content = this.project.description;
+
+                const technologiesHTML = this.project.tags && this.project.tags.length > 0
+                    ? `
+                    <section class="project-section" data-aos="fade-up">
+                        <h2>التقنيات المستخدمة</h2>
+                        <div class="technologies">
+                            ${this.project.tags.map(tag => `
+                                <span class="tech-tag">
+                                    <i class="fas fa-code"></i>
+                                    ${tag}
+                                </span>
+                            `).join('')}
+                        </div>
+                    </section>
+                    `
+                    : '';
+
+                const featuresHTML = this.project.features && this.project.features.length > 0
+                    ? `
+                    <section class="project-section" data-aos="fade-up">
+                        <h2>المميزات الرئيسية</h2>
+                        <ul class="features-list">
+                            ${this.project.features.map(feature => `
+                                <li>
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>${feature}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </section>
+                    `
+                    : '';
+
+                const statsHTML = this.project.stats && this.project.stats.length > 0
+                    ? `
+                    <div class="project-stats" data-aos="fade-up">
+                        ${this.project.stats.map(stat => `
+                            <div class="stat-card">
+                                <i class="${stat.icon}"></i>
+                                <h3>${stat.value}</h3>
+                                <p>${stat.label}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                    `
+                    : '';
+
+                const imageHTML = this.project.image
+                    ? `
+                    <div class="project-featured-image" data-aos="zoom-in">
+                        <div class="container">
+                            <img src="${this.project.image}" alt="${this.project.title}">
+                        </div>
+                    </div>
+                    `
+                    : '';
+
+                container.innerHTML = `
+                    <div class="project-hero" data-aos="fade-down">
+                        <div class="container">
+                            <div class="project-hero-content">
+                                <span class="project-category-badge">${this.project.category}</span>
+                                <h1>${this.project.title}</h1>
+                                <p class="project-hero-description">${this.project.description}</p>
+                                <div class="project-meta">
+                                    ${this.project.client ? `
+                                        <div class="project-meta-item">
+                                            <i class="fas fa-building"></i>
+                                            <span>${this.project.client}</span>
+                                        </div>
+                                    ` : ''}
+                                    ${this.project.date ? `
+                                        <div class="project-meta-item">
+                                            <i class="fas fa-calendar"></i>
+                                            <span>${this.formatDate(this.project.date)}</span>
+                                        </div>
+                                    ` : ''}
+                                    ${this.project.duration ? `
+                                        <div class="project-meta-item">
+                                            <i class="fas fa-clock"></i>
+                                            <span>${this.project.duration}</span>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    ${imageHTML}
+
+                    <div class="project-content">
+                        <div class="container">
+                            ${statsHTML}
+                            ${technologiesHTML}
+                            ${featuresHTML}
+
+                            <div class="project-cta" data-aos="zoom-in">
+                                <h2>هل لديك مشروع مشابه؟</h2>
+                                <p>تواصل معنا الآن واحصل على استشارة مجانية لمشروعك</p>
+                                <div class="cta-buttons">
+                                    <a href="../contact.html" class="btn-cta btn-cta-primary">
+                                        <i class="fas fa-paper-plane"></i>
+                                        تواصل معنا
+                                    </a>
+                                    <a href="./" class="btn-cta btn-cta-secondary">
+                                        <i class="fas fa-th"></i>
+                                        جميع المشاريع
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Initialize AOS
+                if (typeof AOS !== 'undefined') {
+                    AOS.init({
+                        duration: 800,
+                        once: true
+                    });
+                }
+            }
+
+            formatDate(dateString) {
+                const date = new Date(dateString);
+                const months = ['يناير', 'فبراير', 'مارس', 'إبريل', 'مايو', 'يونيو',
+                               'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+                return `${months[date.getMonth()]} ${date.getFullYear()}`;
+            }
+
+            showNotFound() {
+                const container = document.getElementById('projectContainer');
+                document.title = 'المشروع غير موجود - تكنولوجي السعودية';
+
+                container.innerHTML = `
+                    <div class="not-found">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h1>المشروع غير موجود</h1>
+                        <p>عذراً، المشروع الذي تبحث عنه غير متوفر أو تم حذفه</p>
+                        <a href="./" class="btn-cta btn-cta-primary">
+                            <i class="fas fa-arrow-right"></i>
+                            العودة إلى المشاريع
+                        </a>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize project display when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new ProjectDisplay();
+        });
+    </script>
+</body>
+</html>
