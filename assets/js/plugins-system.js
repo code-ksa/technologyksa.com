@@ -105,6 +105,49 @@ const AVAILABLE_PLUGINS = {
       autoGenerateSitemap: true,
       enableSchemaMarkup: true
     }
+  },
+
+  emailmarketing: {
+    id: 'emailmarketing',
+    name: 'التسويق بالبريد الإلكتروني - Email Marketing',
+    description: 'نظام شامل لإدارة البريد الإلكتروني مع SMTP و IMAP ومنشئ القوالب الاحترافي',
+    version: '1.0.0',
+    author: 'Technology KSA',
+    icon: 'envelope',
+    features: [
+      'استقبال الرسائل من Contact Form',
+      'اتصال SMTP لإرسال البريد',
+      'اتصال IMAP لاستقبال البريد',
+      'منشئ قوالب البريد الاحترافي',
+      'إدارة صندوق الوارد والصادر',
+      'الرد على الرسائل',
+      'قوالب جاهزة قابلة للتخصيص',
+      'إحصائيات البريد الإلكتروني',
+      'مجموعات البريد والتصنيفات'
+    ],
+    settings: {
+      // SMTP Settings
+      smtpHost: '',
+      smtpPort: 587,
+      smtpSecure: true, // TLS
+      smtpUser: '',
+      smtpPassword: '',
+      smtpFromName: 'Technology KSA',
+      smtpFromEmail: '',
+
+      // IMAP Settings
+      imapHost: '',
+      imapPort: 993,
+      imapSecure: true, // SSL
+      imapUser: '',
+      imapPassword: '',
+
+      // General Settings
+      enableAutoReply: false,
+      autoReplyMessage: '',
+      saveContactFormSubmissions: true,
+      notifyOnNewEmail: true
+    }
   }
 };
 

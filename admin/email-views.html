@@ -1,0 +1,879 @@
+<!-- ==========================================
+     EMAIL MARKETING VIEWS
+     ========================================== -->
+
+<!-- Main Email View -->
+<div id="emailView" class="admin-view" style="display: none;">
+  <div class="view-header">
+    <div>
+      <h2><i class="fas fa-envelope"></i> إدارة البريد الإلكتروني</h2>
+      <p>نظام شامل لإدارة البريد الإلكتروني والتسويق</p>
+    </div>
+    <div class="view-actions">
+      <button class="btn btn-primary" onclick="openComposeModal()">
+        <i class="fas fa-paper-plane"></i> إرسال بريد جديد
+      </button>
+      <button class="btn btn-secondary" onclick="openEmailSettingsModal()">
+        <i class="fas fa-cog"></i> الإعدادات
+      </button>
+    </div>
+  </div>
+
+  <!-- Statistics -->
+  <div id="emailStatsContainer"></div>
+
+  <!-- Tabs -->
+  <div class="email-tabs" style="margin: 20px 0; border-bottom: 2px solid var(--border-color);">
+    <button class="tab-btn active" onclick="switchEmailTab('inbox')">
+      <i class="fas fa-inbox"></i> البريد
+    </button>
+    <button class="tab-btn" onclick="switchEmailTab('templates')">
+      <i class="fas fa-file-alt"></i> القوالب
+    </button>
+    <button class="tab-btn" onclick="switchEmailTab('contacts')">
+      <i class="fas fa-address-book"></i> جهات الاتصال
+    </button>
+    <button class="tab-btn" onclick="switchEmailTab('settings')">
+      <i class="fas fa-info-circle"></i> معلومات
+    </button>
+  </div>
+
+  <!-- Tab Content -->
+  <div id="emailsTabContent">
+
+    <!-- Inbox Tab -->
+    <div id="inboxTab" class="tab-content active">
+      <div class="email-container">
+        <!-- Sidebar -->
+        <div class="email-sidebar">
+          <div class="email-folders">
+            <div class="email-folder-item active" data-folder="inbox" onclick="switchEmailFolder('inbox')">
+              <i class="fas fa-inbox"></i>
+              <span>صندوق الوارد</span>
+              <span class="badge badge-primary" id="inboxCount">0</span>
+            </div>
+            <div class="email-folder-item" data-folder="sent" onclick="switchEmailFolder('sent')">
+              <i class="fas fa-paper-plane"></i>
+              <span>المرسل</span>
+            </div>
+            <div class="email-folder-item" data-folder="draft" onclick="switchEmailFolder('draft')">
+              <i class="fas fa-file-alt"></i>
+              <span>المسودات</span>
+            </div>
+            <div class="email-folder-item" data-folder="trash" onclick="switchEmailFolder('trash')">
+              <i class="fas fa-trash"></i>
+              <span>المحذوفات</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="email-content">
+          <!-- Toolbar -->
+          <div class="email-toolbar">
+            <div class="toolbar-actions">
+              <button class="btn btn-sm btn-danger" onclick="bulkDeleteEmails()" title="حذف المحدد">
+                <i class="fas fa-trash"></i>
+              </button>
+              <button class="btn btn-sm btn-secondary" onclick="bulkMarkAsRead()" title="تعليم كمقروء">
+                <i class="fas fa-envelope-open"></i>
+              </button>
+            </div>
+            <div class="toolbar-search">
+              <input type="text" id="emailSearchInput" placeholder="بحث في الرسائل..." onkeyup="searchEmails()">
+              <i class="fas fa-search"></i>
+            </div>
+          </div>
+
+          <!-- Emails List -->
+          <div id="emailsList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Templates Tab -->
+    <div id="templatesTab" class="tab-content">
+      <div class="tab-header">
+        <h3>قوالب البريد الإلكتروني</h3>
+        <button class="btn btn-primary" onclick="openTemplateEditorModal()">
+          <i class="fas fa-plus"></i> إضافة قالب جديد
+        </button>
+      </div>
+      <div id="templatesList" class="templates-grid"></div>
+    </div>
+
+    <!-- Contacts Tab -->
+    <div id="contactsTab" class="tab-content">
+      <div class="tab-header">
+        <h3>جهات الاتصال</h3>
+        <button class="btn btn-primary" onclick="openContactFormModal()">
+          <i class="fas fa-plus"></i> إضافة جهة اتصال
+        </button>
+      </div>
+      <div id="contactsList"></div>
+    </div>
+
+    <!-- Settings Info Tab -->
+    <div id="settingsInfoTab" class="tab-content">
+      <div class="info-card">
+        <h3><i class="fas fa-info-circle"></i> حول نظام البريد الإلكتروني</h3>
+        <p>نظام شامل لإدارة البريد الإلكتروني والتسويق مع دعم SMTP و IMAP ومنشئ قوالب احترافي.</p>
+
+        <div class="features-list">
+          <h4>الميزات الرئيسية:</h4>
+          <ul>
+            <li><i class="fas fa-check"></i> إرسال واستقبال البريد الإلكتروني</li>
+            <li><i class="fas fa-check"></i> اتصال SMTP لإرسال البريد</li>
+            <li><i class="fas fa-check"></i> اتصال IMAP لاستقبال البريد</li>
+            <li><i class="fas fa-check"></i> منشئ قوالب البريد الاحترافي</li>
+            <li><i class="fas fa-check"></i> ربط تلقائي مع نماذج الاتصال</li>
+            <li><i class="fas fa-check"></i> إدارة جهات الاتصال</li>
+            <li><i class="fas fa-check"></i> الرد التلقائي</li>
+            <li><i class="fas fa-check"></i> إحصائيات شاملة</li>
+          </ul>
+        </div>
+
+        <div class="alert alert-warning" style="margin-top: 20px;">
+          <i class="fas fa-exclamation-triangle"></i>
+          <strong>ملاحظة مهمة:</strong>
+          <p>
+            للاستخدام الفعلي، يجب تكوين إعدادات SMTP و IMAP من خلال الإعدادات.
+            النظام الحالي يعمل بشكل محاكي (Simulation) ويحتاج إلى Backend حقيقي للعمل بشكل كامل.
+          </p>
+        </div>
+
+        <button class="btn btn-primary" onclick="openEmailSettingsModal()" style="margin-top: 20px;">
+          <i class="fas fa-cog"></i> فتح الإعدادات
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==========================================
+     COMPOSE EMAIL MODAL
+     ========================================== -->
+
+<div id="composeEmailModal" class="modal">
+  <div class="modal-content modal-large">
+    <div class="modal-header">
+      <h3><i class="fas fa-paper-plane"></i> إرسال بريد إلكتروني</h3>
+      <button class="modal-close" onclick="closeComposeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="composeForm" onsubmit="event.preventDefault(); sendComposedEmail();">
+        <input type="hidden" id="composeTemplateId">
+
+        <div class="form-group">
+          <label>إلى: <span class="required">*</span></label>
+          <input type="email" id="composeTo" class="form-control" placeholder="email@example.com" required>
+        </div>
+
+        <div class="form-group">
+          <label>الموضوع: <span class="required">*</span></label>
+          <input type="text" id="composeSubject" class="form-control" placeholder="موضوع الرسالة" required>
+        </div>
+
+        <div class="form-group">
+          <label>الرسالة: <span class="required">*</span></label>
+          <textarea id="composeBody" class="form-control" rows="15" required></textarea>
+          <small class="form-hint">يمكنك استخدام HTML لتنسيق الرسالة</small>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeComposeModal()">
+            <i class="fas fa-times"></i> إلغاء
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-paper-plane"></i> إرسال
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================
+     VIEW EMAIL MODAL
+     ========================================== -->
+
+<div id="emailViewModal" class="modal">
+  <div class="modal-content modal-large">
+    <div class="modal-header">
+      <h3><i class="fas fa-envelope-open"></i> عرض الرسالة</h3>
+      <button class="modal-close" onclick="closeEmailViewModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="currentEmailId">
+
+      <div class="email-view-header">
+        <div class="email-meta">
+          <div class="meta-item">
+            <strong>من:</strong>
+            <span id="emailViewFrom"></span>
+          </div>
+          <div class="meta-item">
+            <strong>إلى:</strong>
+            <span id="emailViewTo"></span>
+          </div>
+          <div class="meta-item">
+            <strong>الموضوع:</strong>
+            <span id="emailViewSubject"></span>
+          </div>
+          <div class="meta-item">
+            <strong>التاريخ:</strong>
+            <span id="emailViewDate"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="email-view-body" id="emailViewBody" style="border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); background: #fff; margin: 20px 0; min-height: 300px;">
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" onclick="deleteCurrentEmail()">
+          <i class="fas fa-trash"></i> حذف
+        </button>
+        <button type="button" class="btn btn-primary" id="replyEmailBtn" onclick="replyToEmail()">
+          <i class="fas fa-reply"></i> رد
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="closeEmailViewModal()">
+          <i class="fas fa-times"></i> إغلاق
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================
+     TEMPLATE EDITOR MODAL
+     ========================================== -->
+
+<div id="templateEditorModal" class="modal">
+  <div class="modal-content modal-xl">
+    <div class="modal-header">
+      <h3 id="templateModalTitle"><i class="fas fa-file-alt"></i> محرر القوالب</h3>
+      <button class="modal-close" onclick="closeTemplateEditorModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="templateForm" onsubmit="event.preventDefault(); saveTemplate();">
+        <input type="hidden" id="templateId">
+
+        <div class="form-row">
+          <div class="form-group" style="flex: 2;">
+            <label>اسم القالب: <span class="required">*</span></label>
+            <input type="text" id="templateName" class="form-control" placeholder="مثال: رسالة الترحيب" required>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label>التصنيف:</label>
+            <select id="templateCategory" class="form-control">
+              <option value="general">عام</option>
+              <option value="support">دعم فني</option>
+              <option value="marketing">تسويق</option>
+              <option value="notification">إشعارات</option>
+              <option value="custom">مخصص</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>الموضوع: <span class="required">*</span></label>
+          <input type="text" id="templateSubject" class="form-control" placeholder="موضوع البريد الإلكتروني" required>
+        </div>
+
+        <!-- Template Editor Tabs -->
+        <div class="template-editor-tabs" style="margin: 20px 0; border-bottom: 2px solid var(--border-color);">
+          <button type="button" class="tab-btn active" onclick="switchTemplateEditorTab('code')">
+            <i class="fas fa-code"></i> محرر الكود
+          </button>
+          <button type="button" class="tab-btn" onclick="switchTemplateEditorTab('preview')">
+            <i class="fas fa-eye"></i> معاينة
+          </button>
+        </div>
+
+        <!-- Code Editor -->
+        <div id="templateCodeEditor">
+          <div class="form-group">
+            <label>محتوى القالب (HTML): <span class="required">*</span></label>
+            <div class="template-variables" style="margin-bottom: 10px;">
+              <label style="font-size: 0.9rem;">متغيرات متاحة:</label>
+              <button type="button" class="btn btn-sm btn-secondary" onclick="insertVariable('site_name')">{{site_name}}</button>
+              <button type="button" class="btn btn-sm btn-secondary" onclick="insertVariable('customer_name')">{{customer_name}}</button>
+              <button type="button" class="btn btn-sm btn-secondary" onclick="insertVariable('site_url')">{{site_url}}</button>
+              <button type="button" class="btn btn-sm btn-secondary" onclick="insertVariable('date')">{{date}}</button>
+            </div>
+            <textarea id="templateBody" class="form-control code-editor" rows="15" required></textarea>
+          </div>
+        </div>
+
+        <!-- Visual Preview -->
+        <div id="templateVisualEditor" style="display: none;">
+          <div class="template-preview-container">
+            <div id="templatePreviewContent" style="border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); background: #f5f5f5; min-height: 400px;">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeTemplateEditorModal()">
+            <i class="fas fa-times"></i> إلغاء
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> حفظ القالب
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================
+     CONTACT MODAL
+     ========================================== -->
+
+<div id="contactModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="contactModalTitle"><i class="fas fa-user-plus"></i> إضافة جهة اتصال</h3>
+      <button class="modal-close" onclick="closeContactModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="contactForm" onsubmit="event.preventDefault(); saveContact();">
+        <input type="hidden" id="contactId">
+
+        <div class="form-group">
+          <label>الاسم: <span class="required">*</span></label>
+          <input type="text" id="contactName" class="form-control" placeholder="الاسم الكامل" required>
+        </div>
+
+        <div class="form-group">
+          <label>البريد الإلكتروني: <span class="required">*</span></label>
+          <input type="email" id="contactEmail" class="form-control" placeholder="email@example.com" required>
+        </div>
+
+        <div class="form-group">
+          <label>رقم الهاتف:</label>
+          <input type="tel" id="contactPhone" class="form-control" placeholder="+966 50 123 4567">
+        </div>
+
+        <div class="form-group">
+          <label>الشركة:</label>
+          <input type="text" id="contactCompany" class="form-control" placeholder="اسم الشركة">
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeContactModal()">
+            <i class="fas fa-times"></i> إلغاء
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> حفظ
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================
+     EMAIL SETTINGS MODAL
+     ========================================== -->
+
+<div id="emailSettingsModal" class="modal">
+  <div class="modal-content modal-large">
+    <div class="modal-header">
+      <h3><i class="fas fa-cog"></i> إعدادات البريد الإلكتروني</h3>
+      <button class="modal-close" onclick="closeEmailSettingsModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form onsubmit="event.preventDefault(); saveEmailSettings();">
+
+        <!-- SMTP Settings -->
+        <div class="settings-section">
+          <h4><i class="fas fa-paper-plane"></i> إعدادات SMTP (الإرسال)</h4>
+
+          <div class="form-row">
+            <div class="form-group" style="flex: 2;">
+              <label>عنوان الخادم (Host):</label>
+              <input type="text" id="settingsSmtpHost" class="form-control" placeholder="smtp.gmail.com">
+            </div>
+            <div class="form-group" style="flex: 1;">
+              <label>المنفذ (Port):</label>
+              <input type="number" id="settingsSmtpPort" class="form-control" value="587">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="settingsSmtpSecure">
+              <span>استخدام TLS/SSL</span>
+            </label>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>اسم المستخدم:</label>
+              <input type="text" id="settingsSmtpUser" class="form-control" placeholder="your-email@gmail.com">
+            </div>
+            <div class="form-group">
+              <label>كلمة المرور:</label>
+              <input type="password" id="settingsSmtpPassword" class="form-control" placeholder="••••••••">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>اسم المرسل:</label>
+              <input type="text" id="settingsSmtpFromName" class="form-control" value="Technology KSA">
+            </div>
+            <div class="form-group">
+              <label>البريد الإلكتروني للمرسل:</label>
+              <input type="email" id="settingsSmtpFromEmail" class="form-control" placeholder="noreply@techksa.com">
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-secondary" onclick="testSmtpConnection()">
+            <i class="fas fa-plug"></i> اختبار الاتصال
+          </button>
+        </div>
+
+        <hr style="margin: 30px 0;">
+
+        <!-- IMAP Settings -->
+        <div class="settings-section">
+          <h4><i class="fas fa-inbox"></i> إعدادات IMAP (الاستقبال)</h4>
+
+          <div class="form-row">
+            <div class="form-group" style="flex: 2;">
+              <label>عنوان الخادم (Host):</label>
+              <input type="text" id="settingsImapHost" class="form-control" placeholder="imap.gmail.com">
+            </div>
+            <div class="form-group" style="flex: 1;">
+              <label>المنفذ (Port):</label>
+              <input type="number" id="settingsImapPort" class="form-control" value="993">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="settingsImapSecure">
+              <span>استخدام SSL</span>
+            </label>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>اسم المستخدم:</label>
+              <input type="text" id="settingsImapUser" class="form-control" placeholder="your-email@gmail.com">
+            </div>
+            <div class="form-group">
+              <label>كلمة المرور:</label>
+              <input type="password" id="settingsImapPassword" class="form-control" placeholder="••••••••">
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-secondary" onclick="testImapConnection()">
+            <i class="fas fa-plug"></i> اختبار الاتصال
+          </button>
+        </div>
+
+        <hr style="margin: 30px 0;">
+
+        <!-- General Settings -->
+        <div class="settings-section">
+          <h4><i class="fas fa-sliders-h"></i> إعدادات عامة</h4>
+
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="settingsEnableAutoReply">
+              <span>تفعيل الرد التلقائي</span>
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label>رسالة الرد التلقائي:</label>
+            <textarea id="settingsAutoReplyMessage" class="form-control" rows="3" placeholder="شكراً لتواصلك معنا. سنرد عليك في أقرب وقت."></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeEmailSettingsModal()">
+            <i class="fas fa-times"></i> إلغاء
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> حفظ الإعدادات
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================
+     EMAIL STYLES
+     ========================================== -->
+
+<style>
+/* Email Container */
+.email-container {
+  display: flex;
+  gap: 0;
+  background: white;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.email-sidebar {
+  width: 250px;
+  background: #f9fafb;
+  border-left: 1px solid var(--border-color);
+  padding: 20px;
+}
+
+.email-content {
+  flex: 1;
+  padding: 20px;
+}
+
+.email-folders {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.email-folder-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 15px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--text-primary);
+}
+
+.email-folder-item:hover {
+  background: rgba(37, 99, 235, 0.1);
+}
+
+.email-folder-item.active {
+  background: var(--primary);
+  color: white;
+}
+
+.email-folder-item i {
+  width: 20px;
+}
+
+.email-folder-item span:nth-child(2) {
+  flex: 1;
+}
+
+.email-folder-item .badge {
+  font-size: 0.75rem;
+}
+
+/* Email Toolbar */
+.email-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: #f9fafb;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  margin-bottom: 15px;
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.toolbar-search {
+  position: relative;
+  width: 300px;
+}
+
+.toolbar-search input {
+  width: 100%;
+  padding: 8px 35px 8px 15px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+}
+
+.toolbar-search i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+}
+
+/* Emails Table */
+.emails-table tbody tr {
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.emails-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.emails-table tbody tr.unread {
+  background: #eff6ff;
+  font-weight: 600;
+}
+
+.email-row td {
+  padding: 15px 10px;
+}
+
+.fa-star.starred {
+  color: #fbbf24 !important;
+}
+
+/* Templates Grid */
+.templates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.template-card {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  transition: all 0.2s;
+}
+
+.template-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.template-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.template-header h4 {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.template-subject {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin: 10px 0;
+}
+
+.template-actions {
+  display: flex;
+  gap: 5px;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Email View */
+.email-view-header {
+  background: #f9fafb;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.email-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.meta-item {
+  display: flex;
+  gap: 10px;
+}
+
+.meta-item strong {
+  min-width: 80px;
+  color: var(--text-secondary);
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: var(--radius-md);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s;
+}
+
+.stat-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.stat-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.stat-info h3 {
+  margin: 0;
+  font-size: 2rem;
+  color: var(--text-primary);
+}
+
+.stat-info p {
+  margin: 5px 0 0 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Settings Section */
+.settings-section {
+  margin-bottom: 20px;
+}
+
+.settings-section h4 {
+  color: var(--primary);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--primary);
+}
+
+/* Code Editor */
+.code-editor {
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  background: #1e293b;
+  color: #e2e8f0;
+  border: 1px solid #334155;
+}
+
+/* Info Card */
+.info-card {
+  background: white;
+  border-radius: var(--radius-md);
+  padding: 30px;
+  box-shadow: var(--shadow-sm);
+}
+
+.info-card h3 {
+  color: var(--primary);
+  margin-bottom: 15px;
+}
+
+.features-list {
+  margin: 20px 0;
+}
+
+.features-list h4 {
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+.features-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.features-list li {
+  padding: 8px 0;
+  color: var(--text-secondary);
+}
+
+.features-list li i {
+  color: var(--success);
+  margin-left: 10px;
+}
+
+/* Alert */
+.alert {
+  padding: 15px 20px;
+  border-radius: var(--radius-md);
+  margin: 15px 0;
+}
+
+.alert-warning {
+  background: #fef3c7;
+  border: 1px solid #fbbf24;
+  color: #92400e;
+}
+
+.alert i {
+  margin-left: 10px;
+}
+
+.alert strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.alert p {
+  margin: 5px 0 0 0;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-secondary);
+}
+
+.empty-state i {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.empty-state h3 {
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .email-container {
+    flex-direction: column;
+  }
+
+  .email-sidebar {
+    width: 100%;
+    border-left: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .toolbar-search {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .email-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+</style>
