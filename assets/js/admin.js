@@ -1,17 +1,19 @@
 /**
  * Technology KSA - Blog CMS System
- * نظام إدارة المدونة الكامل
+ * نظام إدارة المدونة والخدمات الكامل
  */
 
 class BlogCMS {
   constructor() {
     this.posts = [];
+    this.services = [];
     this.media = [];
   }
 
   init() {
     this.loadData();
     this.renderPostsList();
+    this.renderServicesList();
     this.renderMediaGrid();
   }
 
@@ -23,6 +25,10 @@ class BlogCMS {
     // Load posts from localStorage
     const storedPosts = localStorage.getItem('techksa_blog_posts');
     this.posts = storedPosts ? JSON.parse(storedPosts) : this.getDefaultPosts();
+
+    // Load services from localStorage
+    const storedServices = localStorage.getItem('techksa_services');
+    this.services = storedServices ? JSON.parse(storedServices) : [];
 
     // Load media from localStorage
     const storedMedia = localStorage.getItem('techksa_blog_media');
@@ -51,6 +57,11 @@ class BlogCMS {
   savePosts() {
     localStorage.setItem('techksa_blog_posts', JSON.stringify(this.posts));
     this.renderPostsList();
+  }
+
+  saveServices() {
+    localStorage.setItem('techksa_services', JSON.stringify(this.services));
+    this.renderServicesList();
   }
 
   saveMedia() {
@@ -122,6 +133,71 @@ class BlogCMS {
               <i class="fas fa-edit"></i>
             </button>
             <button class="btn-icon btn-danger" onclick="deletePost('${post.id}')" title="حذف">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  // ==========================================
+  // SERVICE MANAGEMENT
+  // ==========================================
+
+  createService(serviceData) {
+    this.services.unshift(serviceData);
+    this.saveServices();
+    this.showToast('تم إضافة الخدمة بنجاح');
+  }
+
+  updateService(serviceData) {
+    const index = this.services.findIndex(s => s.id === serviceData.id);
+    if (index !== -1) {
+      this.services[index] = serviceData;
+      this.saveServices();
+      this.showToast('تم تحديث الخدمة بنجاح');
+    }
+  }
+
+  deleteService(serviceId) {
+    this.services = this.services.filter(s => s.id !== serviceId);
+    this.saveServices();
+    this.showToast('تم حذف الخدمة بنجاح');
+  }
+
+  renderServicesList() {
+    const tbody = document.getElementById('servicesTableBody');
+    if (!tbody) return;
+
+    if (this.services.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="4" style="text-align: center; padding: 3rem; color: var(--text-secondary);">
+            <i class="fas fa-briefcase" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+            لا توجد خدمات حالياً. اضغط "إضافة خدمة جديدة" للبدء
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = this.services.map(service => `
+      <tr>
+        <td>
+          <strong>${service.name}</strong>
+          ${service.description ? `<br><small style="color: var(--text-secondary);">${service.description.substring(0, 80)}...</small>` : ''}
+        </td>
+        <td><code>${service.slug}</code></td>
+        <td>
+          <span class="badge badge-success">نشط</span>
+        </td>
+        <td>
+          <div class="action-buttons">
+            <button class="btn-icon" onclick="editService('${service.id}')" title="تعديل">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn-icon btn-danger" onclick="deleteService('${service.id}')" title="حذف">
               <i class="fas fa-trash"></i>
             </button>
           </div>

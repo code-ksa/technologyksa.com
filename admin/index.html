@@ -65,7 +65,7 @@
       top: 0;
       height: 100vh;
       overflow-y: auto;
-      z-index: 100;
+      z-index: 50;
       display: flex;
       flex-direction: column;
     }
@@ -117,6 +117,8 @@
       flex: 1;
       margin-right: 280px;
       padding: 2rem;
+      position: relative;
+      z-index: 1;
     }
 
     .admin-header {
@@ -341,14 +343,14 @@
       color: white;
     }
 
-    /* Modal Styles */
+    /* Modal Styles - FIXED Z-INDEX */
     .modal {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 10000;
+      z-index: 99999;
       display: none;
       align-items: center;
       justify-content: center;
@@ -360,7 +362,7 @@
     }
 
     .modal-overlay {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
@@ -378,7 +380,7 @@
       max-height: 90vh;
       overflow-y: auto;
       box-shadow: var(--shadow-2xl);
-      z-index: 2;
+      z-index: 10;
     }
 
     .modal-header {
@@ -390,7 +392,7 @@
       position: sticky;
       top: 0;
       background-color: var(--bg-primary);
-      z-index: 10;
+      z-index: 20;
     }
 
     .modal-header h3 {
@@ -430,6 +432,7 @@
       position: sticky;
       bottom: 0;
       background-color: var(--bg-primary);
+      z-index: 20;
     }
 
     /* Form Styles */
@@ -539,7 +542,7 @@
       padding: 1rem 1.5rem;
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-lg);
-      z-index: 99999;
+      z-index: 999999;
       display: none;
       align-items: center;
       gap: 1rem;
@@ -593,6 +596,7 @@
       <nav class="admin-nav">
         <ul>
           <li class="active"><a href="#" data-view="posts"><i class="fas fa-file-alt"></i> المقالات</a></li>
+          <li><a href="#" data-view="services"><i class="fas fa-briefcase"></i> الخدمات</a></li>
           <li><a href="#" data-view="media"><i class="fas fa-images"></i> مكتبة الصور</a></li>
         </ul>
       </nav>
@@ -601,9 +605,9 @@
     <!-- Main Content -->
     <main class="admin-main">
       <div class="admin-header">
-        <h1>إدارة المدونة</h1>
+        <h1 id="pageTitle">إدارة المدونة</h1>
         <button class="btn btn-primary" id="btnNewPost">
-          <i class="fas fa-plus"></i> إضافة مقال جديد
+          <i class="fas fa-plus"></i> <span id="btnNewText">إضافة مقال جديد</span>
         </button>
       </div>
 
@@ -622,6 +626,23 @@
             </thead>
             <tbody id="postsTableBody">
               <!-- Posts will be inserted here -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Services View -->
+        <div id="servicesView" class="admin-view">
+          <table class="posts-table" id="servicesTable">
+            <thead>
+              <tr>
+                <th>اسم الخدمة</th>
+                <th>Slug</th>
+                <th>الحالة</th>
+                <th>الإجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="servicesTableBody">
+              <!-- Services will be inserted here -->
             </tbody>
           </table>
         </div>
@@ -754,6 +775,75 @@
     </div>
   </div>
 
+  <!-- Service Editor Modal -->
+  <div id="serviceModal" class="modal">
+    <div class="modal-overlay" onclick="closeServiceModal()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="serviceModalTitle">إضافة خدمة جديدة</h3>
+        <button class="modal-close" onclick="closeServiceModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="serviceForm">
+          <input type="hidden" id="serviceId">
+
+          <div class="form-group">
+            <label for="serviceName">اسم الخدمة <span style="color: var(--error);">*</span></label>
+            <input type="text" id="serviceName" required placeholder="مثال: تطوير المواقع">
+          </div>
+
+          <div class="form-group">
+            <label for="serviceSlug">Slug</label>
+            <input type="text" id="serviceSlug" placeholder="web-development">
+            <small>سيتم التوليد تلقائياً من الاسم</small>
+          </div>
+
+          <div class="form-group">
+            <label for="serviceIcon">أيقونة Font Awesome</label>
+            <input type="text" id="serviceIcon" placeholder="fas fa-code">
+            <small>مثال: fas fa-code, fas fa-mobile-alt</small>
+          </div>
+
+          <div class="form-group">
+            <label for="serviceDescription">الوصف المختصر <span style="color: var(--error);">*</span></label>
+            <textarea id="serviceDescription" rows="3" required placeholder="وصف قصير عن الخدمة"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="serviceContent">المحتوى الكامل <span style="color: var(--error);">*</span></label>
+            <textarea id="serviceContent" required placeholder="تفاصيل الخدمة الكاملة"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>الصورة المميزة</label>
+            <button type="button" class="btn btn-secondary" onclick="openImageSelectorForService()">
+              <i class="fas fa-image"></i> اختيار صورة من المكتبة
+            </button>
+            <div id="serviceFeaturedImagePreview" style="display: none;" class="featured-image-preview">
+              <img id="servicePreviewImage" src="" alt="">
+              <div class="image-actions">
+                <button type="button" class="btn-change-image" onclick="openImageSelectorForService()">
+                  <i class="fas fa-sync"></i> تغيير الصورة
+                </button>
+                <button type="button" class="btn-remove-image" onclick="removeServiceFeaturedImage()">
+                  <i class="fas fa-trash"></i> حذف الصورة
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeServiceModal()">إلغاء</button>
+        <button type="button" class="btn btn-primary" onclick="saveService()">
+          <i class="fas fa-save"></i> حفظ الخدمة
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Image Selector Modal -->
   <div id="imageSelectorModal" class="modal">
     <div class="modal-overlay" onclick="closeImageSelector()"></div>
@@ -782,6 +872,7 @@
   <script>
     // Initialize Admin Panel
     let blogCMS;
+    let currentImageTarget = 'post'; // 'post' or 'service'
 
     document.addEventListener('DOMContentLoaded', function() {
       blogCMS = new BlogCMS();
@@ -800,6 +891,28 @@
           // Show view
           document.querySelectorAll('.admin-view').forEach(v => v.classList.remove('active'));
           document.getElementById(view + 'View').classList.add('active');
+
+          // Update header
+          const pageTitle = document.getElementById('pageTitle');
+          const btnNewPost = document.getElementById('btnNewPost');
+          const btnNewText = document.getElementById('btnNewText');
+
+          if (view === 'posts') {
+            pageTitle.textContent = 'إدارة المدونة';
+            btnNewText.textContent = 'إضافة مقال جديد';
+            btnNewPost.onclick = openPostModal;
+          } else if (view === 'services') {
+            pageTitle.textContent = 'إدارة الخدمات';
+            btnNewText.textContent = 'إضافة خدمة جديدة';
+            btnNewPost.onclick = openServiceModal;
+          } else if (view === 'media') {
+            pageTitle.textContent = 'مكتبة الصور';
+            btnNewPost.style.display = 'none';
+          }
+
+          if (view !== 'media') {
+            btnNewPost.style.display = 'flex';
+          }
         });
       });
 
@@ -831,16 +944,22 @@
         handleFiles(e.dataTransfer.files);
       });
 
-      // Auto-generate slug from title
+      // Auto-generate slug from title (posts)
       document.getElementById('postTitle').addEventListener('input', function() {
         const title = this.value;
         const slug = blogCMS.generateSlug(title);
         document.getElementById('postSlug').value = slug;
 
-        // Auto-fill alt text if empty
         if (!document.getElementById('imageAlt').value) {
           document.getElementById('imageAlt').value = title;
         }
+      });
+
+      // Auto-generate slug from service name
+      document.getElementById('serviceName').addEventListener('input', function() {
+        const name = this.value;
+        const slug = blogCMS.generateSlug(name);
+        document.getElementById('serviceSlug').value = slug;
       });
     });
 
@@ -856,6 +975,7 @@
       });
     }
 
+    // === POST FUNCTIONS ===
     function openPostModal(postId = null) {
       const modal = document.getElementById('postModal');
       const form = document.getElementById('postForm');
@@ -896,6 +1016,7 @@
     }
 
     function openImageSelector() {
+      currentImageTarget = 'post';
       const modal = document.getElementById('imageSelectorModal');
       const grid = document.getElementById('imageSelectorGrid');
 
@@ -926,8 +1047,12 @@
     function selectImage(imageId) {
       const image = blogCMS.media.find(m => m.id === imageId);
       if (image) {
-        const postTitle = document.getElementById('postTitle').value || 'صورة المقال';
-        showImagePreview(image.url, image.alt || postTitle);
+        if (currentImageTarget === 'post') {
+          const postTitle = document.getElementById('postTitle').value || 'صورة المقال';
+          showImagePreview(image.url, image.alt || postTitle);
+        } else {
+          showServiceImagePreview(image.url);
+        }
         closeImageSelector();
       }
     }
@@ -989,6 +1114,94 @@
       }
     }
 
+    // === SERVICE FUNCTIONS ===
+    function openServiceModal(serviceId = null) {
+      const modal = document.getElementById('serviceModal');
+      const form = document.getElementById('serviceForm');
+      form.reset();
+
+      if (serviceId) {
+        const service = blogCMS.services.find(s => s.id === serviceId);
+        if (service) {
+          document.getElementById('serviceModalTitle').textContent = 'تعديل الخدمة';
+          document.getElementById('serviceId').value = service.id;
+          document.getElementById('serviceName').value = service.name;
+          document.getElementById('serviceSlug').value = service.slug;
+          document.getElementById('serviceIcon').value = service.icon;
+          document.getElementById('serviceDescription').value = service.description;
+          document.getElementById('serviceContent').value = service.content;
+
+          if (service.featuredImage) {
+            showServiceImagePreview(service.featuredImage);
+          }
+        }
+      } else {
+        document.getElementById('serviceModalTitle').textContent = 'إضافة خدمة جديدة';
+        document.getElementById('serviceFeaturedImagePreview').style.display = 'none';
+      }
+
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeServiceModal() {
+      const modal = document.getElementById('serviceModal');
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function openImageSelectorForService() {
+      currentImageTarget = 'service';
+      openImageSelector();
+    }
+
+    function showServiceImagePreview(url) {
+      document.getElementById('serviceFeaturedImagePreview').style.display = 'block';
+      document.getElementById('servicePreviewImage').src = url;
+    }
+
+    function removeServiceFeaturedImage() {
+      document.getElementById('serviceFeaturedImagePreview').style.display = 'none';
+      document.getElementById('servicePreviewImage').src = '';
+    }
+
+    function saveService() {
+      const form = document.getElementById('serviceForm');
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      const serviceData = {
+        id: document.getElementById('serviceId').value || Date.now().toString(),
+        name: document.getElementById('serviceName').value,
+        slug: document.getElementById('serviceSlug').value,
+        icon: document.getElementById('serviceIcon').value,
+        description: document.getElementById('serviceDescription').value,
+        content: document.getElementById('serviceContent').value,
+        featuredImage: document.getElementById('servicePreviewImage').src || ''
+      };
+
+      if (document.getElementById('serviceId').value) {
+        blogCMS.updateService(serviceData);
+      } else {
+        blogCMS.createService(serviceData);
+      }
+
+      closeServiceModal();
+    }
+
+    function editService(serviceId) {
+      openServiceModal(serviceId);
+    }
+
+    function deleteService(serviceId) {
+      if (confirm('هل أنت متأكد من حذف هذه الخدمة؟')) {
+        blogCMS.deleteService(serviceId);
+      }
+    }
+
+    // === MEDIA FUNCTIONS ===
     function deleteMedia(mediaId) {
       if (confirm('هل أنت متأكد من حذف هذه الصورة؟')) {
         blogCMS.deleteMedia(mediaId);
