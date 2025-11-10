@@ -582,6 +582,129 @@
         margin-right: 0;
       }
     }
+
+    /* Settings Page Styles */
+    .settings-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .settings-section-title {
+      font-size: 1.75rem;
+      margin-bottom: 2rem;
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+
+    .settings-section {
+      background: var(--bg-primary);
+      padding: 2rem;
+      border-radius: var(--radius-lg);
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .settings-heading {
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+      color: var(--saudi-green);
+      font-weight: 600;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .settings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .settings-grid .full-width {
+      grid-column: 1 / -1;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .form-group label i {
+      color: var(--saudi-green);
+    }
+
+    .form-input {
+      padding: 0.875rem 1rem;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      font-size: 1rem;
+      font-family: inherit;
+      transition: all 0.3s ease;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--saudi-green);
+      box-shadow: 0 0 0 3px rgba(12, 74, 47, 0.1);
+    }
+
+    .form-input::placeholder {
+      color: var(--text-secondary);
+      opacity: 0.7;
+    }
+
+    textarea.form-input {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .settings-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 2px solid var(--border-color);
+    }
+
+    .btn-lg {
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .btn-secondary {
+      background: var(--text-secondary);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: var(--text-primary);
+    }
+
+    @media (max-width: 768px) {
+      .settings-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .settings-actions {
+        flex-direction: column;
+      }
+
+      .settings-actions .btn {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -599,6 +722,7 @@
           <li><a href="#" data-view="services"><i class="fas fa-briefcase"></i> الخدمات</a></li>
           <li><a href="#" data-view="projects"><i class="fas fa-folder-open"></i> المشاريع</a></li>
           <li><a href="#" data-view="media"><i class="fas fa-images"></i> مكتبة الصور</a></li>
+          <li><a href="#" data-view="settings"><i class="fas fa-cog"></i> الإعدادات</a></li>
         </ul>
       </nav>
     </aside>
@@ -682,6 +806,137 @@
 
           <div class="media-grid" id="mediaGrid">
             <!-- Media items will be inserted here -->
+          </div>
+        </div>
+
+        <!-- Settings View -->
+        <div id="settingsView" class="admin-view">
+          <div class="settings-container">
+            <h2 class="settings-section-title">إعدادات الموقع</h2>
+
+            <!-- Site Information -->
+            <div class="settings-section">
+              <h3 class="settings-heading">معلومات الموقع</h3>
+              <div class="settings-grid">
+                <div class="form-group">
+                  <label for="siteName">اسم الموقع (بالعربية)</label>
+                  <input type="text" id="siteName" class="form-input" placeholder="تكنولوجيا السعودية">
+                </div>
+                <div class="form-group">
+                  <label for="siteNameEn">اسم الموقع (بالإنجليزية)</label>
+                  <input type="text" id="siteNameEn" class="form-input" placeholder="Technology KSA">
+                </div>
+                <div class="form-group full-width">
+                  <label for="siteDescription">وصف الموقع</label>
+                  <textarea id="siteDescription" class="form-input" rows="3" placeholder="شركة تكنولوجيا السعودية - وكالة رقمية رائدة..."></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Logo Settings -->
+            <div class="settings-section">
+              <h3 class="settings-heading">الشعار والصور</h3>
+              <div class="settings-grid">
+                <div class="form-group">
+                  <label for="logoUrl">رابط الشعار</label>
+                  <input type="text" id="logoUrl" class="form-input" placeholder="assets/images/logo.png">
+                </div>
+                <div class="form-group">
+                  <label for="faviconUrl">رابط Favicon</label>
+                  <input type="text" id="faviconUrl" class="form-input" placeholder="assets/images/favicon.ico">
+                </div>
+              </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="settings-section">
+              <h3 class="settings-heading">معلومات التواصل</h3>
+              <div class="settings-grid">
+                <div class="form-group">
+                  <label for="contactPhone">رقم الهاتف</label>
+                  <input type="text" id="contactPhone" class="form-input" placeholder="+966 50 123 4567" dir="ltr">
+                </div>
+                <div class="form-group">
+                  <label for="contactEmail">البريد الإلكتروني</label>
+                  <input type="email" id="contactEmail" class="form-input" placeholder="info@technologyksa.com" dir="ltr">
+                </div>
+                <div class="form-group">
+                  <label for="contactWhatsapp">رقم الواتساب</label>
+                  <input type="text" id="contactWhatsapp" class="form-input" placeholder="+966501234567" dir="ltr">
+                </div>
+                <div class="form-group full-width">
+                  <label for="contactAddress">العنوان</label>
+                  <input type="text" id="contactAddress" class="form-input" placeholder="الرياض، المملكة العربية السعودية">
+                </div>
+              </div>
+            </div>
+
+            <!-- Social Media Links -->
+            <div class="settings-section">
+              <h3 class="settings-heading">روابط التواصل الاجتماعي</h3>
+              <div class="settings-grid">
+                <div class="form-group">
+                  <label for="socialFacebook"><i class="fab fa-facebook"></i> Facebook</label>
+                  <input type="url" id="socialFacebook" class="form-input" placeholder="https://facebook.com/..." dir="ltr">
+                </div>
+                <div class="form-group">
+                  <label for="socialTwitter"><i class="fab fa-twitter"></i> Twitter / X</label>
+                  <input type="url" id="socialTwitter" class="form-input" placeholder="https://twitter.com/..." dir="ltr">
+                </div>
+                <div class="form-group">
+                  <label for="socialLinkedin"><i class="fab fa-linkedin"></i> LinkedIn</label>
+                  <input type="url" id="socialLinkedin" class="form-input" placeholder="https://linkedin.com/..." dir="ltr">
+                </div>
+                <div class="form-group">
+                  <label for="socialInstagram"><i class="fab fa-instagram"></i> Instagram</label>
+                  <input type="url" id="socialInstagram" class="form-input" placeholder="https://instagram.com/..." dir="ltr">
+                </div>
+                <div class="form-group">
+                  <label for="socialYoutube"><i class="fab fa-youtube"></i> YouTube</label>
+                  <input type="url" id="socialYoutube" class="form-input" placeholder="https://youtube.com/..." dir="ltr">
+                </div>
+              </div>
+            </div>
+
+            <!-- Company Information -->
+            <div class="settings-section">
+              <h3 class="settings-heading">معلومات الشركة</h3>
+              <div class="settings-grid">
+                <div class="form-group">
+                  <label for="companyYear">سنة التأسيس</label>
+                  <input type="number" id="companyYear" class="form-input" placeholder="2010">
+                </div>
+                <div class="form-group">
+                  <label for="companyCountry">البلد</label>
+                  <input type="text" id="companyCountry" class="form-input" placeholder="المملكة العربية السعودية">
+                </div>
+                <div class="form-group full-width">
+                  <label for="companyAbout">نبذة عن الشركة</label>
+                  <textarea id="companyAbout" class="form-input" rows="4" placeholder="نحن شركة رائدة في تقديم الحلول التقنية المتكاملة..."></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer Settings -->
+            <div class="settings-section">
+              <h3 class="settings-heading">إعدادات التذييل</h3>
+              <div class="settings-grid">
+                <div class="form-group full-width">
+                  <label for="footerCopyright">نص حقوق النشر</label>
+                  <input type="text" id="footerCopyright" class="form-input" placeholder="© 2025 تكنولوجي السعودية. جميع الحقوق محفوظة.">
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="settings-actions">
+              <button class="btn btn-primary btn-lg" onclick="saveSettings()">
+                <i class="fas fa-save"></i> حفظ الإعدادات
+              </button>
+              <button class="btn btn-secondary btn-lg" onclick="resetSettings()">
+                <i class="fas fa-undo"></i> استعادة الإعدادات الافتراضية
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1033,9 +1288,14 @@
           } else if (view === 'media') {
             pageTitle.textContent = 'مكتبة الصور';
             btnNewPost.style.display = 'none';
+          } else if (view === 'settings') {
+            pageTitle.textContent = 'إعدادات الموقع';
+            btnNewPost.style.display = 'none';
+            // Load settings when opening settings page
+            loadSettings();
           }
 
-          if (view !== 'media') {
+          if (view !== 'media' && view !== 'settings') {
             btnNewPost.style.display = 'flex';
           }
         });

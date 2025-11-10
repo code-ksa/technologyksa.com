@@ -414,3 +414,124 @@ class BlogCMS {
 if (typeof window !== 'undefined') {
   window.BlogCMS = BlogCMS;
 }
+
+// ==========================================
+// SETTINGS MANAGEMENT
+// ==========================================
+
+function loadSettings() {
+  const settings = JSON.parse(localStorage.getItem('techksa_site_settings') || '{}');
+
+  const defaults = {
+    siteName: 'تكنولوجيا السعودية',
+    siteNameEn: 'Technology KSA',
+    siteDescription: 'شركة تكنولوجيا السعودية - وكالة رقمية رائدة متخصصة في تقديم حلول تقنية شاملة ومتكاملة',
+    logo: 'assets/images/logo.png',
+    favicon: 'assets/images/favicon.ico',
+    phone: '+966 50 123 4567',
+    email: 'info@technologyksa.com',
+    whatsapp: '+966501234567',
+    address: 'الرياض، المملكة العربية السعودية',
+    socialMedia: {
+      facebook: 'https://facebook.com/',
+      twitter: 'https://twitter.com/',
+      linkedin: 'https://linkedin.com/',
+      instagram: 'https://instagram.com/',
+      youtube: 'https://youtube.com/'
+    },
+    companyYear: '2010',
+    companyCountry: 'المملكة العربية السعودية',
+    companyAbout: 'نحن شركة رائدة في تقديم الحلول التقنية المتكاملة في المملكة العربية السعودية، نساعد الشركات على التحول الرقمي وتحقيق أهدافها التجارية.',
+    footerCopyright: `© ${new Date().getFullYear()} تكنولوجي السعودية. جميع الحقوق محفوظة.`
+  };
+
+  // Merge defaults with existing settings
+  const mergedSettings = { ...defaults, ...settings };
+  if (settings.socialMedia) {
+    mergedSettings.socialMedia = { ...defaults.socialMedia, ...settings.socialMedia };
+  }
+
+  // Populate form fields
+  document.getElementById('siteName').value = mergedSettings.siteName;
+  document.getElementById('siteNameEn').value = mergedSettings.siteNameEn;
+  document.getElementById('siteDescription').value = mergedSettings.siteDescription;
+  document.getElementById('logoUrl').value = mergedSettings.logo;
+  document.getElementById('faviconUrl').value = mergedSettings.favicon;
+  document.getElementById('contactPhone').value = mergedSettings.phone;
+  document.getElementById('contactEmail').value = mergedSettings.email;
+  document.getElementById('contactWhatsapp').value = mergedSettings.whatsapp;
+  document.getElementById('contactAddress').value = mergedSettings.address;
+  document.getElementById('socialFacebook').value = mergedSettings.socialMedia.facebook;
+  document.getElementById('socialTwitter').value = mergedSettings.socialMedia.twitter;
+  document.getElementById('socialLinkedin').value = mergedSettings.socialMedia.linkedin;
+  document.getElementById('socialInstagram').value = mergedSettings.socialMedia.instagram;
+  document.getElementById('socialYoutube').value = mergedSettings.socialMedia.youtube;
+  document.getElementById('companyYear').value = mergedSettings.companyYear;
+  document.getElementById('companyCountry').value = mergedSettings.companyCountry;
+  document.getElementById('companyAbout').value = mergedSettings.companyAbout;
+  document.getElementById('footerCopyright').value = mergedSettings.footerCopyright;
+}
+
+function saveSettings() {
+  const settings = {
+    siteName: document.getElementById('siteName').value,
+    siteNameEn: document.getElementById('siteNameEn').value,
+    siteDescription: document.getElementById('siteDescription').value,
+    logo: document.getElementById('logoUrl').value,
+    favicon: document.getElementById('faviconUrl').value,
+    phone: document.getElementById('contactPhone').value,
+    email: document.getElementById('contactEmail').value,
+    whatsapp: document.getElementById('contactWhatsapp').value,
+    address: document.getElementById('contactAddress').value,
+    socialMedia: {
+      facebook: document.getElementById('socialFacebook').value,
+      twitter: document.getElementById('socialTwitter').value,
+      linkedin: document.getElementById('socialLinkedin').value,
+      instagram: document.getElementById('socialInstagram').value,
+      youtube: document.getElementById('socialYoutube').value
+    },
+    companyYear: document.getElementById('companyYear').value,
+    companyCountry: document.getElementById('companyCountry').value,
+    companyAbout: document.getElementById('companyAbout').value,
+    footerCopyright: document.getElementById('footerCopyright').value
+  };
+
+  localStorage.setItem('techksa_site_settings', JSON.stringify(settings));
+
+  // Show success message
+  showToast('تم حفظ الإعدادات بنجاح! ستظهر التغييرات في الموقع عند إعادة تحميل الصفحات.', 'success');
+}
+
+function resetSettings() {
+  if (confirm('هل أنت متأكد من استعادة الإعدادات الافتراضية؟ سيتم فقدان جميع التغييرات الحالية.')) {
+    localStorage.removeItem('techksa_site_settings');
+    loadSettings();
+    showToast('تم استعادة الإعدادات الافتراضية بنجاح!', 'success');
+  }
+}
+
+function showToast(message, type = 'success') {
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.style.cssText = `
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: ${type === 'success' ? '#10B981' : '#ef4444'};
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 10000;
+    font-weight: 600;
+    animation: slideUp 0.3s ease;
+  `;
+  toast.textContent = message;
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.animation = 'slideDown 0.3s ease';
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
