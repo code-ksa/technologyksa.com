@@ -705,6 +705,193 @@
         width: 100%;
       }
     }
+
+    /* Components Library Styles */
+    .components-library {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .library-header {
+      margin-bottom: 2rem;
+    }
+
+    .library-header h2 {
+      font-size: 1.75rem;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .library-header p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    .component-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid var(--border-color);
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+
+    .component-tab {
+      padding: 0.75rem 1.5rem;
+      background: transparent;
+      border: none;
+      border-bottom: 3px solid transparent;
+      color: var(--text-secondary);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .component-tab:hover {
+      color: var(--saudi-green);
+    }
+
+    .component-tab.active {
+      color: var(--saudi-green);
+      border-bottom-color: var(--saudi-green);
+    }
+
+    .component-tab-content {
+      display: none;
+    }
+
+    .component-tab-content.active {
+      display: block;
+    }
+
+    .component-actions {
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .components-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+
+    .component-card {
+      background: var(--bg-primary);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .component-card:hover {
+      border-color: var(--saudi-green);
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+
+    .component-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 1rem;
+    }
+
+    .component-card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .component-card-type {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: rgba(12, 74, 47, 0.1);
+      color: var(--saudi-green);
+      border-radius: var(--radius-full);
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    .component-card-preview {
+      width: 100%;
+      height: 180px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .component-card-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .component-card-preview i {
+      font-size: 3rem;
+      color: var(--text-muted);
+    }
+
+    .component-card-description {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .component-card-actions {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: space-between;
+    }
+
+    .component-card-actions .btn {
+      flex: 1;
+      padding: 0.625rem 1rem;
+      font-size: 0.9rem;
+    }
+
+    .component-empty {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-muted);
+    }
+
+    .component-empty i {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    .component-empty h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 768px) {
+      .components-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .component-tabs {
+        gap: 0.25rem;
+      }
+
+      .component-tab {
+        padding: 0.625rem 1rem;
+        font-size: 0.9rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -722,6 +909,7 @@
           <li><a href="#" data-view="services"><i class="fas fa-briefcase"></i> الخدمات</a></li>
           <li><a href="#" data-view="projects"><i class="fas fa-folder-open"></i> المشاريع</a></li>
           <li><a href="#" data-view="media"><i class="fas fa-images"></i> مكتبة الصور</a></li>
+          <li><a href="#" data-view="components"><i class="fas fa-cubes"></i> مكتبة العناصر</a></li>
           <li><a href="#" data-view="settings"><i class="fas fa-cog"></i> الإعدادات</a></li>
         </ul>
       </nav>
@@ -806,6 +994,85 @@
 
           <div class="media-grid" id="mediaGrid">
             <!-- Media items will be inserted here -->
+          </div>
+        </div>
+
+        <!-- Components Library View -->
+        <div id="componentsView" class="admin-view">
+          <div class="components-library">
+            <div class="library-header">
+              <h2>مكتبة العناصر</h2>
+              <p>إنشاء وإدارة العناصر القابلة لإعادة الاستخدام في صفحات الموقع</p>
+            </div>
+
+            <!-- Component Types Tabs -->
+            <div class="component-tabs">
+              <button class="component-tab active" data-tab="hero">Hero Sections</button>
+              <button class="component-tab" data-tab="cta">Call to Action</button>
+              <button class="component-tab" data-tab="features">Features Grid</button>
+              <button class="component-tab" data-tab="testimonials">Testimonials</button>
+              <button class="component-tab" data-tab="stats">Statistics</button>
+            </div>
+
+            <!-- Hero Sections Tab -->
+            <div class="component-tab-content active" data-content="hero">
+              <div class="component-actions">
+                <button class="btn btn-primary" onclick="openComponentModal('hero')">
+                  <i class="fas fa-plus"></i> إضافة Hero Section جديد
+                </button>
+              </div>
+              <div class="components-grid" id="heroComponentsGrid">
+                <!-- Hero components will be loaded here -->
+              </div>
+            </div>
+
+            <!-- CTA Sections Tab -->
+            <div class="component-tab-content" data-content="cta">
+              <div class="component-actions">
+                <button class="btn btn-primary" onclick="openComponentModal('cta')">
+                  <i class="fas fa-plus"></i> إضافة CTA Section جديد
+                </button>
+              </div>
+              <div class="components-grid" id="ctaComponentsGrid">
+                <!-- CTA components will be loaded here -->
+              </div>
+            </div>
+
+            <!-- Features Grid Tab -->
+            <div class="component-tab-content" data-content="features">
+              <div class="component-actions">
+                <button class="btn btn-primary" onclick="openComponentModal('features')">
+                  <i class="fas fa-plus"></i> إضافة Features Grid جديد
+                </button>
+              </div>
+              <div class="components-grid" id="featuresComponentsGrid">
+                <!-- Features components will be loaded here -->
+              </div>
+            </div>
+
+            <!-- Testimonials Tab -->
+            <div class="component-tab-content" data-content="testimonials">
+              <div class="component-actions">
+                <button class="btn btn-primary" onclick="openComponentModal('testimonials')">
+                  <i class="fas fa-plus"></i> إضافة Testimonials Section جديد
+                </button>
+              </div>
+              <div class="components-grid" id="testimonialsComponentsGrid">
+                <!-- Testimonials components will be loaded here -->
+              </div>
+            </div>
+
+            <!-- Statistics Tab -->
+            <div class="component-tab-content" data-content="stats">
+              <div class="component-actions">
+                <button class="btn btn-primary" onclick="openComponentModal('stats')">
+                  <i class="fas fa-plus"></i> إضافة Statistics Section جديد
+                </button>
+              </div>
+              <div class="components-grid" id="statsComponentsGrid">
+                <!-- Stats components will be loaded here -->
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1293,9 +1560,13 @@
             btnNewPost.style.display = 'none';
             // Load settings when opening settings page
             loadSettings();
+          } else if (view === 'components') {
+            pageTitle.textContent = 'مكتبة العناصر';
+            btnNewPost.style.display = 'none';
+            initComponentsLibrary();
           }
 
-          if (view !== 'media' && view !== 'settings') {
+          if (view !== 'media' && view !== 'settings' && view !== 'components') {
             btnNewPost.style.display = 'flex';
           }
         });

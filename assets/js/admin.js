@@ -535,3 +535,171 @@ function showToast(message, type = 'success') {
     setTimeout(() => toast.remove(), 300);
   }, 3000);
 }
+
+// ==========================================
+// COMPONENTS LIBRARY MANAGEMENT
+// ==========================================
+
+function initComponentsLibrary() {
+  // Initialize component tabs
+  const componentTabs = document.querySelectorAll('.component-tab');
+  const componentTabContents = document.querySelectorAll('.component-tab-content');
+
+  componentTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const tabName = tab.dataset.tab;
+
+      // Update active tab
+      componentTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      // Show corresponding content
+      componentTabContents.forEach(content => {
+        if (content.dataset.content === tabName) {
+          content.classList.add('active');
+        } else {
+          content.classList.remove('active');
+        }
+      });
+
+      // Load components for this tab
+      loadComponents(tabName);
+    });
+  });
+
+  // Create sample components for demonstration
+  createSampleComponents();
+
+  // Load hero components by default
+  loadComponents('hero');
+}
+
+function loadComponents(type) {
+  const gridId = `${type}ComponentsGrid`;
+  const grid = document.getElementById(gridId);
+
+  if (!grid) return;
+
+  // Load components from localStorage
+  const components = JSON.parse(localStorage.getItem(`techksa_components_${type}`) || '[]');
+
+  if (components.length === 0) {
+    grid.innerHTML = `
+      <div class="component-empty">
+        <i class="fas fa-cube"></i>
+        <h3>لا توجد عناصر حتى الآن</h3>
+        <p>ابدأ بإضافة عنصر جديد باستخدام الزر أعلاه</p>
+      </div>
+    `;
+    return;
+  }
+
+  grid.innerHTML = components.map(component => `
+    <div class="component-card">
+      <div class="component-card-header">
+        <div>
+          <h3 class="component-card-title">${component.title}</h3>
+          <span class="component-card-type">${getComponentTypeName(type)}</span>
+        </div>
+      </div>
+      <div class="component-card-preview">
+        ${component.preview ? `<img src="${component.preview}" alt="${component.title}">` : `<i class="fas fa-${getComponentIcon(type)}"></i>`}
+      </div>
+      <p class="component-card-description">${component.description || 'لا يوجد وصف'}</p>
+      <div class="component-card-actions">
+        <button class="btn btn-primary" onclick="editComponent('${type}', '${component.id}')">
+          <i class="fas fa-edit"></i> تعديل
+        </button>
+        <button class="btn btn-danger" onclick="deleteComponent('${type}', '${component.id}')">
+          <i class="fas fa-trash"></i> حذف
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function getComponentTypeName(type) {
+  const names = {
+    hero: 'Hero Section',
+    cta: 'Call to Action',
+    features: 'Features Grid',
+    testimonials: 'Testimonials',
+    stats: 'Statistics'
+  };
+  return names[type] || type;
+}
+
+function getComponentIcon(type) {
+  const icons = {
+    hero: 'image',
+    cta: 'bullhorn',
+    features: 'th',
+    testimonials: 'comments',
+    stats: 'chart-bar'
+  };
+  return icons[type] || 'cube';
+}
+
+function openComponentModal(type) {
+  showToast('جاري تطوير محرر المكونات... ستكون متاحة قريباً!', 'success');
+  // TODO: Implement component editor modal
+}
+
+function editComponent(type, id) {
+  showToast('جاري تطوير محرر المكونات... ستكون متاحة قريباً!', 'success');
+  // TODO: Implement component editor
+}
+
+function deleteComponent(type, id) {
+  if (!confirm('هل أنت متأكد من حذف هذا العنصر؟')) return;
+
+  const components = JSON.parse(localStorage.getItem(`techksa_components_${type}`) || '[]');
+  const updated = components.filter(c => c.id !== id);
+
+  localStorage.setItem(`techksa_components_${type}`, JSON.stringify(updated));
+  loadComponents(type);
+  showToast('تم حذف العنصر بنجاح!', 'success');
+}
+
+// Create sample components for demonstration
+function createSampleComponents() {
+  const sampleHero = [
+    {
+      id: 'hero-1',
+      title: 'Hero Section - Modern',
+      description: 'قسم بطل حديث مع خلفية متدرجة وعناصر تفاعلية',
+      preview: null,
+      content: {
+        title: 'عنوان رئيسي جذاب',
+        subtitle: 'نص فرعي يوضح الخدمة أو المنتج',
+        buttonText: 'ابدأ الآن',
+        buttonLink: '#',
+        backgroundImage: '',
+        backgroundColor: 'linear-gradient(135deg, #0C4A2F 0%, #10B981 100%)'
+      }
+    }
+  ];
+
+  const sampleCTA = [
+    {
+      id: 'cta-1',
+      title: 'CTA - اتصل بنا الآن',
+      description: 'قسم دعوة لاتخاذ إجراء مع زر بارز',
+      preview: null,
+      content: {
+        title: 'هل لديك مشروع؟',
+        description: 'تواصل معنا الآن واحصل على استشارة مجانية',
+        buttonText: 'تواصل معنا',
+        buttonLink: '#contact'
+      }
+    }
+  ];
+
+  // Save samples if nothing exists
+  if (!localStorage.getItem('techksa_components_hero')) {
+    localStorage.setItem('techksa_components_hero', JSON.stringify(sampleHero));
+  }
+  if (!localStorage.getItem('techksa_components_cta')) {
+    localStorage.setItem('techksa_components_cta', JSON.stringify(sampleCTA));
+  }
+}
