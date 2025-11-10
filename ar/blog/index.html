@@ -39,6 +39,7 @@
     <!-- Styles -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/rtl.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
 
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -186,8 +187,8 @@
 
         .blog-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
             padding: 4rem 0;
         }
 
@@ -413,80 +414,8 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="container">
-            <div class="nav-wrapper">
-                <a href="../../" class="logo">
-                    <i class="fas fa-code"></i>
-                    <span>تكنولوجي <span class="ksa-text">السعودية</span></span>
-                </a>
-
-                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="القائمة">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-
-                <div class="nav-menu" id="navMenu">
-                    <a href="../../" class="nav-link">الرئيسية</a>
-                    <a href="../about.html" class="nav-link">من نحن</a>
-                    <div class="nav-dropdown">
-                        <a href="../services/" class="nav-link">
-                            خدماتنا <i class="fas fa-chevron-down"></i>
-                        </a>
-                        <div class="dropdown-menu">
-                            <a href="../services/web-development.html" class="dropdown-item">
-                                <i class="fas fa-code"></i>
-                                <div>
-                                    <strong>تطوير المواقع</strong>
-                                    <span>مواقع احترافية متجاوبة</span>
-                                </div>
-                            </a>
-                            <a href="../services/mobile-apps.html" class="dropdown-item">
-                                <i class="fas fa-mobile-alt"></i>
-                                <div>
-                                    <strong>تطبيقات الجوال</strong>
-                                    <span>iOS و Android</span>
-                                </div>
-                            </a>
-                            <a href="../services/digital-marketing.html" class="dropdown-item">
-                                <i class="fas fa-chart-line"></i>
-                                <div>
-                                    <strong>التسويق الرقمي</strong>
-                                    <span>SEO و الإعلانات</span>
-                                </div>
-                            </a>
-                            <a href="../services/erp-systems.html" class="dropdown-item">
-                                <i class="fas fa-network-wired"></i>
-                                <div>
-                                    <strong>أنظمة ERP</strong>
-                                    <span>حلول إدارة متكاملة</span>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <a href="./" class="nav-link active">المدونة</a>
-                    <a href="../contact.html" class="nav-link">تواصل معنا</a>
-
-                    <div class="nav-actions">
-                        <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
-                            <i class="fas fa-moon"></i>
-                        </button>
-                        <button class="search-toggle" id="searchToggle" aria-label="البحث">
-                            <i class="fas fa-search"></i>
-                        </button>
-                        <div class="language-switcher">
-                            <button class="lang-btn" id="langBtn">
-                                <i class="fas fa-globe"></i>
-                                <span>EN</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
 
     <!-- Blog Header -->
     <header class="blog-header">
@@ -517,107 +446,41 @@
         </div>
     </section>
 
-    <!-- Blog Grid -->
+    <!-- Blog Grid with Sidebar Layout -->
     <section class="blog-section">
         <div class="container">
-            <div class="blog-grid" id="blogGrid">
-                <!-- Blog posts will be loaded here dynamically -->
-            </div>
+            <div class="blog-layout">
+                <!-- Main Content -->
+                <main class="blog-main-content">
+                    <div class="blog-grid" id="blogGrid">
+                        <!-- Blog posts will be loaded here dynamically -->
+                    </div>
 
-            <!-- No Results -->
-            <div class="no-results" id="noResults" style="display: none;">
-                <i class="fas fa-search"></i>
-                <h3>لم يتم العثور على نتائج</h3>
-                <p>جرب البحث بكلمات مفتاحية أخرى أو اختر تصنيفاً مختلفاً</p>
-            </div>
+                    <!-- No Results -->
+                    <div class="no-results" id="noResults" style="display: none;">
+                        <i class="fas fa-search"></i>
+                        <h3>لم يتم العثور على نتائج</h3>
+                        <p>جرب البحث بكلمات مفتاحية أخرى أو اختر تصنيفاً مختلفاً</p>
+                    </div>
 
-            <!-- Pagination -->
-            <div class="pagination" id="pagination">
-                <!-- Pagination will be generated dynamically -->
+                    <!-- Pagination -->
+                    <div class="pagination" id="pagination">
+                        <!-- Pagination will be generated dynamically -->
+                    </div>
+                </main>
+
+                <!-- Sidebar Component -->
+                <div id="sidebar-placeholder" data-type="blog"></div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-top">
-            <div class="container">
-                <div class="footer-grid">
-                    <div class="footer-col">
-                        <div class="footer-logo">
-                            <i class="fas fa-code"></i>
-                            <span>تكنولوجي <span class="ksa-text">السعودية</span></span>
-                        </div>
-                        <p class="footer-desc">
-                            نحن شركة رائدة في تقديم الحلول التقنية المتكاملة في المملكة العربية السعودية،
-                            نساعد الشركات على التحول الرقمي وتحقيق أهدافها التجارية.
-                        </p>
-                        <div class="social-links">
-                            <a href="#" aria-label="تويتر"><i class="fab fa-twitter"></i></a>
-                            <a href="#" aria-label="لينكد إن"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#" aria-label="إنستغرام"><i class="fab fa-instagram"></i></a>
-                            <a href="#" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
-                        </div>
-                    </div>
-
-                    <div class="footer-col">
-                        <h4>خدماتنا</h4>
-                        <ul class="footer-links">
-                            <li><a href="../services/web-development.html">تطوير المواقع</a></li>
-                            <li><a href="../services/mobile-apps.html">تطبيقات الجوال</a></li>
-                            <li><a href="../services/digital-marketing.html">التسويق الرقمي</a></li>
-                            <li><a href="../services/erp-systems.html">أنظمة ERP</a></li>
-                            <li><a href="../services/cybersecurity.html">الأمن السيبراني</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="footer-col">
-                        <h4>روابط سريعة</h4>
-                        <ul class="footer-links">
-                            <li><a href="../about.html">من نحن</a></li>
-                            <li><a href="../services/">خدماتنا</a></li>
-                            <li><a href="./">المدونة</a></li>
-                            <li><a href="../contact.html">تواصل معنا</a></li>
-                            <li><a href="../privacy-policy.html">سياسة الخصوصية</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="footer-col">
-                        <h4>تواصل معنا</h4>
-                        <ul class="footer-contact">
-                            <li>
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span>الرياض، المملكة العربية السعودية</span>
-                            </li>
-                            <li>
-                                <i class="fas fa-phone"></i>
-                                <span dir="ltr">+966 50 123 4567</span>
-                            </li>
-                            <li>
-                                <i class="fas fa-envelope"></i>
-                                <span>info@technologyksa.com</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer-bottom">
-            <div class="container">
-                <div class="footer-bottom-content">
-                    <p>&copy; 2025 تكنولوجي السعودية. جميع الحقوق محفوظة.</p>
-                    <div class="footer-bottom-links">
-                        <a href="../privacy-policy.html">سياسة الخصوصية</a>
-                        <a href="../terms.html">الشروط والأحكام</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
 
     <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script src="../../assets/js/components.js"></script>
     <script src="../../assets/js/main.js"></script>
     <script src="../../assets/js/language.js"></script>
     <script src="../../assets/js/theme.js"></script>
@@ -763,7 +626,7 @@
                                     <div class="author-avatar">${authorInitial}</div>
                                     <span>${post.author}</span>
                                 </div>
-                                <a href="posts/${post.slug}.html" class="read-more">
+                                <a href="post.html?id=${post.id}" class="read-more">
                                     اقرأ المزيد <i class="fas fa-arrow-left"></i>
                                 </a>
                             </div>
@@ -824,6 +687,11 @@
 
         // Initialize blog listing when DOM is ready
         document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Components System
+            const componentsManager = new ComponentsManager();
+            componentsManager.init('blog');
+
+            // Initialize Blog Listing
             new BlogListing();
         });
     </script>
