@@ -3,6 +3,421 @@
  * نظام إدارة المدونة والخدمات الكامل
  */
 
+// ==========================================
+// PAGES MANAGEMENT CLASS
+// ==========================================
+
+class PagesManager {
+  constructor() {
+    this.pages = [];
+    this.currentPageId = null;
+  }
+
+  init() {
+    this.loadPages();
+    this.renderPagesList();
+  }
+
+  loadPages() {
+    const storedPages = localStorage.getItem('techksa_pages');
+    this.pages = storedPages ? JSON.parse(storedPages) : this.getDefaultPages();
+  }
+
+  getDefaultPages() {
+    return [
+      {
+        id: 'home',
+        title: 'الصفحة الرئيسية',
+        slug: 'index',
+        metaTitle: 'شركة تكنولوجيا السعودية - حلول تقنية متكاملة',
+        metaDescription: 'نقدم حلول تقنية متكاملة للشركات في المملكة العربية السعودية',
+        status: 'published',
+        date: new Date().toISOString().split('T')[0],
+        layout: []
+      }
+    ];
+  }
+
+  savePages() {
+    localStorage.setItem('techksa_pages', JSON.stringify(this.pages));
+    this.renderPagesList();
+  }
+
+  renderPagesList() {
+    const tbody = document.getElementById('pagesTableBody');
+    if (!tbody) return;
+
+    if (this.pages.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">لا توجد صفحات. أضف صفحة جديدة!</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = this.pages.map(page => `
+      <tr>
+        <td>${page.title}</td>
+        <td><code>${page.slug}</code></td>
+        <td>${page.layout?.length || 0} عناصر</td>
+        <td>${page.date}</td>
+        <td><span class="badge badge-${page.status === 'published' ? 'success' : 'warning'}">${page.status === 'published' ? 'منشورة' : 'مسودة'}</span></td>
+        <td>
+          <button class="btn-icon" onclick="pagesManager.editPage('${page.id}')" title="تعديل">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn-icon" onclick="pagesManager.openPageBuilder('${page.id}')" title="Page Builder">
+            <i class="fas fa-hammer"></i>
+          </button>
+          <button class="btn-icon" onclick="pagesManager.duplicatePage('${page.id}')" title="تكرار">
+            <i class="fas fa-copy"></i>
+          </button>
+          <button class="btn-icon" onclick="pagesManager.addToMenu('${page.id}')" title="إضافة للقائمة">
+            <i class="fas fa-plus-circle"></i>
+          </button>
+          ${page.id !== 'home' ? `<button class="btn-icon" onclick="pagesManager.deletePage('${page.id}')" title="حذف">
+            <i class="fas fa-trash"></i>
+          </button>` : ''}
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  editPage(id) {
+    const page = this.pages.find(p => p.id === id);
+    if (!page) return;
+
+    document.getElementById('pageId').value = page.id;
+    document.getElementById('pageTitle').value = page.title;
+    document.getElementById('pageSlug').value = page.slug;
+    document.getElementById('pageMetaTitle').value = page.metaTitle;
+    document.getElementById('pageMetaDescription').value = page.metaDescription;
+    document.getElementById('pageStatus').value = page.status;
+
+    document.getElementById('pageModalTitle').textContent = 'تعديل الصفحة';
+    document.getElementById('pageModal').classList.add('active');
+  }
+
+  deletePage(id) {
+    if (!confirm('هل أنت متأكد من حذف هذه الصفحة؟')) return;
+
+    this.pages = this.pages.filter(p => p.id !== id);
+    this.savePages();
+    showToast('تم حذف الصفحة بنجاح!', 'success');
+  }
+
+  duplicatePage(id) {
+    const page = this.pages.find(p => p.id === id);
+    if (!page) return;
+
+    const duplicatedPage = JSON.parse(JSON.stringify(page));
+    duplicatedPage.id = 'page-' + Date.now();
+    duplicatedPage.title = page.title + ' (نسخة)';
+    duplicatedPage.slug = page.slug + '-copy';
+    duplicatedPage.date = new Date().toISOString().split('T')[0];
+
+    this.pages.push(duplicatedPage);
+    this.savePages();
+    showToast('تم تكرار الصفحة بنجاح!', 'success');
+  }
+
+  addToMenu(id) {
+    const page = this.pages.find(p => p.id === id);
+    if (!page) return;
+
+    if (!menusManager) {
+      menusManager = new MenusManager();
+      menusManager.init();
+    }
+
+    // Ask which menu to add to
+    const menus = menusManager.menus;
+    if (menus.length === 0) {
+      if (confirm('لا توجد قوائم! هل تريد إنشاء قائمة جديدة؟')) {
+        openMenuModal();
+      }
+      return;
+    }
+
+    const menuOptions = menus.map((m, i) => `${i + 1}. ${m.name}`).join('\n');
+    const selection = prompt(`اختر رقم القائمة:\n\n${menuOptions}`);
+
+    if (selection) {
+      const index = parseInt(selection) - 1;
+      if (index >= 0 && index < menus.length) {
+        const menu = menus[index];
+
+        // Check if page already in menu
+        if (menu.items.some(item => item.pageId === page.id)) {
+          showToast('الصفحة موجودة بالفعل في هذه القائمة!', 'warning');
+          return;
+        }
+
+        // Add to menu
+        menu.items.push({
+          id: 'item-' + Date.now(),
+          title: page.title,
+          url: page.slug + '.html',
+          type: 'page',
+          pageId: page.id
+        });
+
+        menusManager.saveMenus();
+        showToast('تم إضافة الصفحة إلى القائمة بنجاح!', 'success');
+      }
+    }
+  }
+
+  openPageBuilder(id) {
+    this.currentPageId = id;
+    const page = this.pages.find(p => p.id === id);
+
+    if (page) {
+      // Update page builder title
+      document.getElementById('currentPageName').textContent = page.title;
+
+      // Load page layout
+      pageLayout = page.layout || [];
+      renderPageCanvas();
+
+      // Switch to page builder view
+      document.querySelectorAll('.admin-nav li').forEach(li => li.classList.remove('active'));
+      document.querySelector('[data-view="pagebuilder"]').parentElement.classList.add('active');
+
+      document.querySelectorAll('.admin-view').forEach(v => v.classList.remove('active'));
+      document.getElementById('pagebuilderView').classList.add('active');
+
+      document.getElementById('pageTitle').textContent = 'Page Builder';
+      document.getElementById('btnNewPost').style.display = 'none';
+
+      initPageBuilder();
+    }
+  }
+}
+
+// Global instance
+let pagesManager;
+
+// ==========================================
+// MENUS MANAGER
+// ==========================================
+
+class MenusManager {
+  constructor() {
+    this.menus = [];
+    this.currentMenuItems = [];
+  }
+
+  init() {
+    this.loadMenus();
+    this.renderMenusList();
+  }
+
+  loadMenus() {
+    const storedMenus = localStorage.getItem('techksa_menus');
+    this.menus = storedMenus ? JSON.parse(storedMenus) : this.getDefaultMenus();
+  }
+
+  getDefaultMenus() {
+    return [
+      {
+        id: 'main-menu',
+        name: 'القائمة الرئيسية',
+        location: 'header',
+        date: new Date().toISOString().split('T')[0],
+        items: [
+          { id: 'item-1', title: 'الرئيسية', url: 'index.html', type: 'page', pageId: 'home' },
+          { id: 'item-2', title: 'خدماتنا', url: 'services.html', type: 'custom' },
+          { id: 'item-3', title: 'المدونة', url: 'blog.html', type: 'custom' },
+          { id: 'item-4', title: 'اتصل بنا', url: '#contact', type: 'custom' }
+        ]
+      }
+    ];
+  }
+
+  saveMenus() {
+    localStorage.setItem('techksa_menus', JSON.stringify(this.menus));
+    this.renderMenusList();
+  }
+
+  renderMenusList() {
+    const tbody = document.getElementById('menusTableBody');
+    if (!tbody) return;
+
+    if (this.menus.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">لا توجد قوائم. أضف قائمة جديدة!</td></tr>';
+      return;
+    }
+
+    const locationNames = {
+      'header': 'الهيدر',
+      'footer-1': 'الفوتر - عمود 1',
+      'footer-2': 'الفوتر - عمود 2',
+      'footer-3': 'الفوتر - عمود 3',
+      'sidebar': 'الشريط الجانبي',
+      'custom': 'مخصص'
+    };
+
+    tbody.innerHTML = this.menus.map(menu => `
+      <tr>
+        <td>${menu.name}</td>
+        <td><code>${menu.id}</code></td>
+        <td>${menu.items?.length || 0} عناصر</td>
+        <td><span class="badge badge-info">${locationNames[menu.location] || menu.location}</span></td>
+        <td>${menu.date}</td>
+        <td>
+          <button class="btn-icon" onclick="menusManager.editMenu('${menu.id}')" title="تعديل">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn-icon" onclick="menusManager.deleteMenu('${menu.id}')" title="حذف">
+            <i class="fas fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  editMenu(id) {
+    const menu = this.menus.find(m => m.id === id);
+    if (!menu) return;
+
+    document.getElementById('menuId').value = menu.id;
+    document.getElementById('menuName').value = menu.name;
+    document.getElementById('menuLocation').value = menu.location;
+
+    this.currentMenuItems = menu.items || [];
+    this.loadAvailablePages();
+    this.renderMenuItems();
+
+    document.getElementById('menuModalTitle').textContent = 'تعديل القائمة';
+    document.getElementById('menuModal').classList.add('active');
+  }
+
+  deleteMenu(id) {
+    if (!confirm('هل أنت متأكد من حذف هذه القائمة؟')) return;
+
+    this.menus = this.menus.filter(m => m.id !== id);
+    this.saveMenus();
+    showToast('تم حذف القائمة بنجاح!', 'success');
+  }
+
+  loadAvailablePages() {
+    const container = document.getElementById('availablePages');
+    if (!container) return;
+
+    const pages = pagesManager ? pagesManager.pages : [];
+
+    if (pages.length === 0) {
+      container.innerHTML = '<p style="color: var(--text-secondary);">لا توجد صفحات متاحة. أضف صفحات أولاً!</p>';
+      return;
+    }
+
+    container.innerHTML = pages.map(page => {
+      const isChecked = this.currentMenuItems.some(item => item.pageId === page.id);
+      return `
+        <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; background: var(--bg-primary); border-radius: 4px; cursor: pointer;">
+          <input type="checkbox"
+            ${isChecked ? 'checked' : ''}
+            onchange="menusManager.togglePageInMenu('${page.id}', '${page.title}', '${page.slug}.html', this.checked)"
+            style="width: 18px; height: 18px;">
+          <span>${page.title}</span>
+          <code style="margin-right: auto; font-size: 0.85rem; color: var(--text-secondary);">${page.slug}</code>
+        </label>
+      `;
+    }).join('');
+  }
+
+  togglePageInMenu(pageId, title, url, checked) {
+    if (checked) {
+      // Add to menu
+      if (!this.currentMenuItems.some(item => item.pageId === pageId)) {
+        this.currentMenuItems.push({
+          id: 'item-' + Date.now(),
+          title: title,
+          url: url,
+          type: 'page',
+          pageId: pageId
+        });
+      }
+    } else {
+      // Remove from menu
+      this.currentMenuItems = this.currentMenuItems.filter(item => item.pageId !== pageId);
+    }
+    this.renderMenuItems();
+  }
+
+  renderMenuItems() {
+    const container = document.getElementById('menuItemsList');
+    if (!container) return;
+
+    if (this.currentMenuItems.length === 0) {
+      container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 1rem;">لا توجد عناصر. اختر صفحات من الأعلى أو أضف روابط مخصصة.</p>';
+      return;
+    }
+
+    container.innerHTML = this.currentMenuItems.map((item, index) => `
+      <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: var(--bg-secondary); border-radius: 4px; border: 1px solid var(--border-color);">
+        <i class="fas fa-grip-vertical" style="color: var(--text-secondary); cursor: move;"></i>
+        <div style="flex: 1;">
+          <strong>${item.title}</strong>
+          <small style="display: block; color: var(--text-secondary); margin-top: 0.25rem;">
+            ${item.url} ${item.type === 'page' ? '(صفحة)' : '(رابط مخصص)'}
+          </small>
+        </div>
+        ${item.type === 'page' && item.pageId ? `
+          <button type="button" class="btn-icon" onclick="menusManager.editPageFromMenu('${item.pageId}')" title="تعديل الصفحة">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button type="button" class="btn-icon" onclick="menusManager.openPageBuilderFromMenu('${item.pageId}')" title="Page Builder">
+            <i class="fas fa-hammer"></i>
+          </button>
+        ` : ''}
+        <button type="button" class="btn-icon" onclick="menusManager.editMenuItem(${index})" title="تعديل العنصر">
+          <i class="fas fa-pencil-alt"></i>
+        </button>
+        <button type="button" class="btn-icon" onclick="menusManager.removeMenuItem(${index})" title="حذف">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+    `).join('');
+  }
+
+  editPageFromMenu(pageId) {
+    if (pagesManager) {
+      pagesManager.editPage(pageId);
+    }
+  }
+
+  openPageBuilderFromMenu(pageId) {
+    if (pagesManager) {
+      // Close menu modal first
+      closeMenuModal();
+      // Open page builder
+      pagesManager.openPageBuilder(pageId);
+    }
+  }
+
+  editMenuItem(index) {
+    const item = this.currentMenuItems[index];
+    if (!item) return;
+
+    const newTitle = prompt('عنوان العنصر:', item.title);
+    const newUrl = prompt('رابط العنصر:', item.url);
+
+    if (newTitle && newUrl) {
+      this.currentMenuItems[index].title = newTitle;
+      this.currentMenuItems[index].url = newUrl;
+      this.renderMenuItems();
+    }
+  }
+
+  removeMenuItem(index) {
+    this.currentMenuItems.splice(index, 1);
+    this.loadAvailablePages(); // Refresh checkboxes
+    this.renderMenuItems();
+  }
+}
+
+// Global instance
+let menusManager;
+
 class BlogCMS {
   constructor() {
     this.posts = [];
@@ -427,6 +842,8 @@ function loadSettings() {
     siteNameEn: 'Technology KSA',
     siteDescription: 'شركة تكنولوجيا السعودية - وكالة رقمية رائدة متخصصة في تقديم حلول تقنية شاملة ومتكاملة',
     logo: 'assets/images/logo.png',
+    logoLight: 'assets/images/logo-light.png',
+    logoDark: 'assets/images/logo-dark.png',
     favicon: 'assets/images/favicon.ico',
     phone: '+966 50 123 4567',
     email: 'info@technologyksa.com',
@@ -445,8 +862,20 @@ function loadSettings() {
     footerCopyright: `© ${new Date().getFullYear()} تكنولوجي السعودية. جميع الحقوق محفوظة.`,
     headerStyle: 'default',
     headerColor: '#0C4A2F',
+    headerTheme: 'auto',
+    headerPosition: 'static',
+    showSearch: 'yes',
+    showLanguageSwitcher: 'yes',
+    headerCtaText: 'احجز استشارة',
+    headerCtaLink: '#contact',
     footerStyle: 'default',
     footerColor: '#0C4A2F',
+    footerLayout: '3-columns',
+    showFooterCta: 'yes',
+    footerMenu1: '',
+    footerMenu2: '',
+    footerMenu3: '',
+    footerMenu4: '',
     showBlogSidebar: 'yes',
     sidebarPosition: 'right'
   };
@@ -462,6 +891,8 @@ function loadSettings() {
   document.getElementById('siteNameEn').value = mergedSettings.siteNameEn;
   document.getElementById('siteDescription').value = mergedSettings.siteDescription;
   document.getElementById('logoUrl').value = mergedSettings.logo;
+  document.getElementById('logoLight').value = mergedSettings.logoLight;
+  document.getElementById('logoDark').value = mergedSettings.logoDark;
   document.getElementById('faviconUrl').value = mergedSettings.favicon;
   document.getElementById('contactPhone').value = mergedSettings.phone;
   document.getElementById('contactEmail').value = mergedSettings.email;
@@ -484,6 +915,33 @@ function loadSettings() {
   document.getElementById('footerColor').value = mergedSettings.footerColor;
   document.getElementById('showBlogSidebar').value = mergedSettings.showBlogSidebar;
   document.getElementById('sidebarPosition').value = mergedSettings.sidebarPosition;
+
+  // Header Settings
+  document.getElementById('headerTheme').value = mergedSettings.headerTheme;
+  document.getElementById('headerPosition').value = mergedSettings.headerPosition;
+  document.getElementById('showSearch').value = mergedSettings.showSearch;
+  document.getElementById('showLanguageSwitcher').value = mergedSettings.showLanguageSwitcher;
+  document.getElementById('headerCtaText').value = mergedSettings.headerCtaText;
+  document.getElementById('headerCtaLink').value = mergedSettings.headerCtaLink;
+
+  // Footer Settings
+  const footerLayoutEl = document.getElementById('footerLayout');
+  const showFooterCtaEl = document.getElementById('showFooterCta');
+  if (footerLayoutEl) footerLayoutEl.value = mergedSettings.footerLayout;
+  if (showFooterCtaEl) showFooterCtaEl.value = mergedSettings.showFooterCta;
+
+  // Load menus into footer selects
+  loadMenusIntoFooterSelects();
+
+  // Set selected menus
+  const footerMenu1El = document.getElementById('footerMenu1');
+  const footerMenu2El = document.getElementById('footerMenu2');
+  const footerMenu3El = document.getElementById('footerMenu3');
+  const footerMenu4El = document.getElementById('footerMenu4');
+  if (footerMenu1El) footerMenu1El.value = mergedSettings.footerMenu1;
+  if (footerMenu2El) footerMenu2El.value = mergedSettings.footerMenu2;
+  if (footerMenu3El) footerMenu3El.value = mergedSettings.footerMenu3;
+  if (footerMenu4El) footerMenu4El.value = mergedSettings.footerMenu4;
 }
 
 function saveSettings() {
@@ -492,6 +950,8 @@ function saveSettings() {
     siteNameEn: document.getElementById('siteNameEn').value,
     siteDescription: document.getElementById('siteDescription').value,
     logo: document.getElementById('logoUrl').value,
+    logoLight: document.getElementById('logoLight').value,
+    logoDark: document.getElementById('logoDark').value,
     favicon: document.getElementById('faviconUrl').value,
     phone: document.getElementById('contactPhone').value,
     email: document.getElementById('contactEmail').value,
@@ -510,8 +970,20 @@ function saveSettings() {
     footerCopyright: document.getElementById('footerCopyright').value,
     headerStyle: document.getElementById('headerStyle').value,
     headerColor: document.getElementById('headerColor').value,
+    headerTheme: document.getElementById('headerTheme').value,
+    headerPosition: document.getElementById('headerPosition').value,
+    showSearch: document.getElementById('showSearch').value,
+    showLanguageSwitcher: document.getElementById('showLanguageSwitcher').value,
+    headerCtaText: document.getElementById('headerCtaText').value,
+    headerCtaLink: document.getElementById('headerCtaLink').value,
     footerStyle: document.getElementById('footerStyle').value,
     footerColor: document.getElementById('footerColor').value,
+    footerLayout: document.getElementById('footerLayout')?.value || '3-columns',
+    showFooterCta: document.getElementById('showFooterCta')?.value || 'yes',
+    footerMenu1: document.getElementById('footerMenu1')?.value || '',
+    footerMenu2: document.getElementById('footerMenu2')?.value || '',
+    footerMenu3: document.getElementById('footerMenu3')?.value || '',
+    footerMenu4: document.getElementById('footerMenu4')?.value || '',
     showBlogSidebar: document.getElementById('showBlogSidebar').value,
     sidebarPosition: document.getElementById('sidebarPosition').value
   };
@@ -862,16 +1334,19 @@ function renderPageCanvas() {
           </div>
         </div>
         <div class="section-actions">
-          <button class="btn btn-secondary" onclick="moveSection(${index}, 'up')" ${index === 0 ? 'disabled' : ''}>
+          <button class="btn btn-secondary" onclick="moveSection(${index}, 'up')" ${index === 0 ? 'disabled' : ''} title="نقل لأعلى">
             <i class="fas fa-arrow-up"></i>
           </button>
-          <button class="btn btn-secondary" onclick="moveSection(${index}, 'down')" ${index === pageLayout.length - 1 ? 'disabled' : ''}>
+          <button class="btn btn-secondary" onclick="moveSection(${index}, 'down')" ${index === pageLayout.length - 1 ? 'disabled' : ''} title="نقل لأسفل">
             <i class="fas fa-arrow-down"></i>
           </button>
-          <button class="btn btn-primary" onclick="editSection(${index})">
+          <button class="btn btn-secondary" onclick="duplicateSection(${index})" title="تكرار العنصر">
+            <i class="fas fa-copy"></i>
+          </button>
+          <button class="btn btn-primary" onclick="editSection(${index})" title="تعديل">
             <i class="fas fa-edit"></i> تعديل
           </button>
-          <button class="btn btn-danger" onclick="deleteSection(${index})">
+          <button class="btn btn-danger" onclick="deleteSection(${index})" title="حذف">
             <i class="fas fa-trash"></i>
           </button>
         </div>
@@ -994,6 +1469,24 @@ function moveSection(index, direction) {
     [pageLayout[index], pageLayout[index + 1]] = [pageLayout[index + 1], pageLayout[index]];
   }
   renderPageCanvas();
+}
+
+function duplicateSection(index) {
+  const section = pageLayout[index];
+  if (!section) return;
+
+  // Deep clone the section
+  const duplicatedSection = JSON.parse(JSON.stringify(section));
+
+  // Update title
+  duplicatedSection.title = section.title + ' (نسخة)';
+  duplicatedSection.id = Date.now().toString();
+
+  // Insert after the original
+  pageLayout.splice(index + 1, 0, duplicatedSection);
+
+  renderPageCanvas();
+  showToast('تم تكرار العنصر بنجاح!', 'success');
 }
 
 function editSection(index) {
@@ -1454,4 +1947,342 @@ function collectStatItems() {
     item.label = document.querySelector(`.stat-label[data-id="${item.id}"]`)?.value || '';
   });
   return currentStatItems;
+}
+
+// ==========================================
+// PAGE MANAGEMENT FUNCTIONS
+// ==========================================
+
+function openPageModal() {
+  document.getElementById('pageId').value = '';
+  document.getElementById('pageForm').reset();
+  document.getElementById('pageModalTitle').textContent = 'إضافة صفحة جديدة';
+  document.getElementById('pageModal').classList.add('active');
+}
+
+function closePageModal() {
+  document.getElementById('pageModal').classList.remove('active');
+  document.getElementById('pageForm').reset();
+}
+
+function savePage(event) {
+  event.preventDefault();
+
+  const pageId = document.getElementById('pageId').value;
+  const pageData = {
+    id: pageId || 'page-' + Date.now(),
+    title: document.getElementById('pageTitle').value,
+    slug: document.getElementById('pageSlug').value || generateSlug(document.getElementById('pageTitle').value),
+    metaTitle: document.getElementById('pageMetaTitle').value,
+    metaDescription: document.getElementById('pageMetaDescription').value,
+    status: document.getElementById('pageStatus').value,
+    date: new Date().toISOString().split('T')[0],
+    layout: []
+  };
+
+  if (pageId) {
+    // Update existing page
+    const index = pagesManager.pages.findIndex(p => p.id === pageId);
+    if (index !== -1) {
+      pagesManager.pages[index] = { ...pagesManager.pages[index], ...pageData };
+    }
+  } else {
+    // Add new page
+    pagesManager.pages.push(pageData);
+  }
+
+  pagesManager.savePages();
+  closePageModal();
+  showToast('تم حفظ الصفحة بنجاح!', 'success');
+}
+
+function openPageBuilder() {
+  const pageId = document.getElementById('pageId').value;
+  if (pageId) {
+    // Save first then open builder
+    savePage(event);
+    setTimeout(() => {
+      pagesManager.openPageBuilder(pageId);
+    }, 100);
+  } else {
+    showToast('يجب حفظ الصفحة أولاً!', 'warning');
+  }
+}
+
+function selectPage() {
+  if (!pagesManager || pagesManager.pages.length === 0) {
+    showToast('لا توجد صفحات! أضف صفحة جديدة أولاً من قسم الصفحات.', 'warning');
+    return;
+  }
+
+  const pages = pagesManager.pages;
+  const options = pages.map((p, i) => `${i + 1}. ${p.title}`).join('\n');
+  const selection = prompt(`اختر رقم الصفحة:\n\n${options}`);
+
+  if (selection) {
+    const index = parseInt(selection) - 1;
+    if (index >= 0 && index < pages.length) {
+      pagesManager.openPageBuilder(pages[index].id);
+    }
+  }
+}
+
+// ==========================================
+// MENU MANAGEMENT FUNCTIONS
+// ==========================================
+
+function openMenuModal() {
+  if (!menusManager) return;
+
+  document.getElementById('menuId').value = '';
+  document.getElementById('menuForm').reset();
+  document.getElementById('menuModalTitle').textContent = 'إضافة قائمة جديدة';
+
+  menusManager.currentMenuItems = [];
+  menusManager.loadAvailablePages();
+  menusManager.renderMenuItems();
+
+  document.getElementById('menuModal').classList.add('active');
+}
+
+function closeMenuModal() {
+  document.getElementById('menuModal').classList.remove('active');
+  document.getElementById('menuForm').reset();
+}
+
+function saveMenu(event) {
+  event.preventDefault();
+
+  if (!menusManager) return;
+
+  const menuId = document.getElementById('menuId').value;
+  const menuData = {
+    id: menuId || 'menu-' + Date.now(),
+    name: document.getElementById('menuName').value,
+    location: document.getElementById('menuLocation').value,
+    date: new Date().toISOString().split('T')[0],
+    items: menusManager.currentMenuItems
+  };
+
+  if (menuId) {
+    // Update existing menu
+    const index = menusManager.menus.findIndex(m => m.id === menuId);
+    if (index !== -1) {
+      menusManager.menus[index] = { ...menusManager.menus[index], ...menuData };
+    }
+  } else {
+    // Add new menu
+    menusManager.menus.push(menuData);
+  }
+
+  menusManager.saveMenus();
+  closeMenuModal();
+  showToast('تم حفظ القائمة بنجاح!', 'success');
+
+  // Refresh footer menu dropdowns if on settings page
+  loadMenusIntoFooterSelects();
+}
+
+function addCustomMenuItem() {
+  if (!menusManager) return;
+
+  const title = document.getElementById('customItemTitle').value.trim();
+  const url = document.getElementById('customItemUrl').value.trim();
+
+  if (!title || !url) {
+    showToast('يجب إدخال العنوان والرابط!', 'warning');
+    return;
+  }
+
+  menusManager.currentMenuItems.push({
+    id: 'item-' + Date.now(),
+    title: title,
+    url: url,
+    type: 'custom'
+  });
+
+  document.getElementById('customItemTitle').value = '';
+  document.getElementById('customItemUrl').value = '';
+
+  menusManager.renderMenuItems();
+  showToast('تم إضافة العنصر!', 'success');
+}
+
+function openQuickPageModal() {
+  const title = prompt('أدخل عنوان الصفحة الجديدة:');
+  if (!title) return;
+
+  const slug = generateSlug(title);
+
+  if (!pagesManager) {
+    pagesManager = new PagesManager();
+    pagesManager.init();
+  }
+
+  // Create quick page
+  const pageData = {
+    id: 'page-' + Date.now(),
+    title: title,
+    slug: slug,
+    metaTitle: title,
+    metaDescription: '',
+    status: 'published',
+    date: new Date().toISOString().split('T')[0],
+    layout: []
+  };
+
+  pagesManager.pages.push(pageData);
+  pagesManager.savePages();
+
+  // Add to menu automatically
+  if (menusManager) {
+    menusManager.currentMenuItems.push({
+      id: 'item-' + Date.now(),
+      title: title,
+      url: slug + '.html',
+      type: 'page',
+      pageId: pageData.id
+    });
+    menusManager.loadAvailablePages();
+    menusManager.renderMenuItems();
+  }
+
+  showToast('تم إضافة الصفحة بنجاح!', 'success');
+}
+
+function loadMenusIntoFooterSelects() {
+  if (!menusManager) return;
+
+  const selects = ['footerMenu1', 'footerMenu2', 'footerMenu3', 'footerMenu4'];
+
+  selects.forEach(selectId => {
+    const select = document.getElementById(selectId);
+    if (!select) return;
+
+    const currentValue = select.value;
+    const options = menusManager.menus.map(menu =>
+      `<option value="${menu.id}">${menu.name}</option>`
+    ).join('');
+
+    select.innerHTML = '<option value="">-- بدون قائمة --</option>' + options;
+    select.value = currentValue; // Restore selection
+  });
+}
+
+// Quick add element function
+function addQuickElement(type) {
+  if (!pagesManager || !pagesManager.currentPageId) {
+    showToast('يجب اختيار صفحة أولاً!', 'warning');
+    return;
+  }
+
+  const defaultElements = {
+    hero: {
+      id: Date.now().toString(),
+      type: 'hero',
+      title: 'Hero Section',
+      description: 'قسم رئيسي في الصفحة',
+      content: {
+        title: 'عنوان رئيسي',
+        subtitle: 'نص فرعي يوضح المحتوى',
+        buttonText: 'ابدأ الآن',
+        buttonLink: '#',
+        backgroundImage: '',
+        backgroundColor: 'linear-gradient(135deg, #0C4A2F 0%, #10B981 100%)'
+      }
+    },
+    cta: {
+      id: Date.now().toString(),
+      type: 'cta',
+      title: 'Call to Action',
+      description: 'دعوة لاتخاذ إجراء',
+      content: {
+        title: 'هل لديك مشروع؟',
+        description: 'تواصل معنا الآن',
+        buttonText: 'اتصل بنا',
+        buttonLink: '#contact'
+      }
+    },
+    features: {
+      id: Date.now().toString(),
+      type: 'features',
+      title: 'Features Grid',
+      description: 'عرض الميزات',
+      content: {
+        title: 'خدماتنا',
+        subtitle: 'نقدم خدمات متنوعة',
+        items: []
+      }
+    },
+    testimonials: {
+      id: Date.now().toString(),
+      type: 'testimonials',
+      title: 'Testimonials',
+      description: 'آراء العملاء',
+      content: {
+        title: 'آراء عملائنا',
+        subtitle: 'ماذا يقول عملاؤنا',
+        items: []
+      }
+    },
+    stats: {
+      id: Date.now().toString(),
+      type: 'stats',
+      title: 'Statistics',
+      description: 'الإحصائيات',
+      content: {
+        title: 'إنجازاتنا',
+        subtitle: 'بالأرقام',
+        items: []
+      }
+    }
+  };
+
+  const element = defaultElements[type];
+  if (element) {
+    pageLayout.push(element);
+    renderPageCanvas();
+    showToast(`تم إضافة ${getComponentTypeName(type)} بنجاح!`, 'success');
+  }
+}
+
+// Update savePageLayout to save to current page
+function savePageLayout() {
+  if (!pagesManager || !pagesManager.currentPageId) {
+    showToast('يجب اختيار صفحة أولاً!', 'warning');
+    return;
+  }
+
+  const pageIndex = pagesManager.pages.findIndex(p => p.id === pagesManager.currentPageId);
+  if (pageIndex !== -1) {
+    pagesManager.pages[pageIndex].layout = pageLayout;
+    pagesManager.savePages();
+    showToast('تم حفظ تخطيط الصفحة بنجاح!', 'success');
+  }
+}
+
+// Auto-generate slug from Arabic text
+function generateSlug(text) {
+  // Simple transliteration map
+  const arabicToEnglish = {
+    'ا': 'a', 'أ': 'a', 'إ': 'i', 'آ': 'a', 'ب': 'b', 'ت': 't', 'ث': 'th',
+    'ج': 'j', 'ح': 'h', 'خ': 'kh', 'د': 'd', 'ذ': 'th', 'ر': 'r', 'ز': 'z',
+    'س': 's', 'ش': 'sh', 'ص': 's', 'ض': 'd', 'ط': 't', 'ظ': 'z', 'ع': 'a',
+    'غ': 'gh', 'ف': 'f', 'ق': 'q', 'ك': 'k', 'ل': 'l', 'م': 'm', 'ن': 'n',
+    'ه': 'h', 'و': 'w', 'ي': 'y', 'ة': 'h', 'ى': 'a', 'ء': 'a'
+  };
+
+  let slug = text.toLowerCase();
+
+  // Replace Arabic characters
+  for (const [ar, en] of Object.entries(arabicToEnglish)) {
+    slug = slug.replace(new RegExp(ar, 'g'), en);
+  }
+
+  // Clean up
+  slug = slug.replace(/[^a-z0-9]+/g, '-')  // Replace non-alphanumeric with dash
+    .replace(/^-+|-+$/g, '')  // Remove leading/trailing dashes
+    .replace(/-+/g, '-');  // Replace multiple dashes with single dash
+
+  return slug || 'page';
 }
