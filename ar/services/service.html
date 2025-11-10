@@ -34,6 +34,7 @@
     <!-- Styles -->
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/rtl.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
 
     <style>
         .service-header {
@@ -337,130 +338,20 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="container">
-            <div class="nav-wrapper">
-                <a href="../../" class="logo">
-                    <i class="fas fa-code"></i>
-                    <span>تكنولوجي <span class="ksa-text">السعودية</span></span>
-                </a>
-
-                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="القائمة">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-
-                <div class="nav-menu" id="navMenu">
-                    <a href="../../" class="nav-link">الرئيسية</a>
-                    <a href="../about.html" class="nav-link">من نحن</a>
-                    <a href="./" class="nav-link active">خدماتنا</a>
-                    <a href="../portfolio/" class="nav-link">أعمالنا</a>
-                    <a href="../blog/" class="nav-link">المدونة</a>
-                    <a href="../contact.html" class="nav-link">تواصل معنا</a>
-
-                    <div class="nav-actions">
-                        <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
-                            <i class="fas fa-moon"></i>
-                        </button>
-                        <div class="language-switcher">
-                            <button class="lang-btn" id="langBtn">
-                                <i class="fas fa-globe"></i>
-                                <span>EN</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
 
     <!-- Service Content (will be populated by JavaScript) -->
     <div id="serviceContainer">
         <!-- Content will be loaded here -->
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-top">
-            <div class="container">
-                <div class="footer-grid">
-                    <div class="footer-col">
-                        <div class="footer-logo">
-                            <i class="fas fa-code"></i>
-                            <span>تكنولوجي <span class="ksa-text">السعودية</span></span>
-                        </div>
-                        <p class="footer-desc">
-                            نحن شركة رائدة في تقديم الحلول التقنية المتكاملة في المملكة العربية السعودية،
-                            نساعد الشركات على التحول الرقمي وتحقيق أهدافها التجارية.
-                        </p>
-                        <div class="social-links">
-                            <a href="#" aria-label="تويتر"><i class="fab fa-twitter"></i></a>
-                            <a href="#" aria-label="لينكد إن"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#" aria-label="إنستغرام"><i class="fab fa-instagram"></i></a>
-                            <a href="#" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
-                        </div>
-                    </div>
-
-                    <div class="footer-col">
-                        <h4>خدماتنا</h4>
-                        <ul class="footer-links">
-                            <li><a href="./web-development.html">تطوير المواقع</a></li>
-                            <li><a href="./mobile-apps.html">تطبيقات الجوال</a></li>
-                            <li><a href="./digital-marketing.html">التسويق الرقمي</a></li>
-                            <li><a href="./erp-systems.html">أنظمة ERP</a></li>
-                            <li><a href="./cybersecurity.html">الأمن السيبراني</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="footer-col">
-                        <h4>روابط سريعة</h4>
-                        <ul class="footer-links">
-                            <li><a href="../about.html">من نحن</a></li>
-                            <li><a href="./">خدماتنا</a></li>
-                            <li><a href="../blog/">المدونة</a></li>
-                            <li><a href="../contact.html">تواصل معنا</a></li>
-                            <li><a href="../privacy-policy.html">سياسة الخصوصية</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="footer-col">
-                        <h4>تواصل معنا</h4>
-                        <ul class="footer-contact">
-                            <li>
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span>الرياض، المملكة العربية السعودية</span>
-                            </li>
-                            <li>
-                                <i class="fas fa-phone"></i>
-                                <span dir="ltr">+966 50 123 4567</span>
-                            </li>
-                            <li>
-                                <i class="fas fa-envelope"></i>
-                                <span>info@technologyksa.com</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer-bottom">
-            <div class="container">
-                <div class="footer-bottom-content">
-                    <p>&copy; 2025 تكنولوجي السعودية. جميع الحقوق محفوظة.</p>
-                    <div class="footer-bottom-links">
-                        <a href="../privacy-policy.html">سياسة الخصوصية</a>
-                        <a href="../terms.html">الشروط والأحكام</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
 
     <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script src="../../assets/js/components.js"></script>
     <script src="../../assets/js/main.js"></script>
     <script src="../../assets/js/language.js"></script>
     <script src="../../assets/js/theme.js"></script>
@@ -688,6 +579,11 @@
 
         // Initialize service display when DOM is ready
         document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Components System
+            const componentsManager = new ComponentsManager();
+            componentsManager.init('services');
+
+            // Initialize Service Display
             new ServiceDisplay();
         });
     </script>

@@ -582,6 +582,704 @@
         margin-right: 0;
       }
     }
+
+    /* Settings Page Styles */
+    .settings-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .settings-section-title {
+      font-size: 1.75rem;
+      margin-bottom: 2rem;
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+
+    .settings-section {
+      background: var(--bg-primary);
+      padding: 2rem;
+      border-radius: var(--radius-lg);
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .settings-heading {
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+      color: var(--saudi-green);
+      font-weight: 600;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .settings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .settings-grid .full-width {
+      grid-column: 1 / -1;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .form-group label i {
+      color: var(--saudi-green);
+    }
+
+    .form-input {
+      padding: 0.875rem 1rem;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      font-size: 1rem;
+      font-family: inherit;
+      transition: all 0.3s ease;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--saudi-green);
+      box-shadow: 0 0 0 3px rgba(12, 74, 47, 0.1);
+    }
+
+    .form-input::placeholder {
+      color: var(--text-secondary);
+      opacity: 0.7;
+    }
+
+    textarea.form-input {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .settings-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 2px solid var(--border-color);
+    }
+
+    .btn-lg {
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .btn-secondary {
+      background: var(--text-secondary);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: var(--text-primary);
+    }
+
+    @media (max-width: 768px) {
+      .settings-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .settings-actions {
+        flex-direction: column;
+      }
+
+      .settings-actions .btn {
+        width: 100%;
+      }
+    }
+
+    /* Components Library Styles */
+    .components-library {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .library-header {
+      margin-bottom: 2rem;
+    }
+
+    .library-header h2 {
+      font-size: 1.75rem;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .library-header p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    .component-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid var(--border-color);
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+
+    .component-tab {
+      padding: 0.75rem 1.5rem;
+      background: transparent;
+      border: none;
+      border-bottom: 3px solid transparent;
+      color: var(--text-secondary);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .component-tab:hover {
+      color: var(--saudi-green);
+    }
+
+    .component-tab.active {
+      color: var(--saudi-green);
+      border-bottom-color: var(--saudi-green);
+    }
+
+    .component-tab-content {
+      display: none;
+    }
+
+    .component-tab-content.active {
+      display: block;
+    }
+
+    .component-actions {
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .components-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+
+    .component-card {
+      background: var(--bg-primary);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .component-card:hover {
+      border-color: var(--saudi-green);
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+
+    .component-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 1rem;
+    }
+
+    .component-card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .component-card-type {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: rgba(12, 74, 47, 0.1);
+      color: var(--saudi-green);
+      border-radius: var(--radius-full);
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    .component-card-preview {
+      width: 100%;
+      height: 180px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .component-card-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .component-card-preview i {
+      font-size: 3rem;
+      color: var(--text-muted);
+    }
+
+    .component-card-description {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .component-card-actions {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: space-between;
+    }
+
+    .component-card-actions .btn {
+      flex: 1;
+      padding: 0.625rem 1rem;
+      font-size: 0.9rem;
+    }
+
+    .component-empty {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-muted);
+    }
+
+    .component-empty i {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    .component-empty h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 768px) {
+      .components-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .component-tabs {
+        gap: 0.25rem;
+      }
+
+      .component-tab {
+        padding: 0.625rem 1rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* ==========================================
+       PAGE BUILDER STYLES
+       ========================================== */
+
+    .page-builder {
+      max-width: 100%;
+      height: 100%;
+    }
+
+    .builder-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .builder-header h2 {
+      font-size: 1.75rem;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .builder-header p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    .builder-actions {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .builder-container {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 2rem;
+      height: calc(100vh - 300px);
+    }
+
+    /* Sidebar with available components */
+    .builder-sidebar {
+      background: var(--bg-primary);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      overflow-y: auto;
+      max-height: 100%;
+    }
+
+    .sidebar-title {
+      font-size: 1.25rem;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .component-categories {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .component-category {
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+    }
+
+    .category-title {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+    }
+
+    .draggable-components {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .draggable-component {
+      background: var(--bg-primary);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.875rem;
+      cursor: grab;
+      transition: all 0.3s ease;
+    }
+
+    .draggable-component:hover {
+      border-color: var(--saudi-green);
+      box-shadow: var(--shadow-md);
+      transform: translateX(-2px);
+    }
+
+    .draggable-component:active {
+      cursor: grabbing;
+    }
+
+    .draggable-component h5 {
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .draggable-component p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    /* Canvas area for building the page */
+    .builder-canvas {
+      background: var(--bg-primary);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      overflow-y: auto;
+      max-height: 100%;
+    }
+
+    .canvas-title {
+      font-size: 1.25rem;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .page-canvas {
+      min-height: 400px;
+      background: var(--bg-secondary);
+      border: 2px dashed var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+    }
+
+    .canvas-empty {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-muted);
+    }
+
+    .canvas-empty i {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    .canvas-empty h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-secondary);
+    }
+
+    .canvas-empty p {
+      color: var(--text-muted);
+    }
+
+    /* Page section in canvas */
+    .page-section {
+      background: var(--bg-primary);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .page-section:hover {
+      border-color: var(--saudi-green);
+      box-shadow: var(--shadow-md);
+    }
+
+    .page-section.dragging {
+      opacity: 0.5;
+      border-style: dashed;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .section-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--saudi-green);
+      color: white;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .section-title-group h4 {
+      font-size: 1rem;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .section-title-group p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .section-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .section-actions .btn {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    .section-content {
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+    }
+
+    .section-content-preview {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .section-content-preview strong {
+      color: var(--text-primary);
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    /* Drag handle */
+    .drag-handle {
+      cursor: grab;
+      color: var(--text-muted);
+      padding: 0.25rem 0.5rem;
+      margin-right: 0.5rem;
+    }
+
+    .drag-handle:active {
+      cursor: grabbing;
+    }
+
+    /* Drop zone indicator */
+    .drop-zone {
+      border: 3px dashed var(--saudi-green);
+      background: rgba(12, 74, 47, 0.1);
+      padding: 2rem;
+      border-radius: var(--radius-md);
+      margin: 1rem 0;
+      text-align: center;
+      color: var(--saudi-green);
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .builder-container {
+        grid-template-columns: 250px 1fr;
+        gap: 1rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .builder-header {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .builder-actions {
+        width: 100%;
+        flex-wrap: wrap;
+      }
+
+      .builder-actions .btn {
+        flex: 1;
+        min-width: 140px;
+      }
+
+      .builder-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        height: auto;
+      }
+
+      .builder-sidebar {
+        max-height: 300px;
+      }
+    }
+
+    /* ==========================================
+       DYNAMIC ITEMS (Features, Testimonials, Stats)
+       ========================================== */
+
+    .dynamic-item {
+      background: var(--bg-secondary);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .dynamic-item:hover {
+      border-color: var(--saudi-green);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .dynamic-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .dynamic-item-header h6 {
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .dynamic-item-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .dynamic-item-actions button {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.85rem;
+    }
+
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+    }
+
+    .item-fields {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .item-fields .form-group {
+      margin-bottom: 0;
+    }
+
+    .item-fields input,
+    .item-fields textarea,
+    .item-fields select {
+      font-size: 0.9rem;
+      padding: 0.625rem 0.875rem;
+    }
+
+    .item-fields label {
+      font-size: 0.85rem;
+      margin-bottom: 0.25rem;
+    }
   </style>
 </head>
 <body>
@@ -599,6 +1297,9 @@
           <li><a href="#" data-view="services"><i class="fas fa-briefcase"></i> الخدمات</a></li>
           <li><a href="#" data-view="projects"><i class="fas fa-folder-open"></i> المشاريع</a></li>
           <li><a href="#" data-view="media"><i class="fas fa-images"></i> مكتبة الصور</a></li>
+          <li><a href="#" data-view="components"><i class="fas fa-cubes"></i> مكتبة العناصر</a></li>
+          <li><a href="#" data-view="pagebuilder"><i class="fas fa-hammer"></i> Page Builder</a></li>
+          <li><a href="#" data-view="settings"><i class="fas fa-cog"></i> الإعدادات</a></li>
         </ul>
       </nav>
     </aside>
@@ -682,6 +1383,429 @@
 
           <div class="media-grid" id="mediaGrid">
             <!-- Media items will be inserted here -->
+          </div>
+        </div>
+
+        <!-- Components Library View -->
+        <div id="componentsView" class="admin-view">
+          <div class="components-library">
+            <div class="library-header">
+              <h2>مكتبة العناصر</h2>
+              <p>إنشاء وإدارة العناصر القابلة لإعادة الاستخدام في صفحات الموقع</p>
+            </div>
+
+            <!-- Component Types Tabs -->
+            <div class="component-tabs">
+              <button class="component-tab active" data-tab="hero">Hero Sections</button>
+              <button class="component-tab" data-tab="cta">Call to Action</button>
+              <button class="component-tab" data-tab="features">Features Grid</button>
+              <button class="component-tab" data-tab="testimonials">Testimonials</button>
+              <button class="component-tab" data-tab="stats">Statistics</button>
+              <button class="component-tab" data-tab="contact">Contact Form</button>
+              <button class="component-tab" data-tab="team">Team Members</button>
+              <button class="component-tab" data-tab="pricing">Pricing Tables</button>
+            </div>
+
+            <!-- Hero Sections Tab -->
+            <div class="component-tab-content active" data-content="hero">
+              <div class="component-actions">
+                <button class="btn btn-primary" onclick="openComponentModal('hero')">
+                  <i class="fas fa-plus"></i> إضافة Hero Section جديد
+                </button>
+              </div>
+              <div class="components-grid" id="heroComponentsGrid">
+                <!-- Hero components will be loaded here -->
+              </div>
+            </div>
+
+            <!-- CTA Sections Tab -->
+            <div class="component-tab-content" data-content="cta">
+              <div class="component-actions">
+                <button class="btn btn-primary" onclick="openComponentModal('cta')">
+                  <i class="fas fa-plus"></i> إضافة CTA Section جديد
+                </button>
+              </div>
+              <div class="components-grid" id="ctaComponentsGrid">
+                <!-- CTA components will be loaded here -->
+              </div>
+            </div>
+
+            <!-- Features Grid Tab -->
+            <div class="component-tab-content" data-content="features">
+              <div class="component-actions">
+                <button class="btn btn-primary" onclick="openComponentModal('features')">
+                  <i class="fas fa-plus"></i> إضافة Features Grid جديد
+                </button>
+              </div>
+              <div class="components-grid" id="featuresComponentsGrid">
+                <!-- Features components will be loaded here -->
+              </div>
+            </div>
+
+            <!-- Testimonials Tab -->
+            <div class="component-tab-content" data-content="testimonials">
+              <div class="component-actions">
+                <button class="btn btn-primary" onclick="openComponentModal('testimonials')">
+                  <i class="fas fa-plus"></i> إضافة Testimonials Section جديد
+                </button>
+              </div>
+              <div class="components-grid" id="testimonialsComponentsGrid">
+                <!-- Testimonials components will be loaded here -->
+              </div>
+            </div>
+
+            <!-- Statistics Tab -->
+            <div class="component-tab-content" data-content="stats">
+              <div class="component-actions">
+                <button class="btn btn-primary" onclick="openComponentModal('stats')">
+                  <i class="fas fa-plus"></i> إضافة Statistics Section جديد
+                </button>
+              </div>
+              <div class="components-grid" id="statsComponentsGrid">
+                <!-- Stats components will be loaded here -->
+              </div>
+            </div>
+
+            <!-- Contact Form Tab -->
+            <div class="component-tab-content" data-content="contact">
+              <div class="component-actions">
+                <button class="btn btn-primary" onclick="openComponentModal('contact')">
+                  <i class="fas fa-plus"></i> إضافة Contact Form جديد
+                </button>
+              </div>
+              <div class="components-grid" id="contactComponentsGrid">
+                <!-- Contact components will be loaded here -->
+              </div>
+            </div>
+
+            <!-- Team Members Tab -->
+            <div class="component-tab-content" data-content="team">
+              <div class="component-actions">
+                <button class="btn btn-primary" onclick="openComponentModal('team')">
+                  <i class="fas fa-plus"></i> إضافة Team Section جديد
+                </button>
+              </div>
+              <div class="components-grid" id="teamComponentsGrid">
+                <!-- Team components will be loaded here -->
+              </div>
+            </div>
+
+            <!-- Pricing Tables Tab -->
+            <div class="component-tab-content" data-content="pricing">
+              <div class="component-actions">
+                <button class="btn btn-primary" onclick="openComponentModal('pricing')">
+                  <i class="fas fa-plus"></i> إضافة Pricing Table جديد
+                </button>
+              </div>
+              <div class="components-grid" id="pricingComponentsGrid">
+                <!-- Pricing components will be loaded here -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Settings View -->
+        <div id="settingsView" class="admin-view">
+          <div class="settings-container">
+            <h2 class="settings-section-title">إعدادات الموقع</h2>
+
+            <!-- Site Information -->
+            <div class="settings-section">
+              <h3 class="settings-heading">معلومات الموقع</h3>
+              <div class="settings-grid">
+                <div class="form-group">
+                  <label for="siteName">اسم الموقع (بالعربية)</label>
+                  <input type="text" id="siteName" class="form-input" placeholder="تكنولوجيا السعودية">
+                </div>
+                <div class="form-group">
+                  <label for="siteNameEn">اسم الموقع (بالإنجليزية)</label>
+                  <input type="text" id="siteNameEn" class="form-input" placeholder="Technology KSA">
+                </div>
+                <div class="form-group full-width">
+                  <label for="siteDescription">وصف الموقع</label>
+                  <textarea id="siteDescription" class="form-input" rows="3" placeholder="شركة تكنولوجيا السعودية - وكالة رقمية رائدة..."></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Logo Settings -->
+            <div class="settings-section">
+              <h3 class="settings-heading">الشعار والصور</h3>
+              <div class="settings-grid">
+                <div class="form-group">
+                  <label for="logoUrl">رابط الشعار</label>
+                  <input type="text" id="logoUrl" class="form-input" placeholder="assets/images/logo.png">
+                </div>
+                <div class="form-group">
+                  <label for="faviconUrl">رابط Favicon</label>
+                  <input type="text" id="faviconUrl" class="form-input" placeholder="assets/images/favicon.ico">
+                </div>
+              </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="settings-section">
+              <h3 class="settings-heading">معلومات التواصل</h3>
+              <div class="settings-grid">
+                <div class="form-group">
+                  <label for="contactPhone">رقم الهاتف</label>
+                  <input type="text" id="contactPhone" class="form-input" placeholder="+966 50 123 4567" dir="ltr">
+                </div>
+                <div class="form-group">
+                  <label for="contactEmail">البريد الإلكتروني</label>
+                  <input type="email" id="contactEmail" class="form-input" placeholder="info@technologyksa.com" dir="ltr">
+                </div>
+                <div class="form-group">
+                  <label for="contactWhatsapp">رقم الواتساب</label>
+                  <input type="text" id="contactWhatsapp" class="form-input" placeholder="+966501234567" dir="ltr">
+                </div>
+                <div class="form-group full-width">
+                  <label for="contactAddress">العنوان</label>
+                  <input type="text" id="contactAddress" class="form-input" placeholder="الرياض، المملكة العربية السعودية">
+                </div>
+              </div>
+            </div>
+
+            <!-- Social Media Links -->
+            <div class="settings-section">
+              <h3 class="settings-heading">روابط التواصل الاجتماعي</h3>
+              <div class="settings-grid">
+                <div class="form-group">
+                  <label for="socialFacebook"><i class="fab fa-facebook"></i> Facebook</label>
+                  <input type="url" id="socialFacebook" class="form-input" placeholder="https://facebook.com/..." dir="ltr">
+                </div>
+                <div class="form-group">
+                  <label for="socialTwitter"><i class="fab fa-twitter"></i> Twitter / X</label>
+                  <input type="url" id="socialTwitter" class="form-input" placeholder="https://twitter.com/..." dir="ltr">
+                </div>
+                <div class="form-group">
+                  <label for="socialLinkedin"><i class="fab fa-linkedin"></i> LinkedIn</label>
+                  <input type="url" id="socialLinkedin" class="form-input" placeholder="https://linkedin.com/..." dir="ltr">
+                </div>
+                <div class="form-group">
+                  <label for="socialInstagram"><i class="fab fa-instagram"></i> Instagram</label>
+                  <input type="url" id="socialInstagram" class="form-input" placeholder="https://instagram.com/..." dir="ltr">
+                </div>
+                <div class="form-group">
+                  <label for="socialYoutube"><i class="fab fa-youtube"></i> YouTube</label>
+                  <input type="url" id="socialYoutube" class="form-input" placeholder="https://youtube.com/..." dir="ltr">
+                </div>
+              </div>
+            </div>
+
+            <!-- Company Information -->
+            <div class="settings-section">
+              <h3 class="settings-heading">معلومات الشركة</h3>
+              <div class="settings-grid">
+                <div class="form-group">
+                  <label for="companyYear">سنة التأسيس</label>
+                  <input type="number" id="companyYear" class="form-input" placeholder="2010">
+                </div>
+                <div class="form-group">
+                  <label for="companyCountry">البلد</label>
+                  <input type="text" id="companyCountry" class="form-input" placeholder="المملكة العربية السعودية">
+                </div>
+                <div class="form-group full-width">
+                  <label for="companyAbout">نبذة عن الشركة</label>
+                  <textarea id="companyAbout" class="form-input" rows="4" placeholder="نحن شركة رائدة في تقديم الحلول التقنية المتكاملة..."></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer Settings -->
+            <div class="settings-section">
+              <h3 class="settings-heading">إعدادات التذييل</h3>
+              <div class="settings-grid">
+                <div class="form-group full-width">
+                  <label for="footerCopyright">نص حقوق النشر</label>
+                  <input type="text" id="footerCopyright" class="form-input" placeholder="© 2025 تكنولوجي السعودية. جميع الحقوق محفوظة.">
+                </div>
+              </div>
+            </div>
+
+            <!-- Layout Settings -->
+            <div class="settings-section">
+              <h3 class="settings-heading">إعدادات التخطيط والمظهر</h3>
+              <div class="settings-grid">
+                <div class="form-group">
+                  <label for="headerStyle">نمط الهيدر (Header)</label>
+                  <select id="headerStyle" class="form-input">
+                    <option value="default">الافتراضي</option>
+                    <option value="transparent">شفاف</option>
+                    <option value="fixed">ثابت</option>
+                    <option value="minimal">بسيط</option>
+                  </select>
+                  <small>نمط عرض الهيدر في جميع صفحات الموقع</small>
+                </div>
+                <div class="form-group">
+                  <label for="headerColor">لون الهيدر</label>
+                  <input type="color" id="headerColor" class="form-input" value="#0C4A2F">
+                  <small>اللون الأساسي للهيدر</small>
+                </div>
+                <div class="form-group">
+                  <label for="footerStyle">نمط الفوتر (Footer)</label>
+                  <select id="footerStyle" class="form-input">
+                    <option value="default">الافتراضي</option>
+                    <option value="minimal">بسيط</option>
+                    <option value="detailed">مفصّل</option>
+                  </select>
+                  <small>نمط عرض الفوتر في جميع الصفحات</small>
+                </div>
+                <div class="form-group">
+                  <label for="footerColor">لون الفوتر</label>
+                  <input type="color" id="footerColor" class="form-input" value="#0C4A2F">
+                  <small>اللون الأساسي للفوتر</small>
+                </div>
+                <div class="form-group">
+                  <label for="showBlogSidebar">عرض Sidebar في المدونة</label>
+                  <select id="showBlogSidebar" class="form-input">
+                    <option value="yes">نعم</option>
+                    <option value="no">لا</option>
+                  </select>
+                  <small>هل تريد عرض الشريط الجانبي في صفحات المدونة؟</small>
+                </div>
+                <div class="form-group">
+                  <label for="sidebarPosition">موقع Sidebar</label>
+                  <select id="sidebarPosition" class="form-input">
+                    <option value="right">يمين</option>
+                    <option value="left">يسار</option>
+                  </select>
+                  <small>موقع الشريط الجانبي في المدونة</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="settings-actions">
+              <button class="btn btn-primary btn-lg" onclick="saveSettings()">
+                <i class="fas fa-save"></i> حفظ الإعدادات
+              </button>
+              <button class="btn btn-secondary btn-lg" onclick="resetSettings()">
+                <i class="fas fa-undo"></i> استعادة الإعدادات الافتراضية
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Page Builder View -->
+        <div id="pagebuilderView" class="admin-view">
+          <div class="page-builder">
+            <div class="builder-header">
+              <div>
+                <h2>Page Builder - بناء الصفحة الرئيسية</h2>
+                <p>قم بتصميم الصفحة الرئيسية باستخدام السحب والإفلات</p>
+              </div>
+              <div class="builder-actions">
+                <button class="btn btn-secondary" onclick="previewPage()">
+                  <i class="fas fa-eye"></i> معاينة
+                </button>
+                <button class="btn btn-primary" onclick="savePageLayout()">
+                  <i class="fas fa-save"></i> حفظ التخطيط
+                </button>
+                <button class="btn btn-success" onclick="publishPage()">
+                  <i class="fas fa-globe"></i> نشر الصفحة
+                </button>
+              </div>
+            </div>
+
+            <div class="builder-container">
+              <!-- Sidebar: Available Components -->
+              <div class="builder-sidebar">
+                <h3 class="sidebar-title">
+                  <i class="fas fa-cubes"></i>
+                  العناصر المتاحة
+                </h3>
+
+                <div class="component-categories">
+                  <!-- Hero Sections -->
+                  <div class="component-category">
+                    <h4 class="category-title">
+                      <i class="fas fa-image"></i>
+                      Hero Sections
+                    </h4>
+                    <div id="heroComponents" class="draggable-components"></div>
+                  </div>
+
+                  <!-- Call to Action -->
+                  <div class="component-category">
+                    <h4 class="category-title">
+                      <i class="fas fa-bullhorn"></i>
+                      Call to Action
+                    </h4>
+                    <div id="ctaComponents" class="draggable-components"></div>
+                  </div>
+
+                  <!-- Features Grid -->
+                  <div class="component-category">
+                    <h4 class="category-title">
+                      <i class="fas fa-th"></i>
+                      Features Grid
+                    </h4>
+                    <div id="featuresComponents" class="draggable-components"></div>
+                  </div>
+
+                  <!-- Testimonials -->
+                  <div class="component-category">
+                    <h4 class="category-title">
+                      <i class="fas fa-comments"></i>
+                      Testimonials
+                    </h4>
+                    <div id="testimonialsComponents" class="draggable-components"></div>
+                  </div>
+
+                  <!-- Statistics -->
+                  <div class="component-category">
+                    <h4 class="category-title">
+                      <i class="fas fa-chart-bar"></i>
+                      Statistics
+                    </h4>
+                    <div id="statsComponents" class="draggable-components"></div>
+                  </div>
+
+                  <!-- Contact Form -->
+                  <div class="component-category">
+                    <h4 class="category-title">
+                      <i class="fas fa-envelope"></i>
+                      Contact Form
+                    </h4>
+                    <div id="contactComponents" class="draggable-components"></div>
+                  </div>
+
+                  <!-- Team Members -->
+                  <div class="component-category">
+                    <h4 class="category-title">
+                      <i class="fas fa-users"></i>
+                      Team Members
+                    </h4>
+                    <div id="teamComponents" class="draggable-components"></div>
+                  </div>
+
+                  <!-- Pricing Tables -->
+                  <div class="component-category">
+                    <h4 class="category-title">
+                      <i class="fas fa-tags"></i>
+                      Pricing Tables
+                    </h4>
+                    <div id="pricingComponents" class="draggable-components"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Canvas: Page Layout -->
+              <div class="builder-canvas">
+                <h3 class="canvas-title">
+                  <i class="fas fa-file-alt"></i>
+                  تخطيط الصفحة
+                </h3>
+                <div id="pageCanvas" class="page-canvas">
+                  <div class="canvas-empty">
+                    <i class="fas fa-plus-circle"></i>
+                    <h3>ابدأ بإضافة عناصر إلى الصفحة</h3>
+                    <p>اسحب العناصر من الشريط الجانبي وأفلتها هنا</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -983,6 +2107,180 @@
     </div>
   </div>
 
+  <!-- Section Editor Modal (Page Builder) -->
+  <div id="sectionEditorModal" class="modal">
+    <div class="modal-overlay" onclick="closeSectionEditor()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="sectionModalTitle">تحرير العنصر</h3>
+        <button class="modal-close" onclick="closeSectionEditor()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="sectionForm" onsubmit="saveSectionEdit(event)">
+          <input type="hidden" id="sectionIndex">
+          <input type="hidden" id="sectionType">
+
+          <div class="form-group">
+            <label for="sectionTitle">عنوان العنصر <span style="color: var(--error);">*</span></label>
+            <input type="text" id="sectionTitle" required placeholder="أدخل عنوان العنصر">
+          </div>
+
+          <div class="form-group">
+            <label for="sectionDescription">وصف العنصر</label>
+            <textarea id="sectionDescription" rows="2" placeholder="وصف مختصر للعنصر"></textarea>
+          </div>
+
+          <!-- Hero Section Fields -->
+          <div id="heroFields" class="section-fields" style="display: none;">
+            <h4 style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
+              <i class="fas fa-image"></i> محتوى Hero Section
+            </h4>
+            <div class="form-group">
+              <label for="heroTitle">العنوان الرئيسي <span style="color: var(--error);">*</span></label>
+              <input type="text" id="heroTitle" placeholder="عنوان جذاب يظهر في الأعلى">
+            </div>
+            <div class="form-group">
+              <label for="heroSubtitle">النص الفرعي</label>
+              <textarea id="heroSubtitle" rows="3" placeholder="نص يوضح الخدمة أو المنتج"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="heroButtonText">نص الزر</label>
+              <input type="text" id="heroButtonText" placeholder="ابدأ الآن">
+            </div>
+            <div class="form-group">
+              <label for="heroButtonLink">رابط الزر</label>
+              <input type="text" id="heroButtonLink" placeholder="#contact">
+            </div>
+            <div class="form-group">
+              <label for="heroBackgroundImage">رابط صورة الخلفية</label>
+              <input type="text" id="heroBackgroundImage" placeholder="https://...">
+            </div>
+            <div class="form-group">
+              <label for="heroBackgroundColor">لون/تدرج الخلفية</label>
+              <input type="text" id="heroBackgroundColor" placeholder="linear-gradient(135deg, #0C4A2F 0%, #10B981 100%)">
+              <small>يمكنك استخدام لون أو gradient CSS</small>
+            </div>
+          </div>
+
+          <!-- CTA Fields -->
+          <div id="ctaFields" class="section-fields" style="display: none;">
+            <h4 style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
+              <i class="fas fa-bullhorn"></i> محتوى Call to Action
+            </h4>
+            <div class="form-group">
+              <label for="ctaTitle">العنوان <span style="color: var(--error);">*</span></label>
+              <input type="text" id="ctaTitle" placeholder="هل لديك مشروع؟">
+            </div>
+            <div class="form-group">
+              <label for="ctaDescription">الوصف</label>
+              <textarea id="ctaDescription" rows="3" placeholder="تواصل معنا الآن واحصل على استشارة مجانية"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="ctaButtonText">نص الزر <span style="color: var(--error);">*</span></label>
+              <input type="text" id="ctaButtonText" placeholder="تواصل معنا">
+            </div>
+            <div class="form-group">
+              <label for="ctaButtonLink">رابط الزر</label>
+              <input type="text" id="ctaButtonLink" placeholder="#contact">
+            </div>
+          </div>
+
+          <!-- Features Fields -->
+          <div id="featuresFields" class="section-fields" style="display: none;">
+            <h4 style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
+              <i class="fas fa-th"></i> محتوى Features Grid
+            </h4>
+
+            <div class="form-group">
+              <label for="featuresTitle">عنوان القسم</label>
+              <input type="text" id="featuresTitle" placeholder="خدماتنا المميزة">
+            </div>
+
+            <div class="form-group">
+              <label for="featuresSubtitle">نص فرعي</label>
+              <textarea id="featuresSubtitle" rows="2" placeholder="نقدم مجموعة متكاملة من الخدمات"></textarea>
+            </div>
+
+            <div style="margin-top: 1.5rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h5 style="color: var(--text-primary); margin: 0;">الميزات</h5>
+                <button type="button" class="btn btn-primary btn-sm" onclick="addFeatureItem()">
+                  <i class="fas fa-plus"></i> إضافة ميزة
+                </button>
+              </div>
+              <div id="featuresList"></div>
+            </div>
+          </div>
+
+          <!-- Testimonials Fields -->
+          <div id="testimonialsFields" class="section-fields" style="display: none;">
+            <h4 style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
+              <i class="fas fa-comments"></i> محتوى Testimonials
+            </h4>
+
+            <div class="form-group">
+              <label for="testimonialsTitle">عنوان القسم</label>
+              <input type="text" id="testimonialsTitle" placeholder="آراء عملائنا">
+            </div>
+
+            <div class="form-group">
+              <label for="testimonialsSubtitle">نص فرعي</label>
+              <textarea id="testimonialsSubtitle" rows="2" placeholder="ماذا يقول عملاؤنا عنا"></textarea>
+            </div>
+
+            <div style="margin-top: 1.5rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h5 style="color: var(--text-primary); margin: 0;">الشهادات</h5>
+                <button type="button" class="btn btn-primary btn-sm" onclick="addTestimonialItem()">
+                  <i class="fas fa-plus"></i> إضافة شهادة
+                </button>
+              </div>
+              <div id="testimonialsList"></div>
+            </div>
+          </div>
+
+          <!-- Statistics Fields -->
+          <div id="statsFields" class="section-fields" style="display: none;">
+            <h4 style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
+              <i class="fas fa-chart-bar"></i> محتوى Statistics
+            </h4>
+
+            <div class="form-group">
+              <label for="statsTitle">عنوان القسم</label>
+              <input type="text" id="statsTitle" placeholder="إنجازاتنا بالأرقام">
+            </div>
+
+            <div class="form-group">
+              <label for="statsSubtitle">نص فرعي</label>
+              <textarea id="statsSubtitle" rows="2" placeholder="أرقام تتحدث عن خبرتنا"></textarea>
+            </div>
+
+            <div style="margin-top: 1.5rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h5 style="color: var(--text-primary); margin: 0;">الإحصائيات</h5>
+                <button type="button" class="btn btn-primary btn-sm" onclick="addStatItem()">
+                  <i class="fas fa-plus"></i> إضافة إحصائية
+                </button>
+              </div>
+              <div id="statsList"></div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save"></i> حفظ التعديلات
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="closeSectionEditor()">
+              <i class="fas fa-times"></i> إلغاء
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Notification -->
   <div id="toast" class="toast">
     <i class="fas fa-check-circle"></i>
@@ -1033,9 +2331,22 @@
           } else if (view === 'media') {
             pageTitle.textContent = 'مكتبة الصور';
             btnNewPost.style.display = 'none';
+          } else if (view === 'settings') {
+            pageTitle.textContent = 'إعدادات الموقع';
+            btnNewPost.style.display = 'none';
+            // Load settings when opening settings page
+            loadSettings();
+          } else if (view === 'components') {
+            pageTitle.textContent = 'مكتبة العناصر';
+            btnNewPost.style.display = 'none';
+            initComponentsLibrary();
+          } else if (view === 'pagebuilder') {
+            pageTitle.textContent = 'Page Builder';
+            btnNewPost.style.display = 'none';
+            initPageBuilder();
           }
 
-          if (view !== 'media') {
+          if (view !== 'media' && view !== 'settings' && view !== 'components' && view !== 'pagebuilder') {
             btnNewPost.style.display = 'flex';
           }
         });
