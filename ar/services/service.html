@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="تفاصيل الخدمة - تكنولوجي السعودية">
+    <meta name="keywords" content="خدمات تقنية، حلول رقمية، السعودية">
+    <meta name="author" content="تكنولوجي السعودية">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="">
+    <meta property="og:title" content="">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="">
+
+    <title>الخدمة - تكنولوجي السعودية</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+    <link rel="apple-touch-icon" href="../../assets/images/apple-touch-icon.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- AOS Animation -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/rtl.css">
+
+    <style>
+        .service-header {
+            background: linear-gradient(135deg, var(--saudi-green) 0%, var(--saudi-green-light) 100%);
+            padding: 10rem 0 5rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .service-header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-icon-large {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            width: 120px;
+            height: 120px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+
+        .service-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-category {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .service-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 4rem 1.5rem;
+        }
+
+        .service-description {
+            font-size: 1.25rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+        }
+
+        [data-theme="dark"] .service-description {
+            color: var(--dark-text-secondary);
+        }
+
+        .service-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .detail-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        [data-theme="dark"] .detail-card {
+            background: var(--dark-card);
+        }
+
+        .detail-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .detail-card i {
+            font-size: 2.5rem;
+            color: var(--saudi-green);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .detail-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .detail-card h3 {
+            color: var(--dark-text);
+        }
+
+        .detail-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        [data-theme="dark"] .detail-card p {
+            color: var(--dark-text-secondary);
+        }
+
+        .features-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            padding: 3rem;
+            border-radius: 15px;
+            margin-bottom: 3rem;
+        }
+
+        [data-theme="dark"] .features-section {
+            background: linear-gradient(135deg, var(--dark-card) 0%, var(--dark-surface) 100%);
+        }
+
+        .features-section h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .features-section h2 {
+            color: var(--dark-text);
+        }
+
+        .features-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .features-list li {
+            background: var(--dark-card);
+        }
+
+        .features-list li:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .features-list li i {
+            color: var(--saudi-green);
+            font-size: 1.25rem;
+            margin-top: 0.25rem;
+            flex-shrink: 0;
+        }
+
+        .features-list li span {
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        [data-theme="dark"] .features-list li span {
+            color: var(--dark-text);
+        }
+
+        .cta-section {
+            background: var(--saudi-green);
+            color: white;
+            padding: 3rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .cta-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.125rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-cta {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cta-primary {
+            background: white;
+            color: var(--saudi-green);
+        }
+
+        .btn-cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .btn-cta-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-cta-secondary:hover {
+            background: white;
+            color: var(--saudi-green);
+        }
+
+        .not-found {
+            text-align: center;
+            padding: 5rem 2rem;
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .not-found i {
+            font-size: 5rem;
+            color: var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .not-found h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .not-found h1 {
+            color: var(--dark-text);
+        }
+
+        .not-found p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        [data-theme="dark"] .not-found p {
+            color: var(--dark-text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .service-header h1 {
+                font-size: 2rem;
+            }
+
+            .service-icon-large {
+                width: 100px;
+                height: 100px;
+                font-size: 3rem;
+            }
+
+            .service-details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="../../" class="logo">
+                    <i class="fas fa-code"></i>
+                    <span>تكنولوجي <span class="ksa-text">السعودية</span></span>
+                </a>
+
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="القائمة">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <div class="nav-menu" id="navMenu">
+                    <a href="../../" class="nav-link">الرئيسية</a>
+                    <a href="../about.html" class="nav-link">من نحن</a>
+                    <a href="./" class="nav-link active">خدماتنا</a>
+                    <a href="../portfolio/" class="nav-link">أعمالنا</a>
+                    <a href="../blog/" class="nav-link">المدونة</a>
+                    <a href="../contact.html" class="nav-link">تواصل معنا</a>
+
+                    <div class="nav-actions">
+                        <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                        <div class="language-switcher">
+                            <button class="lang-btn" id="langBtn">
+                                <i class="fas fa-globe"></i>
+                                <span>EN</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Service Content (will be populated by JavaScript) -->
+    <div id="serviceContainer">
+        <!-- Content will be loaded here -->
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-col">
+                        <div class="footer-logo">
+                            <i class="fas fa-code"></i>
+                            <span>تكنولوجي <span class="ksa-text">السعودية</span></span>
+                        </div>
+                        <p class="footer-desc">
+                            نحن شركة رائدة في تقديم الحلول التقنية المتكاملة في المملكة العربية السعودية،
+                            نساعد الشركات على التحول الرقمي وتحقيق أهدافها التجارية.
+                        </p>
+                        <div class="social-links">
+                            <a href="#" aria-label="تويتر"><i class="fab fa-twitter"></i></a>
+                            <a href="#" aria-label="لينكد إن"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" aria-label="إنستغرام"><i class="fab fa-instagram"></i></a>
+                            <a href="#" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4>خدماتنا</h4>
+                        <ul class="footer-links">
+                            <li><a href="./web-development.html">تطوير المواقع</a></li>
+                            <li><a href="./mobile-apps.html">تطبيقات الجوال</a></li>
+                            <li><a href="./digital-marketing.html">التسويق الرقمي</a></li>
+                            <li><a href="./erp-systems.html">أنظمة ERP</a></li>
+                            <li><a href="./cybersecurity.html">الأمن السيبراني</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4>روابط سريعة</h4>
+                        <ul class="footer-links">
+                            <li><a href="../about.html">من نحن</a></li>
+                            <li><a href="./">خدماتنا</a></li>
+                            <li><a href="../blog/">المدونة</a></li>
+                            <li><a href="../contact.html">تواصل معنا</a></li>
+                            <li><a href="../privacy-policy.html">سياسة الخصوصية</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4>تواصل معنا</h4>
+                        <ul class="footer-contact">
+                            <li>
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>الرياض، المملكة العربية السعودية</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-phone"></i>
+                                <span dir="ltr">+966 50 123 4567</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-envelope"></i>
+                                <span>info@technologyksa.com</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2025 تكنولوجي السعودية. جميع الحقوق محفوظة.</p>
+                    <div class="footer-bottom-links">
+                        <a href="../privacy-policy.html">سياسة الخصوصية</a>
+                        <a href="../terms.html">الشروط والأحكام</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/language.js"></script>
+    <script src="../../assets/js/theme.js"></script>
+
+    <script>
+        // Service Display Page Script
+        class ServiceDisplay {
+            constructor() {
+                this.serviceId = this.getServiceIdFromURL();
+                this.service = null;
+                this.init();
+            }
+
+            getServiceIdFromURL() {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get('id');
+            }
+
+            init() {
+                if (!this.serviceId) {
+                    this.showNotFound();
+                    return;
+                }
+
+                this.loadService();
+            }
+
+            loadService() {
+                // Load services from localStorage
+                const stored = localStorage.getItem('techksa_services');
+                let services = stored ? JSON.parse(stored) : [];
+
+                // Add default services if empty
+                if (services.length === 0) {
+                    services = this.getDefaultServices();
+                }
+
+                // Find the service
+                this.service = services.find(s => s.id === this.serviceId);
+
+                if (this.service) {
+                    this.displayService();
+                } else {
+                    this.showNotFound();
+                }
+            }
+
+            getDefaultServices() {
+                return [
+                    {
+                        id: 'web-development',
+                        name: 'تطوير المواقع',
+                        slug: 'web-development',
+                        category: 'تطوير',
+                        description: 'نطور مواقع إلكترونية احترافية باستخدام أحدث التقنيات لتحقيق الأداء الأمثل وتجربة مستخدم متميزة. نضمن لك موقعاً سريعاً، آمناً، ومتجاوباً مع جميع الأجهزة.',
+                        icon: 'fas fa-code',
+                        features: [
+                            'تصميم متجاوب يتكيف مع جميع الأجهزة والشاشات',
+                            'سرعة تحميل عالية لتحسين تجربة المستخدم',
+                            'تحسين محركات البحث (SEO) المدمج',
+                            'لوحة تحكم سهلة الاستخدام',
+                            'أمان متقدم وحماية ضد الاختراقات',
+                            'تكامل مع أنظمة الدفع الإلكتروني',
+                            'تحليلات ومتابعة الأداء',
+                            'دعم فني مستمر وتحديثات دورية'
+                        ],
+                        details: [
+                            { icon: 'fas fa-rocket', title: 'أداء عالي', text: 'سرعة تحميل فائقة' },
+                            { icon: 'fas fa-shield-alt', title: 'أمان متقدم', text: 'حماية من الاختراقات' },
+                            { icon: 'fas fa-mobile-alt', title: 'متجاوب', text: 'يعمل على جميع الأجهزة' }
+                        ]
+                    },
+                    {
+                        id: 'mobile-apps',
+                        name: 'تطبيقات الجوال',
+                        slug: 'mobile-apps',
+                        category: 'تطوير',
+                        description: 'نصمم ونطور تطبيقات جوال أصلية ومتعددة المنصات لأجهزة iOS و Android بأحدث التقنيات. تطبيقاتنا تتميز بالأداء العالي والتجربة السلسة.',
+                        icon: 'fas fa-mobile-alt',
+                        features: [
+                            'تطوير تطبيقات iOS أصلية',
+                            'تطوير تطبيقات Android أصلية',
+                            'تطبيقات متعددة المنصات (React Native, Flutter)',
+                            'تصميم واجهات مستخدم جذابة',
+                            'تكامل مع APIs والخدمات السحابية',
+                            'إشعارات فورية (Push Notifications)',
+                            'نشر التطبيق في المتاجر',
+                            'صيانة ودعم مستمر'
+                        ],
+                        details: [
+                            { icon: 'fab fa-apple', title: 'iOS', text: 'تطبيقات iPhone و iPad' },
+                            { icon: 'fab fa-android', title: 'Android', text: 'جميع أجهزة أندرويد' },
+                            { icon: 'fas fa-sync', title: 'متعدد المنصات', text: 'تطوير موحد' }
+                        ]
+                    },
+                    {
+                        id: 'digital-marketing',
+                        name: 'التسويق الرقمي',
+                        slug: 'digital-marketing',
+                        category: 'تسويق',
+                        description: 'استراتيجيات تسويقية متكاملة لزيادة التفاعل مع علامتك التجارية وزيادة المبيعات. نساعدك على الوصول إلى جمهورك المستهدف بفعالية.',
+                        icon: 'fas fa-bullhorn',
+                        features: [
+                            'تحسين محركات البحث (SEO)',
+                            'إعلانات جوجل (Google Ads)',
+                            'التسويق عبر وسائل التواصل الاجتماعي',
+                            'إدارة حملات الإعلانات المدفوعة',
+                            'تسويق المحتوى وكتابة المقالات',
+                            'التسويق عبر البريد الإلكتروني',
+                            'تحليل البيانات وإعداد التقارير',
+                            'إدارة السمعة الرقمية'
+                        ],
+                        details: [
+                            { icon: 'fas fa-chart-line', title: 'نمو مستمر', text: 'زيادة المبيعات' },
+                            { icon: 'fas fa-users', title: 'استهداف دقيق', text: 'الوصول للعملاء' },
+                            { icon: 'fas fa-chart-bar', title: 'تحليلات', text: 'قياس النتائج' }
+                        ]
+                    }
+                ];
+            }
+
+            displayService() {
+                const container = document.getElementById('serviceContainer');
+
+                // Update page meta
+                document.title = `${this.service.name} - تكنولوجي السعودية`;
+                document.querySelector('meta[name="description"]').content = this.service.description;
+
+                const featuresHTML = this.service.features && this.service.features.length > 0
+                    ? `
+                    <section class="features-section" data-aos="fade-up">
+                        <h2>ما نقدمه في هذه الخدمة</h2>
+                        <ul class="features-list">
+                            ${this.service.features.map(feature => `
+                                <li>
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>${feature}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </section>
+                    `
+                    : '';
+
+                const detailsHTML = this.service.details && this.service.details.length > 0
+                    ? `
+                    <div class="service-details-grid" data-aos="fade-up" data-aos-delay="100">
+                        ${this.service.details.map(detail => `
+                            <div class="detail-card">
+                                <i class="${detail.icon}"></i>
+                                <h3>${detail.title}</h3>
+                                <p>${detail.text}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                    `
+                    : '';
+
+                container.innerHTML = `
+                    <header class="service-header" data-aos="fade-down">
+                        <div class="container">
+                            <div class="service-header-content">
+                                <div class="service-icon-large">
+                                    <i class="${this.service.icon || 'fas fa-briefcase'}"></i>
+                                </div>
+                                <span class="service-category">${this.service.category}</span>
+                                <h1>${this.service.name}</h1>
+                            </div>
+                        </div>
+                    </header>
+
+                    <div class="service-content">
+                        <div class="container">
+                            <p class="service-description" data-aos="fade-up">
+                                ${this.service.description}
+                            </p>
+
+                            ${detailsHTML}
+                            ${featuresHTML}
+
+                            <section class="cta-section" data-aos="zoom-in">
+                                <h2>هل أنت مستعد لبدء مشروعك؟</h2>
+                                <p>تواصل معنا الآن واحصل على استشارة مجانية</p>
+                                <div class="cta-buttons">
+                                    <a href="../contact.html" class="btn-cta btn-cta-primary">
+                                        <i class="fas fa-paper-plane"></i>
+                                        تواصل معنا
+                                    </a>
+                                    <a href="./" class="btn-cta btn-cta-secondary">
+                                        <i class="fas fa-th"></i>
+                                        جميع الخدمات
+                                    </a>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                `;
+
+                // Initialize AOS
+                if (typeof AOS !== 'undefined') {
+                    AOS.init({
+                        duration: 800,
+                        once: true
+                    });
+                }
+            }
+
+            showNotFound() {
+                const container = document.getElementById('serviceContainer');
+                document.title = 'الخدمة غير موجودة - تكنولوجي السعودية';
+
+                container.innerHTML = `
+                    <div class="not-found">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h1>الخدمة غير موجودة</h1>
+                        <p>عذراً، الخدمة التي تبحث عنها غير متوفرة أو تم حذفها</p>
+                        <a href="./" class="btn-cta btn-cta-primary">
+                            <i class="fas fa-arrow-right"></i>
+                            العودة إلى الخدمات
+                        </a>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize service display when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new ServiceDisplay();
+        });
+    </script>
+</body>
+</html>
