@@ -222,6 +222,12 @@
       background-color: var(--bg-secondary);
     }
 
+    .post-title-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
     .badge {
       display: inline-block;
       padding: 0.25rem 0.75rem;
@@ -324,6 +330,7 @@
       border-radius: var(--radius-lg);
       overflow: hidden;
       background-color: var(--bg-secondary);
+      cursor: pointer;
     }
 
     .media-item img {
@@ -348,6 +355,13 @@
 
     .media-item:hover .media-overlay {
       opacity: 1;
+    }
+
+    .media-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
     }
 
     .form-group {
@@ -382,11 +396,216 @@
       border-color: var(--saudi-green);
     }
 
+    .form-group small {
+      display: block;
+      margin-top: 0.25rem;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+
+    /* Modal Styles */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-content {
+      position: relative;
+      background-color: var(--bg-primary);
+      border-radius: var(--radius-xl);
+      max-width: 900px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-2xl);
+      z-index: 1;
+    }
+
+    .modal-header {
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      color: var(--text-primary);
+      font-size: 1.75rem;
+    }
+
+    .modal-close {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 1.5rem;
+      cursor: pointer;
+      border-radius: var(--radius-full);
+      transition: all 0.3s;
+    }
+
+    .modal-close:hover {
+      background-color: var(--bg-secondary);
+      color: var(--error);
+    }
+
+    .modal-body {
+      padding: 2rem;
+    }
+
+    .modal-footer {
+      padding: 1.5rem 2rem;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+
+    .featured-image-selector {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .image-preview {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      aspect-ratio: 16/9;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background-color: var(--bg-secondary);
+      display: none;
+    }
+
+    .image-preview.active {
+      display: block;
+    }
+
+    .image-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .btn-remove-image {
+      position: absolute;
+      top: 0.5rem;
+      left: 0.5rem;
+      width: 35px;
+      height: 35px;
+      background-color: var(--error);
+      color: white;
+      border: none;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      transition: all 0.3s;
+    }
+
+    .btn-remove-image:hover {
+      background-color: #dc2626;
+    }
+
+    .image-selection-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 1rem;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .selectable-image {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: all 0.3s;
+    }
+
+    .selectable-image:hover {
+      border-color: var(--saudi-green);
+      transform: scale(1.05);
+    }
+
+    .selectable-image.selected {
+      border-color: var(--saudi-green);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
+    }
+
+    .selectable-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .image-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      background-color: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+    }
+
+    .image-info label {
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .image-info input {
+      padding: 0.5rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+    }
+
+    .image-url-display {
+      padding: 0.5rem;
+      background-color: var(--bg-secondary);
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      word-break: break-all;
+    }
+
     .toast-container {
       position: fixed;
       bottom: 2rem;
       left: 2rem;
-      z-index: 9999;
+      z-index: 99999;
     }
 
     .toast {
@@ -401,6 +620,7 @@
       transform: translateX(-100%);
       opacity: 0;
       transition: all 0.3s;
+      min-width: 300px;
     }
 
     .toast.show {
@@ -416,6 +636,26 @@
       border-right: 4px solid var(--error);
     }
 
+    .toast-info {
+      border-right: 4px solid var(--info);
+    }
+
+    .toast i {
+      font-size: 1.5rem;
+    }
+
+    .toast-success i {
+      color: var(--success);
+    }
+
+    .toast-error i {
+      color: var(--error);
+    }
+
+    .toast-info i {
+      color: var(--info);
+    }
+
     @media (max-width: 768px) {
       .admin-sidebar {
         transform: translateX(100%);
@@ -428,6 +668,11 @@
 
       .admin-main {
         margin-right: 0;
+      }
+
+      .modal-content {
+        width: 95%;
+        max-height: 95vh;
       }
     }
   </style>
@@ -504,7 +749,7 @@
           <div class="stats-grid">
             <div class="stat-card">
               <div class="stat-content">
-                <h3 id="totalPosts">6</h3>
+                <h3 id="totalPosts">0</h3>
                 <p>إجمالي المقالات</p>
               </div>
               <div class="stat-icon">
@@ -514,7 +759,7 @@
 
             <div class="stat-card">
               <div class="stat-content">
-                <h3 id="publishedPosts">6</h3>
+                <h3 id="publishedPosts">0</h3>
                 <p>مقالات منشورة</p>
               </div>
               <div class="stat-icon">
@@ -556,22 +801,9 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>أفضل 10 استراتيجيات التسويق الرقمي في السعودية 2025</td>
-                  <td>التسويق الرقمي</td>
-                  <td>15 يناير 2025</td>
-                  <td><span class="badge badge-success">منشور</span></td>
-                </tr>
-                <tr>
-                  <td>دليل شامل لتطوير تطبيقات الجوال للشركات السعودية</td>
-                  <td>تطوير التطبيقات</td>
-                  <td>12 يناير 2025</td>
-                  <td><span class="badge badge-success">منشور</span></td>
-                </tr>
-                <tr>
-                  <td>كيف تختار أفضل شركة تصميم مواقع في السعودية؟</td>
-                  <td>تطوير المواقع</td>
-                  <td>10 يناير 2025</td>
-                  <td><span class="badge badge-success">منشور</span></td>
+                  <td colspan="4" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                    جاري التحميل...
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -580,10 +812,25 @@
 
         <!-- Posts View -->
         <section class="admin-view" id="postsView">
-          <h2>إدارة المقالات</h2>
-          <p style="color: var(--text-secondary); margin-top: 1rem;">
-            يمكنك إضافة وتعديل وحذف المقالات من هنا. جميع المقالات تُحفظ في ملفات HTML منفصلة.
-          </p>
+          <h2 style="margin-bottom: 1.5rem;">إدارة المقالات</h2>
+          <table class="posts-table">
+            <thead>
+              <tr>
+                <th>العنوان</th>
+                <th>الفئة</th>
+                <th>التاريخ</th>
+                <th>الحالة</th>
+                <th>الإجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="postsTableBody">
+              <tr>
+                <td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                  جاري التحميل...
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </section>
 
         <!-- Media View -->
@@ -601,8 +848,8 @@
           </div>
 
           <div class="media-grid" id="mediaGrid">
-            <p style="text-align: center; color: var(--text-secondary); padding: 2rem;">
-              لا توجد صور في المكتبة حالياً
+            <p style="text-align: center; color: var(--text-secondary); padding: 2rem; grid-column: 1/-1;">
+              جاري التحميل...
             </p>
           </div>
         </section>
@@ -640,164 +887,159 @@
     </main>
   </div>
 
+  <!-- Post Editor Modal -->
+  <div class="modal" id="postEditorModal">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">مقال جديد</h3>
+        <button class="modal-close" id="closeEditorBtn">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form id="postEditorForm">
+          <input type="hidden" id="postId">
+
+          <!-- Title -->
+          <div class="form-group">
+            <label>عنوان المقال *</label>
+            <input type="text" id="postTitle" required placeholder="أدخل عنوان المقال">
+          </div>
+
+          <!-- Slug -->
+          <div class="form-group">
+            <label>الرابط (Slug) *</label>
+            <input type="text" id="postSlug" required placeholder="post-url-slug">
+            <small>سيتم إنشاؤه تلقائياً من العنوان</small>
+          </div>
+
+          <!-- Category -->
+          <div class="form-group">
+            <label>الفئة *</label>
+            <select id="postCategory" required>
+              <option value="">اختر الفئة</option>
+              <option value="digital-marketing">التسويق الرقمي</option>
+              <option value="app-development">تطوير التطبيقات</option>
+              <option value="web-development">تطوير المواقع</option>
+              <option value="cybersecurity">الأمن السيبراني</option>
+              <option value="erp">أنظمة ERP</option>
+              <option value="seo">تحسين محركات البحث</option>
+            </select>
+          </div>
+
+          <!-- Featured Image -->
+          <div class="form-group">
+            <label>الصورة البارزة *</label>
+            <div class="featured-image-selector">
+              <div class="image-preview" id="featuredImagePreview">
+                <img src="" alt="Preview" id="featuredImageImg">
+                <button type="button" class="btn-remove-image" id="removeFeaturedImage">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+              <button type="button" class="btn btn-outline" id="selectFeaturedImage">
+                <i class="fas fa-image"></i>
+                اختر صورة من المكتبة
+              </button>
+              <div class="image-info">
+                <label>رابط الصورة:</label>
+                <div class="image-url-display" id="imageUrl">لم يتم اختيار صورة</div>
+                <label>النص البديل (Alt Text):</label>
+                <input type="text" id="imageAlt" placeholder="سيتم استخدام عنوان المقال تلقائياً">
+              </div>
+            </div>
+          </div>
+
+          <!-- Excerpt -->
+          <div class="form-group">
+            <label>المقتطف (Excerpt) *</label>
+            <textarea id="postExcerpt" rows="3" required placeholder="مقتطف قصير عن المقال (150-160 حرف)"></textarea>
+          </div>
+
+          <!-- Content -->
+          <div class="form-group">
+            <label>محتوى المقال *</label>
+            <textarea id="postContent" rows="15" required placeholder="اكتب محتوى المقال هنا... (1500-2000 كلمة)"></textarea>
+          </div>
+
+          <!-- Meta Title -->
+          <div class="form-group">
+            <label>عنوان SEO (Meta Title)</label>
+            <input type="text" id="postMetaTitle" maxlength="60" placeholder="عنوان محسّن لمحركات البحث (60 حرف)">
+            <small>سيتم إنشاؤه تلقائياً من العنوان إذا تُرك فارغاً</small>
+          </div>
+
+          <!-- Meta Description -->
+          <div class="form-group">
+            <label>وصف SEO (Meta Description) *</label>
+            <textarea id="postMetaDescription" maxlength="160" rows="2" required placeholder="وصف محسّن لمحركات البحث (155-160 حرف)"></textarea>
+            <small>سيتم استخدام المقتطف إذا تُرك فارغاً</small>
+          </div>
+
+          <!-- Author -->
+          <div class="form-group">
+            <label>الكاتب *</label>
+            <input type="text" id="postAuthor" required value="محمد أحمد" placeholder="اسم الكاتب">
+          </div>
+
+          <!-- Status -->
+          <div class="form-group">
+            <label>حالة المقال *</label>
+            <select id="postStatus" required>
+              <option value="draft">مسودة</option>
+              <option value="published">منشور</option>
+            </select>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline" id="cancelPostBtn">
+              إلغاء
+            </button>
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save"></i>
+              حفظ المقال
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Selection Modal -->
+  <div class="modal" id="imageSelectionModal">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>اختر صورة من المكتبة</h3>
+        <button class="modal-close" id="closeImageModalBtn">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="image-selection-grid" id="imageSelectionGrid">
+          <p style="text-align: center; color: var(--text-secondary); padding: 2rem; grid-column: 1/-1;">
+            جاري التحميل...
+          </p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline" id="cancelImageSelection">إلغاء</button>
+        <button class="btn btn-primary" id="confirmImageSelection" disabled>
+          اختيار الصورة
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Container -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <script>
-    // Admin Panel Functionality
-    (function() {
-      'use strict';
-
-      // Navigation
-      const navItems = document.querySelectorAll('.admin-nav li');
-      const views = document.querySelectorAll('.admin-view');
-      const pageTitle = document.getElementById('pageTitle');
-
-      const titles = {
-        dashboard: 'لوحة المعلومات',
-        posts: 'إدارة المقالات',
-        media: 'مكتبة الوسائط',
-        settings: 'الإعدادات'
-      };
-
-      navItems.forEach(item => {
-        item.addEventListener('click', function() {
-          const viewName = this.getAttribute('data-view');
-
-          // Update active nav
-          navItems.forEach(i => i.classList.remove('active'));
-          this.classList.add('active');
-
-          // Show view
-          views.forEach(v => v.classList.remove('active'));
-          document.getElementById(viewName + 'View').classList.add('active');
-
-          // Update title
-          pageTitle.textContent = titles[viewName];
-        });
-      });
-
-      // Image upload
-      const uploadArea = document.getElementById('uploadArea');
-      const imageUpload = document.getElementById('imageUpload');
-      const selectFilesBtn = document.getElementById('selectFilesBtn');
-      const mediaGrid = document.getElementById('mediaGrid');
-
-      if (selectFilesBtn) {
-        selectFilesBtn.addEventListener('click', () => imageUpload.click());
-      }
-
-      if (uploadArea) {
-        uploadArea.addEventListener('dragover', (e) => {
-          e.preventDefault();
-          uploadArea.classList.add('dragover');
-        });
-
-        uploadArea.addEventListener('dragleave', () => {
-          uploadArea.classList.remove('dragover');
-        });
-
-        uploadArea.addEventListener('drop', (e) => {
-          e.preventDefault();
-          uploadArea.classList.remove('dragover');
-          handleFiles(e.dataTransfer.files);
-        });
-
-        uploadArea.addEventListener('click', () => imageUpload.click());
-      }
-
-      if (imageUpload) {
-        imageUpload.addEventListener('change', (e) => {
-          handleFiles(e.target.files);
-        });
-      }
-
-      function handleFiles(files) {
-        Array.from(files).forEach(file => {
-          if (!file.type.startsWith('image/')) {
-            showToast('يرجى اختيار ملفات صور فقط', 'error');
-            return;
-          }
-
-          if (file.size > 5 * 1024 * 1024) {
-            showToast('حجم الصورة يجب أن يكون أقل من 5MB', 'error');
-            return;
-          }
-
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            addImageToGrid(e.target.result, file.name);
-            showToast('تم رفع الصورة بنجاح', 'success');
-          };
-          reader.readAsDataURL(file);
-        });
-      }
-
-      function addImageToGrid(src, name) {
-        const mediaItem = document.createElement('div');
-        mediaItem.className = 'media-item';
-        mediaItem.innerHTML = `
-          <img src="${src}" alt="${name}">
-          <div class="media-overlay">
-            <button class="btn-icon btn-danger" onclick="this.closest('.media-item').remove()">
-              <i class="fas fa-trash"></i>
-            </button>
-          </div>
-        `;
-
-        if (mediaGrid.querySelector('p')) {
-          mediaGrid.innerHTML = '';
-        }
-
-        mediaGrid.appendChild(mediaItem);
-      }
-
-      // New post button
-      const newPostBtn = document.getElementById('newPostBtn');
-      if (newPostBtn) {
-        newPostBtn.addEventListener('click', () => {
-          showToast('ميزة إضافة مقال جديد ستكون متاحة قريباً', 'info');
-        });
-      }
-
-      // Logout
-      const logoutBtn = document.getElementById('logoutBtn');
-      if (logoutBtn) {
-        logoutBtn.addEventListener('click', () => {
-          if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
-            window.location.href = '../';
-          }
-        });
-      }
-
-      // Toast notification
-      function showToast(message, type = 'info') {
-        const toast = document.createElement('div');
-        toast.className = `toast toast-${type}`;
-        toast.innerHTML = `
-          <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
-          <span>${message}</span>
-        `;
-
-        const container = document.getElementById('toastContainer');
-        container.appendChild(toast);
-
-        setTimeout(() => toast.classList.add('show'), 100);
-        setTimeout(() => {
-          toast.classList.remove('show');
-          setTimeout(() => toast.remove(), 300);
-        }, 3000);
-      }
-
-      // Settings form
-      const settingsForm = document.getElementById('settingsForm');
-      if (settingsForm) {
-        settingsForm.addEventListener('submit', (e) => {
-          e.preventDefault();
-          showToast('تم حفظ الإعدادات بنجاح', 'success');
-        });
-      }
-    })();
-  </script>
+  <!-- JavaScript -->
+  <script src="../assets/js/admin.js"></script>
 </body>
 </html>
