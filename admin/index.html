@@ -9,11 +9,51 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
   <style>
-    /* Admin-specific styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --saudi-green: #0C4A2F;
+      --saudi-green-light: #10B981;
+      --gold: #C5A572;
+      --tech-blue: #0066FF;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8f9fa;
+      --text-primary: #1f2937;
+      --text-secondary: #6b7280;
+      --border-color: #e5e7eb;
+      --error: #ef4444;
+      --success: #10B981;
+      --warning: #f59e0b;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+      --radius-full: 9999px;
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    [data-theme="dark"] {
+      --bg-primary: #1f2937;
+      --bg-secondary: #111827;
+      --text-primary: #f9fafb;
+      --text-secondary: #9ca3af;
+      --border-color: #374151;
+    }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+
     .admin-container {
       display: flex;
       min-height: 100vh;
-      background-color: var(--bg-secondary);
     }
 
     .admin-sidebar {
@@ -25,7 +65,7 @@
       top: 0;
       height: 100vh;
       overflow-y: auto;
-      z-index: 1000;
+      z-index: 100;
       display: flex;
       flex-direction: column;
     }
@@ -49,8 +89,6 @@
 
     .admin-nav ul {
       list-style: none;
-      padding: 0;
-      margin: 0;
     }
 
     .admin-nav li {
@@ -75,57 +113,6 @@
       border-right-color: var(--saudi-green);
     }
 
-    .admin-nav i {
-      font-size: 1.25rem;
-      width: 20px;
-    }
-
-    .admin-user {
-      padding: 1.5rem;
-      border-top: 1px solid var(--border-color);
-    }
-
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .user-info img {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--saudi-green), var(--tech-blue));
-    }
-
-    .user-info h4 {
-      margin: 0;
-      color: var(--text-primary);
-      font-size: 1rem;
-    }
-
-    .user-info p {
-      margin: 0;
-      color: var(--text-secondary);
-      font-size: 0.875rem;
-    }
-
-    .btn-logout {
-      width: 100%;
-      padding: 0.75rem;
-      background-color: var(--error);
-      color: white;
-      border: none;
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      font-weight: 600;
-    }
-
     .admin-main {
       flex: 1;
       margin-right: 280px;
@@ -145,8 +132,40 @@
 
     .admin-header h1 {
       margin: 0;
-      color: var(--text-primary);
       font-size: 2rem;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-weight: 600;
+      font-family: inherit;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background-color: var(--saudi-green);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--saudi-green-light);
+    }
+
+    .btn-secondary {
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+      border: 2px solid var(--border-color);
+    }
+
+    .btn-danger {
+      background-color: var(--error);
+      color: white;
     }
 
     .admin-content {
@@ -154,55 +173,21 @@
       padding: 2rem;
       border-radius: var(--radius-xl);
       box-shadow: var(--shadow-md);
-      min-height: 500px;
     }
 
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 3rem;
+    .admin-view {
+      display: none;
     }
 
-    .stat-card {
-      background: linear-gradient(135deg, var(--saudi-green), var(--tech-blue));
-      padding: 2rem;
-      border-radius: var(--radius-lg);
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .admin-view.active {
+      display: block;
     }
 
-    .stat-icon {
-      font-size: 3rem;
-      opacity: 0.5;
-    }
-
-    .stat-content h3 {
-      font-size: 2.5rem;
-      margin: 0 0 0.5rem;
-      font-weight: 900;
-    }
-
-    .stat-content p {
-      margin: 0;
-      opacity: 0.9;
-    }
-
-    .dashboard-section {
-      margin-bottom: 2rem;
-    }
-
-    .dashboard-section h2 {
-      color: var(--text-primary);
-      margin-bottom: 1.5rem;
-      font-size: 1.5rem;
-    }
-
+    /* Posts Table */
     .posts-table {
       width: 100%;
       border-collapse: collapse;
+      margin-top: 2rem;
     }
 
     .posts-table th,
@@ -215,17 +200,6 @@
     .posts-table th {
       background-color: var(--bg-secondary);
       font-weight: 600;
-      color: var(--text-primary);
-    }
-
-    .posts-table tr:hover {
-      background-color: var(--bg-secondary);
-    }
-
-    .post-title-cell {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
     }
 
     .badge {
@@ -261,7 +235,6 @@
       border: none;
       border-radius: var(--radius-md);
       cursor: pointer;
-      color: var(--text-primary);
       transition: all 0.3s;
     }
 
@@ -274,14 +247,7 @@
       background-color: var(--error);
     }
 
-    .admin-view {
-      display: none;
-    }
-
-    .admin-view.active {
-      display: block;
-    }
-
+    /* Media Library */
     .upload-area {
       border: 2px dashed var(--border-color);
       border-radius: var(--radius-xl);
@@ -297,25 +263,10 @@
       background-color: var(--bg-secondary);
     }
 
-    .upload-area.dragover {
-      border-color: var(--saudi-green);
-      background-color: rgba(16, 185, 129, 0.1);
-    }
-
-    .upload-content i {
+    .upload-area i {
       font-size: 4rem;
       color: var(--text-secondary);
       margin-bottom: 1rem;
-    }
-
-    .upload-content h3 {
-      color: var(--text-primary);
-      margin-bottom: 0.5rem;
-    }
-
-    .upload-content p {
-      color: var(--text-secondary);
-      margin-bottom: 1.5rem;
     }
 
     .media-grid {
@@ -326,44 +277,162 @@
 
     .media-item {
       position: relative;
-      aspect-ratio: 1;
       border-radius: var(--radius-lg);
       overflow: hidden;
       background-color: var(--bg-secondary);
-      cursor: pointer;
+      border: 2px solid var(--border-color);
     }
 
     .media-item img {
       width: 100%;
-      height: 100%;
+      height: 200px;
       object-fit: cover;
     }
 
-    .media-overlay {
+    .media-item-info {
+      padding: 0.75rem;
+      background-color: var(--bg-primary);
+    }
+
+    .media-item-info input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+      font-family: inherit;
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+
+    .media-item-info small {
+      display: block;
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+      word-break: break-all;
+    }
+
+    .media-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .media-actions button {
+      flex: 1;
+      padding: 0.5rem;
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .media-actions .btn-select {
+      background-color: var(--saudi-green);
+      color: white;
+    }
+
+    .media-actions .btn-delete {
+      background-color: var(--error);
+      color: white;
+    }
+
+    /* Modal Styles */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1;
+    }
+
+    .modal-content {
+      position: relative;
+      background-color: var(--bg-primary);
+      border-radius: var(--radius-xl);
+      max-width: 900px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-2xl);
+      z-index: 2;
+    }
+
+    .modal-header {
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      background-color: var(--bg-primary);
+      z-index: 10;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .modal-close {
+      width: 40px;
+      height: 40px;
       display: flex;
       align-items: center;
       justify-content: center;
-      opacity: 0;
-      transition: opacity 0.3s;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      border-radius: var(--radius-full);
+      color: var(--text-secondary);
     }
 
-    .media-item:hover .media-overlay {
-      opacity: 1;
+    .modal-close:hover {
+      background-color: var(--bg-secondary);
+      color: var(--error);
     }
 
-    .media-info {
-      position: absolute;
+    .modal-body {
+      padding: 2rem;
+    }
+
+    .modal-footer {
+      padding: 1.5rem 2rem;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      position: sticky;
       bottom: 0;
-      left: 0;
-      right: 0;
+      background-color: var(--bg-primary);
     }
 
+    /* Form Styles */
     .form-group {
       margin-bottom: 1.5rem;
     }
@@ -396,6 +465,11 @@
       border-color: var(--saudi-green);
     }
 
+    .form-group textarea {
+      min-height: 200px;
+      resize: vertical;
+    }
+
     .form-group small {
       display: block;
       margin-top: 0.25rem;
@@ -403,257 +477,92 @@
       font-size: 0.875rem;
     }
 
-    /* Modal Styles */
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 9999;
-      display: none;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal.active {
-      display: flex;
-    }
-
-    .modal-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.7);
-    }
-
-    .modal-content {
-      position: relative;
-      background-color: var(--bg-primary);
-      border-radius: var(--radius-xl);
-      max-width: 900px;
-      width: 90%;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: var(--shadow-2xl);
-      z-index: 1;
-    }
-
-    .modal-header {
-      padding: 1.5rem 2rem;
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .modal-header h3 {
-      margin: 0;
-      color: var(--text-primary);
-      font-size: 1.75rem;
-    }
-
-    .modal-close {
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: none;
-      border: none;
-      color: var(--text-secondary);
-      font-size: 1.5rem;
-      cursor: pointer;
-      border-radius: var(--radius-full);
-      transition: all 0.3s;
-    }
-
-    .modal-close:hover {
+    .featured-image-preview {
+      margin-top: 1rem;
+      padding: 1rem;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
       background-color: var(--bg-secondary);
-      color: var(--error);
     }
 
-    .modal-body {
-      padding: 2rem;
-    }
-
-    .modal-footer {
-      padding: 1.5rem 2rem;
-      border-top: 1px solid var(--border-color);
-      display: flex;
-      justify-content: flex-end;
-      gap: 1rem;
-    }
-
-    .featured-image-selector {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .image-preview {
-      position: relative;
+    .featured-image-preview img {
       width: 100%;
       max-width: 400px;
-      aspect-ratio: 16/9;
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      background-color: var(--bg-secondary);
-      display: none;
+      height: auto;
+      border-radius: var(--radius-md);
+      margin-bottom: 1rem;
     }
 
-    .image-preview.active {
+    .featured-image-preview .image-url {
       display: block;
+      padding: 0.5rem;
+      background-color: var(--bg-primary);
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      word-break: break-all;
+      margin-bottom: 0.5rem;
     }
 
-    .image-preview img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .image-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-change-image,
+    .btn-remove-image {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+
+    .btn-change-image {
+      background-color: var(--saudi-green);
+      color: white;
     }
 
     .btn-remove-image {
-      position: absolute;
-      top: 0.5rem;
-      left: 0.5rem;
-      width: 35px;
-      height: 35px;
       background-color: var(--error);
       color: white;
-      border: none;
-      border-radius: var(--radius-full);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.25rem;
-      transition: all 0.3s;
     }
 
-    .btn-remove-image:hover {
-      background-color: #dc2626;
-    }
-
-    .image-selection-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 1rem;
-      max-height: 400px;
-      overflow-y: auto;
-    }
-
-    .selectable-image {
-      position: relative;
-      aspect-ratio: 1;
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      cursor: pointer;
-      border: 3px solid transparent;
-      transition: all 0.3s;
-    }
-
-    .selectable-image:hover {
-      border-color: var(--saudi-green);
-      transform: scale(1.05);
-    }
-
-    .selectable-image.selected {
-      border-color: var(--saudi-green);
-      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
-    }
-
-    .selectable-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .image-info {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      padding: 0.75rem;
-      background-color: var(--bg-secondary);
-      border-radius: var(--radius-md);
-      font-size: 0.875rem;
-    }
-
-    .image-info label {
-      font-weight: 600;
-      color: var(--text-secondary);
-    }
-
-    .image-info input {
-      padding: 0.5rem;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
-      font-size: 0.875rem;
-    }
-
-    .image-url-display {
-      padding: 0.5rem;
-      background-color: var(--bg-secondary);
-      border-radius: var(--radius-sm);
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-      word-break: break-all;
-    }
-
-    .toast-container {
+    /* Toast Notification */
+    .toast {
       position: fixed;
       bottom: 2rem;
       left: 2rem;
-      z-index: 99999;
-    }
-
-    .toast {
-      background-color: var(--bg-primary);
+      background-color: var(--saudi-green);
+      color: white;
       padding: 1rem 1.5rem;
       border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-xl);
-      margin-bottom: 1rem;
-      display: flex;
+      box-shadow: var(--shadow-lg);
+      z-index: 99999;
+      display: none;
       align-items: center;
       gap: 1rem;
-      transform: translateX(-100%);
-      opacity: 0;
-      transition: all 0.3s;
-      min-width: 300px;
+      animation: slideIn 0.3s ease;
     }
 
     .toast.show {
-      transform: translateX(0);
-      opacity: 1;
+      display: flex;
     }
 
-    .toast-success {
-      border-right: 4px solid var(--success);
+    .toast.error {
+      background-color: var(--error);
     }
 
-    .toast-error {
-      border-right: 4px solid var(--error);
-    }
-
-    .toast-info {
-      border-right: 4px solid var(--info);
-    }
-
-    .toast i {
-      font-size: 1.5rem;
-    }
-
-    .toast-success i {
-      color: var(--success);
-    }
-
-    .toast-error i {
-      color: var(--error);
-    }
-
-    .toast-info i {
-      color: var(--info);
+    @keyframes slideIn {
+      from {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
     }
 
     @media (max-width: 768px) {
@@ -662,384 +571,433 @@
         transition: transform 0.3s;
       }
 
-      .admin-sidebar.active {
+      .admin-sidebar.open {
         transform: translateX(0);
       }
 
       .admin-main {
         margin-right: 0;
       }
-
-      .modal-content {
-        width: 95%;
-        max-height: 95vh;
-      }
     }
   </style>
 </head>
 <body>
-
   <div class="admin-container">
     <!-- Sidebar -->
-    <aside class="admin-sidebar" id="adminSidebar">
+    <aside class="admin-sidebar">
       <div class="admin-logo">
-        <div style="font-size: 3rem;">🚀</div>
+        <i class="fas fa-code" style="font-size: 2.5rem; color: var(--saudi-green);"></i>
         <h2>لوحة التحكم</h2>
       </div>
 
       <nav class="admin-nav">
         <ul>
-          <li class="active" data-view="dashboard">
-            <a href="#dashboard">
-              <i class="fas fa-home"></i>
-              <span>لوحة المعلومات</span>
-            </a>
-          </li>
-          <li data-view="posts">
-            <a href="#posts">
-              <i class="fas fa-file-alt"></i>
-              <span>المقالات</span>
-            </a>
-          </li>
-          <li data-view="media">
-            <a href="#media">
-              <i class="fas fa-images"></i>
-              <span>المكتبة</span>
-            </a>
-          </li>
-          <li data-view="settings">
-            <a href="#settings">
-              <i class="fas fa-cog"></i>
-              <span>الإعدادات</span>
-            </a>
-          </li>
+          <li class="active"><a href="#" data-view="posts"><i class="fas fa-file-alt"></i> المقالات</a></li>
+          <li><a href="#" data-view="media"><i class="fas fa-images"></i> مكتبة الصور</a></li>
         </ul>
       </nav>
-
-      <div class="admin-user">
-        <div class="user-info">
-          <img src="" alt="Admin">
-          <div>
-            <h4>المشرف</h4>
-            <p>admin@technologyksa.com</p>
-          </div>
-        </div>
-        <button class="btn-logout" id="logoutBtn">
-          <i class="fas fa-sign-out-alt"></i>
-          تسجيل الخروج
-        </button>
-      </div>
     </aside>
 
     <!-- Main Content -->
     <main class="admin-main">
-      <header class="admin-header">
-        <h1 id="pageTitle">لوحة المعلومات</h1>
-        <div class="header-actions">
-          <button class="btn btn-primary" id="newPostBtn">
-            <i class="fas fa-plus"></i>
-            مقال جديد
-          </button>
-        </div>
-      </header>
+      <div class="admin-header">
+        <h1>إدارة المدونة</h1>
+        <button class="btn btn-primary" id="btnNewPost">
+          <i class="fas fa-plus"></i> إضافة مقال جديد
+        </button>
+      </div>
 
       <div class="admin-content">
-        <!-- Dashboard View -->
-        <section class="admin-view active" id="dashboardView">
-          <div class="stats-grid">
-            <div class="stat-card">
-              <div class="stat-content">
-                <h3 id="totalPosts">0</h3>
-                <p>إجمالي المقالات</p>
-              </div>
-              <div class="stat-icon">
-                <i class="fas fa-file-alt"></i>
-              </div>
-            </div>
-
-            <div class="stat-card">
-              <div class="stat-content">
-                <h3 id="publishedPosts">0</h3>
-                <p>مقالات منشورة</p>
-              </div>
-              <div class="stat-icon">
-                <i class="fas fa-check-circle"></i>
-              </div>
-            </div>
-
-            <div class="stat-card">
-              <div class="stat-content">
-                <h3 id="draftPosts">0</h3>
-                <p>مسودات</p>
-              </div>
-              <div class="stat-icon">
-                <i class="fas fa-clock"></i>
-              </div>
-            </div>
-
-            <div class="stat-card">
-              <div class="stat-content">
-                <h3 id="totalImages">0</h3>
-                <p>الصور</p>
-              </div>
-              <div class="stat-icon">
-                <i class="fas fa-images"></i>
-              </div>
-            </div>
-          </div>
-
-          <div class="dashboard-section">
-            <h2>أحدث المقالات</h2>
-            <table class="posts-table">
-              <thead>
-                <tr>
-                  <th>العنوان</th>
-                  <th>الفئة</th>
-                  <th>التاريخ</th>
-                  <th>الحالة</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td colspan="4" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
-                    جاري التحميل...
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
         <!-- Posts View -->
-        <section class="admin-view" id="postsView">
-          <h2 style="margin-bottom: 1.5rem;">إدارة المقالات</h2>
-          <table class="posts-table">
+        <div id="postsView" class="admin-view active">
+          <table class="posts-table" id="postsTable">
             <thead>
               <tr>
                 <th>العنوان</th>
-                <th>الفئة</th>
+                <th>التصنيف</th>
                 <th>التاريخ</th>
                 <th>الحالة</th>
                 <th>الإجراءات</th>
               </tr>
             </thead>
             <tbody id="postsTableBody">
-              <tr>
-                <td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
-                  جاري التحميل...
-                </td>
-              </tr>
+              <!-- Posts will be inserted here -->
             </tbody>
           </table>
-        </section>
+        </div>
 
         <!-- Media View -->
-        <section class="admin-view" id="mediaView">
+        <div id="mediaView" class="admin-view">
           <div class="upload-area" id="uploadArea">
             <div class="upload-content">
               <i class="fas fa-cloud-upload-alt"></i>
-              <h3>اسحب الصور هنا أو انقر للرفع</h3>
-              <p>PNG, JPG, WebP (الحد الأقصى: 5MB)</p>
-              <input type="file" id="imageUpload" multiple accept="image/*" hidden>
-              <button class="btn btn-primary" id="selectFilesBtn">
-                اختر الملفات
+              <h3>رفع الصور</h3>
+              <p>اسحب وأفلت الصور هنا أو اضغط للاختيار</p>
+              <input type="file" id="fileInput" accept="image/*" multiple style="display: none;">
+              <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                <i class="fas fa-upload"></i> اختر الصور
               </button>
             </div>
           </div>
 
           <div class="media-grid" id="mediaGrid">
-            <p style="text-align: center; color: var(--text-secondary); padding: 2rem; grid-column: 1/-1;">
-              جاري التحميل...
-            </p>
+            <!-- Media items will be inserted here -->
           </div>
-        </section>
-
-        <!-- Settings View -->
-        <section class="admin-view" id="settingsView">
-          <h2>إعدادات الموقع</h2>
-          <form id="settingsForm" style="max-width: 600px; margin-top: 2rem;">
-            <div class="form-group">
-              <label>عنوان الموقع</label>
-              <input type="text" value="شركة تكنولوجيا السعودية">
-            </div>
-
-            <div class="form-group">
-              <label>وصف الموقع</label>
-              <textarea rows="3">وكالة رقمية سعودية رائدة متخصصة في تقديم حلول تقنية شاملة</textarea>
-            </div>
-
-            <div class="form-group">
-              <label>البريد الإلكتروني</label>
-              <input type="email" value="info@technologyksa.com">
-            </div>
-
-            <div class="form-group">
-              <label>رقم الهاتف</label>
-              <input type="tel" value="+966 XX XXX XXXX">
-            </div>
-
-            <button type="submit" class="btn btn-primary">
-              حفظ التغييرات
-            </button>
-          </form>
-        </section>
+        </div>
       </div>
     </main>
   </div>
 
   <!-- Post Editor Modal -->
-  <div class="modal" id="postEditorModal">
-    <div class="modal-overlay"></div>
+  <div id="postModal" class="modal">
+    <div class="modal-overlay" onclick="closePostModal()"></div>
     <div class="modal-content">
       <div class="modal-header">
-        <h3 id="modalTitle">مقال جديد</h3>
-        <button class="modal-close" id="closeEditorBtn">
+        <h3 id="modalTitle">إضافة مقال جديد</h3>
+        <button class="modal-close" onclick="closePostModal()">
           <i class="fas fa-times"></i>
         </button>
       </div>
-
       <div class="modal-body">
-        <form id="postEditorForm">
+        <form id="postForm">
           <input type="hidden" id="postId">
 
-          <!-- Title -->
           <div class="form-group">
-            <label>عنوان المقال *</label>
+            <label for="postTitle">عنوان المقال <span style="color: var(--error);">*</span></label>
             <input type="text" id="postTitle" required placeholder="أدخل عنوان المقال">
+            <small>سيتم توليد الـ slug والـ alt text تلقائياً من العنوان</small>
           </div>
 
-          <!-- Slug -->
           <div class="form-group">
-            <label>الرابط (Slug) *</label>
-            <input type="text" id="postSlug" required placeholder="post-url-slug">
-            <small>سيتم إنشاؤه تلقائياً من العنوان</small>
+            <label for="postSlug">Slug</label>
+            <input type="text" id="postSlug" placeholder="سيتم التوليد تلقائياً">
+            <small>رابط المقال (يتم توليده تلقائياً من العنوان)</small>
           </div>
 
-          <!-- Category -->
           <div class="form-group">
-            <label>الفئة *</label>
+            <label for="postCategory">التصنيف <span style="color: var(--error);">*</span></label>
             <select id="postCategory" required>
-              <option value="">اختر الفئة</option>
-              <option value="digital-marketing">التسويق الرقمي</option>
-              <option value="app-development">تطوير التطبيقات</option>
-              <option value="web-development">تطوير المواقع</option>
-              <option value="cybersecurity">الأمن السيبراني</option>
-              <option value="erp">أنظمة ERP</option>
-              <option value="seo">تحسين محركات البحث</option>
+              <option value="">اختر التصنيف</option>
+              <option value="تسويق رقمي">تسويق رقمي</option>
+              <option value="تطوير ويب">تطوير ويب</option>
+              <option value="تطبيقات جوال">تطبيقات جوال</option>
+              <option value="أمن سيبراني">أمن سيبراني</option>
+              <option value="تقنية">تقنية</option>
+              <option value="استشارات">استشارات</option>
             </select>
           </div>
 
-          <!-- Featured Image -->
           <div class="form-group">
-            <label>الصورة البارزة *</label>
-            <div class="featured-image-selector">
-              <div class="image-preview" id="featuredImagePreview">
-                <img src="" alt="Preview" id="featuredImageImg">
-                <button type="button" class="btn-remove-image" id="removeFeaturedImage">
-                  <i class="fas fa-times"></i>
-                </button>
+            <label>الصورة المميزة</label>
+            <button type="button" class="btn btn-secondary" onclick="openImageSelector()">
+              <i class="fas fa-image"></i> اختيار صورة من المكتبة
+            </button>
+            <div id="featuredImagePreview" style="display: none;" class="featured-image-preview">
+              <img id="previewImage" src="" alt="">
+              <small style="font-weight: 600; color: var(--text-primary); display: block; margin-bottom: 0.5rem;">رابط الصورة:</small>
+              <span class="image-url" id="imageUrl"></span>
+              <div class="form-group" style="margin-bottom: 0.5rem;">
+                <label for="imageAlt">Alt Text للصورة</label>
+                <input type="text" id="imageAlt" placeholder="وصف الصورة">
               </div>
-              <button type="button" class="btn btn-outline" id="selectFeaturedImage">
-                <i class="fas fa-image"></i>
-                اختر صورة من المكتبة
-              </button>
-              <div class="image-info">
-                <label>رابط الصورة:</label>
-                <div class="image-url-display" id="imageUrl">لم يتم اختيار صورة</div>
-                <label>النص البديل (Alt Text):</label>
-                <input type="text" id="imageAlt" placeholder="سيتم استخدام عنوان المقال تلقائياً">
+              <div class="image-actions">
+                <button type="button" class="btn-change-image" onclick="openImageSelector()">
+                  <i class="fas fa-sync"></i> تغيير الصورة
+                </button>
+                <button type="button" class="btn-remove-image" onclick="removeFeaturedImage()">
+                  <i class="fas fa-trash"></i> حذف الصورة
+                </button>
               </div>
             </div>
           </div>
 
-          <!-- Excerpt -->
           <div class="form-group">
-            <label>المقتطف (Excerpt) *</label>
-            <textarea id="postExcerpt" rows="3" required placeholder="مقتطف قصير عن المقال (150-160 حرف)"></textarea>
+            <label for="postExcerpt">المقتطف</label>
+            <textarea id="postExcerpt" rows="3" placeholder="ملخص قصير للمقال"></textarea>
           </div>
 
-          <!-- Content -->
           <div class="form-group">
-            <label>محتوى المقال *</label>
-            <textarea id="postContent" rows="15" required placeholder="اكتب محتوى المقال هنا... (1500-2000 كلمة)"></textarea>
+            <label for="postContent">محتوى المقال <span style="color: var(--error);">*</span></label>
+            <textarea id="postContent" required placeholder="اكتب محتوى المقال هنا..."></textarea>
           </div>
 
-          <!-- Meta Title -->
           <div class="form-group">
-            <label>عنوان SEO (Meta Title)</label>
-            <input type="text" id="postMetaTitle" maxlength="60" placeholder="عنوان محسّن لمحركات البحث (60 حرف)">
-            <small>سيتم إنشاؤه تلقائياً من العنوان إذا تُرك فارغاً</small>
+            <label for="metaTitle">عنوان Meta</label>
+            <input type="text" id="metaTitle" placeholder="عنوان الصفحة للسيو">
           </div>
 
-          <!-- Meta Description -->
           <div class="form-group">
-            <label>وصف SEO (Meta Description) *</label>
-            <textarea id="postMetaDescription" maxlength="160" rows="2" required placeholder="وصف محسّن لمحركات البحث (155-160 حرف)"></textarea>
-            <small>سيتم استخدام المقتطف إذا تُرك فارغاً</small>
+            <label for="metaDescription">وصف Meta</label>
+            <textarea id="metaDescription" rows="2" placeholder="وصف الصفحة للسيو"></textarea>
           </div>
 
-          <!-- Author -->
           <div class="form-group">
-            <label>الكاتب *</label>
-            <input type="text" id="postAuthor" required value="محمد أحمد" placeholder="اسم الكاتب">
+            <label for="postAuthor">الكاتب</label>
+            <input type="text" id="postAuthor" value="فريق تكنولوجي السعودية" placeholder="اسم الكاتب">
           </div>
 
-          <!-- Status -->
           <div class="form-group">
-            <label>حالة المقال *</label>
+            <label for="postStatus">حالة المقال <span style="color: var(--error);">*</span></label>
             <select id="postStatus" required>
-              <option value="draft">مسودة</option>
               <option value="published">منشور</option>
+              <option value="draft">مسودة</option>
             </select>
-          </div>
-
-          <!-- Form Actions -->
-          <div class="modal-footer">
-            <button type="button" class="btn btn-outline" id="cancelPostBtn">
-              إلغاء
-            </button>
-            <button type="submit" class="btn btn-primary">
-              <i class="fas fa-save"></i>
-              حفظ المقال
-            </button>
           </div>
         </form>
       </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closePostModal()">إلغاء</button>
+        <button type="button" class="btn btn-primary" onclick="savePost()">
+          <i class="fas fa-save"></i> حفظ المقال
+        </button>
+      </div>
     </div>
   </div>
 
-  <!-- Image Selection Modal -->
-  <div class="modal" id="imageSelectionModal">
-    <div class="modal-overlay"></div>
+  <!-- Image Selector Modal -->
+  <div id="imageSelectorModal" class="modal">
+    <div class="modal-overlay" onclick="closeImageSelector()"></div>
     <div class="modal-content">
       <div class="modal-header">
-        <h3>اختر صورة من المكتبة</h3>
-        <button class="modal-close" id="closeImageModalBtn">
+        <h3>اختيار صورة</h3>
+        <button class="modal-close" onclick="closeImageSelector()">
           <i class="fas fa-times"></i>
         </button>
       </div>
-
       <div class="modal-body">
-        <div class="image-selection-grid" id="imageSelectionGrid">
-          <p style="text-align: center; color: var(--text-secondary); padding: 2rem; grid-column: 1/-1;">
-            جاري التحميل...
-          </p>
+        <div class="media-grid" id="imageSelectorGrid">
+          <!-- Images will be inserted here -->
         </div>
-      </div>
-
-      <div class="modal-footer">
-        <button class="btn btn-outline" id="cancelImageSelection">إلغاء</button>
-        <button class="btn btn-primary" id="confirmImageSelection" disabled>
-          اختيار الصورة
-        </button>
       </div>
     </div>
   </div>
 
-  <!-- Toast Container -->
-  <div class="toast-container" id="toastContainer"></div>
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMessage"></span>
+  </div>
 
-  <!-- JavaScript -->
   <script src="../assets/js/admin.js"></script>
+  <script>
+    // Initialize Admin Panel
+    let blogCMS;
+
+    document.addEventListener('DOMContentLoaded', function() {
+      blogCMS = new BlogCMS();
+      blogCMS.init();
+
+      // Navigation
+      document.querySelectorAll('.admin-nav a').forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const view = this.dataset.view;
+
+          // Update active nav
+          document.querySelectorAll('.admin-nav li').forEach(li => li.classList.remove('active'));
+          this.parentElement.classList.add('active');
+
+          // Show view
+          document.querySelectorAll('.admin-view').forEach(v => v.classList.remove('active'));
+          document.getElementById(view + 'View').classList.add('active');
+        });
+      });
+
+      // New Post Button
+      document.getElementById('btnNewPost').addEventListener('click', function() {
+        openPostModal();
+      });
+
+      // File Upload
+      const fileInput = document.getElementById('fileInput');
+      const uploadArea = document.getElementById('uploadArea');
+
+      fileInput.addEventListener('change', function(e) {
+        handleFiles(e.target.files);
+      });
+
+      uploadArea.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        uploadArea.classList.add('dragover');
+      });
+
+      uploadArea.addEventListener('dragleave', function() {
+        uploadArea.classList.remove('dragover');
+      });
+
+      uploadArea.addEventListener('drop', function(e) {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        handleFiles(e.dataTransfer.files);
+      });
+
+      // Auto-generate slug from title
+      document.getElementById('postTitle').addEventListener('input', function() {
+        const title = this.value;
+        const slug = blogCMS.generateSlug(title);
+        document.getElementById('postSlug').value = slug;
+
+        // Auto-fill alt text if empty
+        if (!document.getElementById('imageAlt').value) {
+          document.getElementById('imageAlt').value = title;
+        }
+      });
+    });
+
+    function handleFiles(files) {
+      Array.from(files).forEach(file => {
+        if (file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            blogCMS.uploadImage(file.name, e.target.result);
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+
+    function openPostModal(postId = null) {
+      const modal = document.getElementById('postModal');
+      const form = document.getElementById('postForm');
+      form.reset();
+
+      if (postId) {
+        const post = blogCMS.posts.find(p => p.id === postId);
+        if (post) {
+          document.getElementById('modalTitle').textContent = 'تعديل المقال';
+          document.getElementById('postId').value = post.id;
+          document.getElementById('postTitle').value = post.title;
+          document.getElementById('postSlug').value = post.slug;
+          document.getElementById('postCategory').value = post.category;
+          document.getElementById('postExcerpt').value = post.excerpt;
+          document.getElementById('postContent').value = post.content;
+          document.getElementById('metaTitle').value = post.metaTitle;
+          document.getElementById('metaDescription').value = post.metaDescription;
+          document.getElementById('postAuthor').value = post.author;
+          document.getElementById('postStatus').value = post.status;
+
+          if (post.featuredImage) {
+            showImagePreview(post.featuredImage, post.imageAlt || post.title);
+          }
+        }
+      } else {
+        document.getElementById('modalTitle').textContent = 'إضافة مقال جديد';
+        document.getElementById('featuredImagePreview').style.display = 'none';
+      }
+
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePostModal() {
+      const modal = document.getElementById('postModal');
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function openImageSelector() {
+      const modal = document.getElementById('imageSelectorModal');
+      const grid = document.getElementById('imageSelectorGrid');
+
+      grid.innerHTML = '';
+
+      blogCMS.media.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'media-item';
+        div.innerHTML = `
+          <img src="${item.url}" alt="${item.alt || item.name}">
+          <div class="media-item-info">
+            <button class="btn btn-primary" style="width: 100%;" onclick="selectImage('${item.id}')">
+              <i class="fas fa-check"></i> اختيار
+            </button>
+          </div>
+        `;
+        grid.appendChild(div);
+      });
+
+      modal.classList.add('active');
+    }
+
+    function closeImageSelector() {
+      const modal = document.getElementById('imageSelectorModal');
+      modal.classList.remove('active');
+    }
+
+    function selectImage(imageId) {
+      const image = blogCMS.media.find(m => m.id === imageId);
+      if (image) {
+        const postTitle = document.getElementById('postTitle').value || 'صورة المقال';
+        showImagePreview(image.url, image.alt || postTitle);
+        closeImageSelector();
+      }
+    }
+
+    function showImagePreview(url, alt) {
+      document.getElementById('featuredImagePreview').style.display = 'block';
+      document.getElementById('previewImage').src = url;
+      document.getElementById('imageUrl').textContent = url;
+      document.getElementById('imageAlt').value = alt;
+    }
+
+    function removeFeaturedImage() {
+      document.getElementById('featuredImagePreview').style.display = 'none';
+      document.getElementById('previewImage').src = '';
+      document.getElementById('imageUrl').textContent = '';
+      document.getElementById('imageAlt').value = '';
+    }
+
+    function savePost() {
+      const form = document.getElementById('postForm');
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      const postData = {
+        id: document.getElementById('postId').value || Date.now().toString(),
+        title: document.getElementById('postTitle').value,
+        slug: document.getElementById('postSlug').value,
+        category: document.getElementById('postCategory').value,
+        excerpt: document.getElementById('postExcerpt').value,
+        content: document.getElementById('postContent').value,
+        featuredImage: document.getElementById('previewImage').src || '',
+        imageAlt: document.getElementById('imageAlt').value,
+        metaTitle: document.getElementById('metaTitle').value,
+        metaDescription: document.getElementById('metaDescription').value,
+        author: document.getElementById('postAuthor').value,
+        status: document.getElementById('postStatus').value,
+        date: new Date().toISOString().split('T')[0],
+        readTime: Math.ceil(document.getElementById('postContent').value.split(' ').length / 200)
+      };
+
+      if (document.getElementById('postId').value) {
+        blogCMS.updatePost(postData);
+      } else {
+        blogCMS.createPost(postData);
+      }
+
+      closePostModal();
+    }
+
+    function editPost(postId) {
+      openPostModal(postId);
+    }
+
+    function deletePost(postId) {
+      if (confirm('هل أنت متأكد من حذف هذا المقال؟')) {
+        blogCMS.deletePost(postId);
+      }
+    }
+
+    function deleteMedia(mediaId) {
+      if (confirm('هل أنت متأكد من حذف هذه الصورة؟')) {
+        blogCMS.deleteMedia(mediaId);
+      }
+    }
+
+    function updateImageAlt(imageId, alt) {
+      blogCMS.updateImageAlt(imageId, alt);
+    }
+  </script>
 </body>
 </html>
