@@ -154,7 +154,7 @@ class PagesManager {
         menu.items.push({
           id: 'item-' + Date.now(),
           title: page.title,
-          url: page.slug + '.html',
+          url: '/' + page.slug,
           type: 'page',
           pageId: page.id
         });
@@ -223,9 +223,9 @@ class MenusManager {
         location: 'header',
         date: new Date().toISOString().split('T')[0],
         items: [
-          { id: 'item-1', title: 'الرئيسية', url: 'index.html', type: 'page', pageId: 'home' },
-          { id: 'item-2', title: 'خدماتنا', url: 'services.html', type: 'custom' },
-          { id: 'item-3', title: 'المدونة', url: 'blog.html', type: 'custom' },
+          { id: 'item-1', title: 'الرئيسية', url: '/', type: 'page', pageId: 'home' },
+          { id: 'item-2', title: 'خدماتنا', url: '/services', type: 'custom' },
+          { id: 'item-3', title: 'المدونة', url: '/blog', type: 'custom' },
           { id: 'item-4', title: 'اتصل بنا', url: '#contact', type: 'custom' }
         ]
       }
@@ -315,10 +315,10 @@ class MenusManager {
         <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; background: var(--bg-primary); border-radius: 4px; cursor: pointer;">
           <input type="checkbox"
             ${isChecked ? 'checked' : ''}
-            onchange="menusManager.togglePageInMenu('${page.id}', '${page.title}', '${page.slug}.html', this.checked)"
+            onchange="menusManager.togglePageInMenu('${page.id}', '${page.title}', '/${page.slug}', this.checked)"
             style="width: 18px; height: 18px;">
           <span>${page.title}</span>
-          <code style="margin-right: auto; font-size: 0.85rem; color: var(--text-secondary);">${page.slug}</code>
+          <code style="margin-right: auto; font-size: 0.85rem; color: var(--text-secondary);">/${page.slug}</code>
         </label>
       `;
     }).join('');
@@ -2680,7 +2680,7 @@ function openQuickPageModal() {
     menusManager.currentMenuItems.push({
       id: 'item-' + Date.now(),
       title: title,
-      url: slug + '.html',
+      url: '/' + slug,
       type: 'page',
       pageId: pageData.id
     });
