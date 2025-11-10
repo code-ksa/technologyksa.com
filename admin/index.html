@@ -1280,6 +1280,82 @@
       font-size: 0.85rem;
       margin-bottom: 0.25rem;
     }
+
+    /* ==========================================
+       DYNAMIC COMPONENTS SYSTEM (38 Types)
+       ========================================== */
+
+    .items-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      border: 1px dashed var(--border-color);
+    }
+
+    .item-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      transition: all 0.3s ease;
+    }
+
+    .item-card:hover {
+      border-color: var(--saudi-green);
+      box-shadow: 0 2px 8px rgba(12, 74, 47, 0.1);
+    }
+
+    .item-info {
+      flex: 1;
+    }
+
+    .item-info strong {
+      display: block;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .item-info p {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      margin: 0;
+    }
+
+    .item-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .item-editor-form {
+      padding: 1rem;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+    }
+
+    .dynamic-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: flex-end;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-color);
+    }
   </style>
 </head>
 <body>
@@ -2459,140 +2535,9 @@
             <textarea id="sectionDescription" rows="2" placeholder="وصف مختصر للعنصر"></textarea>
           </div>
 
-          <!-- Hero Section Fields -->
-          <div id="heroFields" class="section-fields" style="display: none;">
-            <h4 style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
-              <i class="fas fa-image"></i> محتوى Hero Section
-            </h4>
-            <div class="form-group">
-              <label for="heroTitle">العنوان الرئيسي <span style="color: var(--error);">*</span></label>
-              <input type="text" id="heroTitle" placeholder="عنوان جذاب يظهر في الأعلى">
-            </div>
-            <div class="form-group">
-              <label for="heroSubtitle">النص الفرعي</label>
-              <textarea id="heroSubtitle" rows="3" placeholder="نص يوضح الخدمة أو المنتج"></textarea>
-            </div>
-            <div class="form-group">
-              <label for="heroButtonText">نص الزر</label>
-              <input type="text" id="heroButtonText" placeholder="ابدأ الآن">
-            </div>
-            <div class="form-group">
-              <label for="heroButtonLink">رابط الزر</label>
-              <input type="text" id="heroButtonLink" placeholder="#contact">
-            </div>
-            <div class="form-group">
-              <label for="heroBackgroundImage">رابط صورة الخلفية</label>
-              <input type="text" id="heroBackgroundImage" placeholder="https://...">
-            </div>
-            <div class="form-group">
-              <label for="heroBackgroundColor">لون/تدرج الخلفية</label>
-              <input type="text" id="heroBackgroundColor" placeholder="linear-gradient(135deg, #0C4A2F 0%, #10B981 100%)">
-              <small>يمكنك استخدام لون أو gradient CSS</small>
-            </div>
-          </div>
-
-          <!-- CTA Fields -->
-          <div id="ctaFields" class="section-fields" style="display: none;">
-            <h4 style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
-              <i class="fas fa-bullhorn"></i> محتوى Call to Action
-            </h4>
-            <div class="form-group">
-              <label for="ctaTitle">العنوان <span style="color: var(--error);">*</span></label>
-              <input type="text" id="ctaTitle" placeholder="هل لديك مشروع؟">
-            </div>
-            <div class="form-group">
-              <label for="ctaDescription">الوصف</label>
-              <textarea id="ctaDescription" rows="3" placeholder="تواصل معنا الآن واحصل على استشارة مجانية"></textarea>
-            </div>
-            <div class="form-group">
-              <label for="ctaButtonText">نص الزر <span style="color: var(--error);">*</span></label>
-              <input type="text" id="ctaButtonText" placeholder="تواصل معنا">
-            </div>
-            <div class="form-group">
-              <label for="ctaButtonLink">رابط الزر</label>
-              <input type="text" id="ctaButtonLink" placeholder="#contact">
-            </div>
-          </div>
-
-          <!-- Features Fields -->
-          <div id="featuresFields" class="section-fields" style="display: none;">
-            <h4 style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
-              <i class="fas fa-th"></i> محتوى Features Grid
-            </h4>
-
-            <div class="form-group">
-              <label for="featuresTitle">عنوان القسم</label>
-              <input type="text" id="featuresTitle" placeholder="خدماتنا المميزة">
-            </div>
-
-            <div class="form-group">
-              <label for="featuresSubtitle">نص فرعي</label>
-              <textarea id="featuresSubtitle" rows="2" placeholder="نقدم مجموعة متكاملة من الخدمات"></textarea>
-            </div>
-
-            <div style="margin-top: 1.5rem;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <h5 style="color: var(--text-primary); margin: 0;">الميزات</h5>
-                <button type="button" class="btn btn-primary btn-sm" onclick="addFeatureItem()">
-                  <i class="fas fa-plus"></i> إضافة ميزة
-                </button>
-              </div>
-              <div id="featuresList"></div>
-            </div>
-          </div>
-
-          <!-- Testimonials Fields -->
-          <div id="testimonialsFields" class="section-fields" style="display: none;">
-            <h4 style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
-              <i class="fas fa-comments"></i> محتوى Testimonials
-            </h4>
-
-            <div class="form-group">
-              <label for="testimonialsTitle">عنوان القسم</label>
-              <input type="text" id="testimonialsTitle" placeholder="آراء عملائنا">
-            </div>
-
-            <div class="form-group">
-              <label for="testimonialsSubtitle">نص فرعي</label>
-              <textarea id="testimonialsSubtitle" rows="2" placeholder="ماذا يقول عملاؤنا عنا"></textarea>
-            </div>
-
-            <div style="margin-top: 1.5rem;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <h5 style="color: var(--text-primary); margin: 0;">الشهادات</h5>
-                <button type="button" class="btn btn-primary btn-sm" onclick="addTestimonialItem()">
-                  <i class="fas fa-plus"></i> إضافة شهادة
-                </button>
-              </div>
-              <div id="testimonialsList"></div>
-            </div>
-          </div>
-
-          <!-- Statistics Fields -->
-          <div id="statsFields" class="section-fields" style="display: none;">
-            <h4 style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
-              <i class="fas fa-chart-bar"></i> محتوى Statistics
-            </h4>
-
-            <div class="form-group">
-              <label for="statsTitle">عنوان القسم</label>
-              <input type="text" id="statsTitle" placeholder="إنجازاتنا بالأرقام">
-            </div>
-
-            <div class="form-group">
-              <label for="statsSubtitle">نص فرعي</label>
-              <textarea id="statsSubtitle" rows="2" placeholder="أرقام تتحدث عن خبرتنا"></textarea>
-            </div>
-
-            <div style="margin-top: 1.5rem;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <h5 style="color: var(--text-primary); margin: 0;">الإحصائيات</h5>
-                <button type="button" class="btn btn-primary btn-sm" onclick="addStatItem()">
-                  <i class="fas fa-plus"></i> إضافة إحصائية
-                </button>
-              </div>
-              <div id="statsList"></div>
-            </div>
+          <!-- Dynamic Fields Container (replaces all hardcoded section fields) -->
+          <div id="dynamicFieldsContainer" style="margin-top: 1.5rem;">
+            <!-- Dynamic fields will be inserted here by buildDynamicFormFields() -->
           </div>
 
           <div class="form-actions">
@@ -2614,6 +2559,7 @@
     <span id="toastMessage"></span>
   </div>
 
+  <script src="../assets/js/components-data.js"></script>
   <script src="../assets/js/admin.js"></script>
   <script>
     // Initialize Admin Panel
