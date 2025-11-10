@@ -127,6 +127,189 @@ class PagesManager {
 // Global instance
 let pagesManager;
 
+// ==========================================
+// MENUS MANAGER
+// ==========================================
+
+class MenusManager {
+  constructor() {
+    this.menus = [];
+    this.currentMenuItems = [];
+  }
+
+  init() {
+    this.loadMenus();
+    this.renderMenusList();
+  }
+
+  loadMenus() {
+    const storedMenus = localStorage.getItem('techksa_menus');
+    this.menus = storedMenus ? JSON.parse(storedMenus) : this.getDefaultMenus();
+  }
+
+  getDefaultMenus() {
+    return [
+      {
+        id: 'main-menu',
+        name: 'القائمة الرئيسية',
+        location: 'header',
+        date: new Date().toISOString().split('T')[0],
+        items: [
+          { id: 'item-1', title: 'الرئيسية', url: 'index.html', type: 'page', pageId: 'home' },
+          { id: 'item-2', title: 'خدماتنا', url: 'services.html', type: 'custom' },
+          { id: 'item-3', title: 'المدونة', url: 'blog.html', type: 'custom' },
+          { id: 'item-4', title: 'اتصل بنا', url: '#contact', type: 'custom' }
+        ]
+      }
+    ];
+  }
+
+  saveMenus() {
+    localStorage.setItem('techksa_menus', JSON.stringify(this.menus));
+    this.renderMenusList();
+  }
+
+  renderMenusList() {
+    const tbody = document.getElementById('menusTableBody');
+    if (!tbody) return;
+
+    if (this.menus.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">لا توجد قوائم. أضف قائمة جديدة!</td></tr>';
+      return;
+    }
+
+    const locationNames = {
+      'header': 'الهيدر',
+      'footer-1': 'الفوتر - عمود 1',
+      'footer-2': 'الفوتر - عمود 2',
+      'footer-3': 'الفوتر - عمود 3',
+      'sidebar': 'الشريط الجانبي',
+      'custom': 'مخصص'
+    };
+
+    tbody.innerHTML = this.menus.map(menu => `
+      <tr>
+        <td>${menu.name}</td>
+        <td><code>${menu.id}</code></td>
+        <td>${menu.items?.length || 0} عناصر</td>
+        <td><span class="badge badge-info">${locationNames[menu.location] || menu.location}</span></td>
+        <td>${menu.date}</td>
+        <td>
+          <button class="btn-icon" onclick="menusManager.editMenu('${menu.id}')" title="تعديل">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn-icon" onclick="menusManager.deleteMenu('${menu.id}')" title="حذف">
+            <i class="fas fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  editMenu(id) {
+    const menu = this.menus.find(m => m.id === id);
+    if (!menu) return;
+
+    document.getElementById('menuId').value = menu.id;
+    document.getElementById('menuName').value = menu.name;
+    document.getElementById('menuLocation').value = menu.location;
+
+    this.currentMenuItems = menu.items || [];
+    this.loadAvailablePages();
+    this.renderMenuItems();
+
+    document.getElementById('menuModalTitle').textContent = 'تعديل القائمة';
+    document.getElementById('menuModal').classList.add('active');
+  }
+
+  deleteMenu(id) {
+    if (!confirm('هل أنت متأكد من حذف هذه القائمة؟')) return;
+
+    this.menus = this.menus.filter(m => m.id !== id);
+    this.saveMenus();
+    showToast('تم حذف القائمة بنجاح!', 'success');
+  }
+
+  loadAvailablePages() {
+    const container = document.getElementById('availablePages');
+    if (!container) return;
+
+    const pages = pagesManager ? pagesManager.pages : [];
+
+    if (pages.length === 0) {
+      container.innerHTML = '<p style="color: var(--text-secondary);">لا توجد صفحات متاحة. أضف صفحات أولاً!</p>';
+      return;
+    }
+
+    container.innerHTML = pages.map(page => {
+      const isChecked = this.currentMenuItems.some(item => item.pageId === page.id);
+      return `
+        <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; background: var(--bg-primary); border-radius: 4px; cursor: pointer;">
+          <input type="checkbox"
+            ${isChecked ? 'checked' : ''}
+            onchange="menusManager.togglePageInMenu('${page.id}', '${page.title}', '${page.slug}.html', this.checked)"
+            style="width: 18px; height: 18px;">
+          <span>${page.title}</span>
+          <code style="margin-right: auto; font-size: 0.85rem; color: var(--text-secondary);">${page.slug}</code>
+        </label>
+      `;
+    }).join('');
+  }
+
+  togglePageInMenu(pageId, title, url, checked) {
+    if (checked) {
+      // Add to menu
+      if (!this.currentMenuItems.some(item => item.pageId === pageId)) {
+        this.currentMenuItems.push({
+          id: 'item-' + Date.now(),
+          title: title,
+          url: url,
+          type: 'page',
+          pageId: pageId
+        });
+      }
+    } else {
+      // Remove from menu
+      this.currentMenuItems = this.currentMenuItems.filter(item => item.pageId !== pageId);
+    }
+    this.renderMenuItems();
+  }
+
+  renderMenuItems() {
+    const container = document.getElementById('menuItemsList');
+    if (!container) return;
+
+    if (this.currentMenuItems.length === 0) {
+      container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 1rem;">لا توجد عناصر. اختر صفحات من الأعلى أو أضف روابط مخصصة.</p>';
+      return;
+    }
+
+    container.innerHTML = this.currentMenuItems.map((item, index) => `
+      <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: var(--bg-secondary); border-radius: 4px; border: 1px solid var(--border-color);">
+        <i class="fas fa-grip-vertical" style="color: var(--text-secondary); cursor: move;"></i>
+        <div style="flex: 1;">
+          <strong>${item.title}</strong>
+          <small style="display: block; color: var(--text-secondary); margin-top: 0.25rem;">
+            ${item.url} ${item.type === 'page' ? '(صفحة)' : '(رابط مخصص)'}
+          </small>
+        </div>
+        <button type="button" class="btn-icon" onclick="menusManager.removeMenuItem(${index})" title="حذف">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+    `).join('');
+  }
+
+  removeMenuItem(index) {
+    this.currentMenuItems.splice(index, 1);
+    this.loadAvailablePages(); // Refresh checkboxes
+    this.renderMenuItems();
+  }
+}
+
+// Global instance
+let menusManager;
+
 class BlogCMS {
   constructor() {
     this.posts = [];
@@ -551,6 +734,8 @@ function loadSettings() {
     siteNameEn: 'Technology KSA',
     siteDescription: 'شركة تكنولوجيا السعودية - وكالة رقمية رائدة متخصصة في تقديم حلول تقنية شاملة ومتكاملة',
     logo: 'assets/images/logo.png',
+    logoLight: 'assets/images/logo-light.png',
+    logoDark: 'assets/images/logo-dark.png',
     favicon: 'assets/images/favicon.ico',
     phone: '+966 50 123 4567',
     email: 'info@technologyksa.com',
@@ -569,8 +754,20 @@ function loadSettings() {
     footerCopyright: `© ${new Date().getFullYear()} تكنولوجي السعودية. جميع الحقوق محفوظة.`,
     headerStyle: 'default',
     headerColor: '#0C4A2F',
+    headerTheme: 'auto',
+    headerPosition: 'static',
+    showSearch: 'yes',
+    showLanguageSwitcher: 'yes',
+    headerCtaText: 'احجز استشارة',
+    headerCtaLink: '#contact',
     footerStyle: 'default',
     footerColor: '#0C4A2F',
+    footerLayout: '3-columns',
+    showFooterCta: 'yes',
+    footerMenu1: '',
+    footerMenu2: '',
+    footerMenu3: '',
+    footerMenu4: '',
     showBlogSidebar: 'yes',
     sidebarPosition: 'right'
   };
@@ -586,6 +783,8 @@ function loadSettings() {
   document.getElementById('siteNameEn').value = mergedSettings.siteNameEn;
   document.getElementById('siteDescription').value = mergedSettings.siteDescription;
   document.getElementById('logoUrl').value = mergedSettings.logo;
+  document.getElementById('logoLight').value = mergedSettings.logoLight;
+  document.getElementById('logoDark').value = mergedSettings.logoDark;
   document.getElementById('faviconUrl').value = mergedSettings.favicon;
   document.getElementById('contactPhone').value = mergedSettings.phone;
   document.getElementById('contactEmail').value = mergedSettings.email;
@@ -608,6 +807,33 @@ function loadSettings() {
   document.getElementById('footerColor').value = mergedSettings.footerColor;
   document.getElementById('showBlogSidebar').value = mergedSettings.showBlogSidebar;
   document.getElementById('sidebarPosition').value = mergedSettings.sidebarPosition;
+
+  // Header Settings
+  document.getElementById('headerTheme').value = mergedSettings.headerTheme;
+  document.getElementById('headerPosition').value = mergedSettings.headerPosition;
+  document.getElementById('showSearch').value = mergedSettings.showSearch;
+  document.getElementById('showLanguageSwitcher').value = mergedSettings.showLanguageSwitcher;
+  document.getElementById('headerCtaText').value = mergedSettings.headerCtaText;
+  document.getElementById('headerCtaLink').value = mergedSettings.headerCtaLink;
+
+  // Footer Settings
+  const footerLayoutEl = document.getElementById('footerLayout');
+  const showFooterCtaEl = document.getElementById('showFooterCta');
+  if (footerLayoutEl) footerLayoutEl.value = mergedSettings.footerLayout;
+  if (showFooterCtaEl) showFooterCtaEl.value = mergedSettings.showFooterCta;
+
+  // Load menus into footer selects
+  loadMenusIntoFooterSelects();
+
+  // Set selected menus
+  const footerMenu1El = document.getElementById('footerMenu1');
+  const footerMenu2El = document.getElementById('footerMenu2');
+  const footerMenu3El = document.getElementById('footerMenu3');
+  const footerMenu4El = document.getElementById('footerMenu4');
+  if (footerMenu1El) footerMenu1El.value = mergedSettings.footerMenu1;
+  if (footerMenu2El) footerMenu2El.value = mergedSettings.footerMenu2;
+  if (footerMenu3El) footerMenu3El.value = mergedSettings.footerMenu3;
+  if (footerMenu4El) footerMenu4El.value = mergedSettings.footerMenu4;
 }
 
 function saveSettings() {
@@ -616,6 +842,8 @@ function saveSettings() {
     siteNameEn: document.getElementById('siteNameEn').value,
     siteDescription: document.getElementById('siteDescription').value,
     logo: document.getElementById('logoUrl').value,
+    logoLight: document.getElementById('logoLight').value,
+    logoDark: document.getElementById('logoDark').value,
     favicon: document.getElementById('faviconUrl').value,
     phone: document.getElementById('contactPhone').value,
     email: document.getElementById('contactEmail').value,
@@ -634,8 +862,20 @@ function saveSettings() {
     footerCopyright: document.getElementById('footerCopyright').value,
     headerStyle: document.getElementById('headerStyle').value,
     headerColor: document.getElementById('headerColor').value,
+    headerTheme: document.getElementById('headerTheme').value,
+    headerPosition: document.getElementById('headerPosition').value,
+    showSearch: document.getElementById('showSearch').value,
+    showLanguageSwitcher: document.getElementById('showLanguageSwitcher').value,
+    headerCtaText: document.getElementById('headerCtaText').value,
+    headerCtaLink: document.getElementById('headerCtaLink').value,
     footerStyle: document.getElementById('footerStyle').value,
     footerColor: document.getElementById('footerColor').value,
+    footerLayout: document.getElementById('footerLayout')?.value || '3-columns',
+    showFooterCta: document.getElementById('showFooterCta')?.value || 'yes',
+    footerMenu1: document.getElementById('footerMenu1')?.value || '',
+    footerMenu2: document.getElementById('footerMenu2')?.value || '',
+    footerMenu3: document.getElementById('footerMenu3')?.value || '',
+    footerMenu4: document.getElementById('footerMenu4')?.value || '',
     showBlogSidebar: document.getElementById('showBlogSidebar').value,
     sidebarPosition: document.getElementById('sidebarPosition').value
   };
@@ -1656,6 +1896,106 @@ function selectPage() {
       pagesManager.openPageBuilder(pages[index].id);
     }
   }
+}
+
+// ==========================================
+// MENU MANAGEMENT FUNCTIONS
+// ==========================================
+
+function openMenuModal() {
+  if (!menusManager) return;
+
+  document.getElementById('menuId').value = '';
+  document.getElementById('menuForm').reset();
+  document.getElementById('menuModalTitle').textContent = 'إضافة قائمة جديدة';
+
+  menusManager.currentMenuItems = [];
+  menusManager.loadAvailablePages();
+  menusManager.renderMenuItems();
+
+  document.getElementById('menuModal').classList.add('active');
+}
+
+function closeMenuModal() {
+  document.getElementById('menuModal').classList.remove('active');
+  document.getElementById('menuForm').reset();
+}
+
+function saveMenu(event) {
+  event.preventDefault();
+
+  if (!menusManager) return;
+
+  const menuId = document.getElementById('menuId').value;
+  const menuData = {
+    id: menuId || 'menu-' + Date.now(),
+    name: document.getElementById('menuName').value,
+    location: document.getElementById('menuLocation').value,
+    date: new Date().toISOString().split('T')[0],
+    items: menusManager.currentMenuItems
+  };
+
+  if (menuId) {
+    // Update existing menu
+    const index = menusManager.menus.findIndex(m => m.id === menuId);
+    if (index !== -1) {
+      menusManager.menus[index] = { ...menusManager.menus[index], ...menuData };
+    }
+  } else {
+    // Add new menu
+    menusManager.menus.push(menuData);
+  }
+
+  menusManager.saveMenus();
+  closeMenuModal();
+  showToast('تم حفظ القائمة بنجاح!', 'success');
+
+  // Refresh footer menu dropdowns if on settings page
+  loadMenusIntoFooterSelects();
+}
+
+function addCustomMenuItem() {
+  if (!menusManager) return;
+
+  const title = document.getElementById('customItemTitle').value.trim();
+  const url = document.getElementById('customItemUrl').value.trim();
+
+  if (!title || !url) {
+    showToast('يجب إدخال العنوان والرابط!', 'warning');
+    return;
+  }
+
+  menusManager.currentMenuItems.push({
+    id: 'item-' + Date.now(),
+    title: title,
+    url: url,
+    type: 'custom'
+  });
+
+  document.getElementById('customItemTitle').value = '';
+  document.getElementById('customItemUrl').value = '';
+
+  menusManager.renderMenuItems();
+  showToast('تم إضافة العنصر!', 'success');
+}
+
+function loadMenusIntoFooterSelects() {
+  if (!menusManager) return;
+
+  const selects = ['footerMenu1', 'footerMenu2', 'footerMenu3', 'footerMenu4'];
+
+  selects.forEach(selectId => {
+    const select = document.getElementById(selectId);
+    if (!select) return;
+
+    const currentValue = select.value;
+    const options = menusManager.menus.map(menu =>
+      `<option value="${menu.id}">${menu.name}</option>`
+    ).join('');
+
+    select.innerHTML = '<option value="">-- بدون قائمة --</option>' + options;
+    select.value = currentValue; // Restore selection
+  });
 }
 
 // Quick add element function

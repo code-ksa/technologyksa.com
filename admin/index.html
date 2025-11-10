@@ -1297,6 +1297,7 @@
           <li><a href="#" data-view="services"><i class="fas fa-briefcase"></i> الخدمات</a></li>
           <li><a href="#" data-view="projects"><i class="fas fa-folder-open"></i> المشاريع</a></li>
           <li><a href="#" data-view="pages"><i class="fas fa-file"></i> الصفحات</a></li>
+          <li><a href="#" data-view="menus"><i class="fas fa-bars"></i> القوائم</a></li>
           <li><a href="#" data-view="media"><i class="fas fa-images"></i> مكتبة الصور</a></li>
           <li><a href="#" data-view="components"><i class="fas fa-cubes"></i> مكتبة العناصر</a></li>
           <li><a href="#" data-view="pagebuilder"><i class="fas fa-hammer"></i> Page Builder</a></li>
@@ -1383,6 +1384,25 @@
             </thead>
             <tbody id="pagesTableBody">
               <!-- Pages will be inserted here -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Menus View -->
+        <div id="menusView" class="admin-view">
+          <table class="posts-table" id="menusTable">
+            <thead>
+              <tr>
+                <th>اسم القائمة</th>
+                <th>المعرف (ID)</th>
+                <th>عدد العناصر</th>
+                <th>الموقع</th>
+                <th>التاريخ</th>
+                <th>الإجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="menusTableBody">
+              <!-- Menus will be inserted here -->
             </tbody>
           </table>
         </div>
@@ -1553,13 +1573,131 @@
               <h3 class="settings-heading">الشعار والصور</h3>
               <div class="settings-grid">
                 <div class="form-group">
-                  <label for="logoUrl">رابط الشعار</label>
+                  <label for="logoUrl">رابط الشعار (الافتراضي)</label>
                   <input type="text" id="logoUrl" class="form-input" placeholder="assets/images/logo.png">
                 </div>
                 <div class="form-group">
                   <label for="faviconUrl">رابط Favicon</label>
                   <input type="text" id="faviconUrl" class="form-input" placeholder="assets/images/favicon.ico">
                 </div>
+                <div class="form-group">
+                  <label for="logoLight">شعار Light Mode</label>
+                  <input type="text" id="logoLight" class="form-input" placeholder="assets/images/logo-light.png">
+                  <small>الشعار الذي يظهر في الثيم الفاتح</small>
+                </div>
+                <div class="form-group">
+                  <label for="logoDark">شعار Dark Mode</label>
+                  <input type="text" id="logoDark" class="form-input" placeholder="assets/images/logo-dark.png">
+                  <small>الشعار الذي يظهر في الثيم الداكن</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Header Settings -->
+            <div class="settings-section">
+              <h3 class="settings-heading">إعدادات الهيدر (Header)</h3>
+              <div class="settings-grid">
+                <div class="form-group">
+                  <label for="headerTheme">ثيم الهيدر</label>
+                  <select id="headerTheme" class="form-input">
+                    <option value="light">Light (فاتح)</option>
+                    <option value="dark">Dark (داكن)</option>
+                    <option value="auto">Auto (تلقائي حسب الموقع)</option>
+                  </select>
+                  <small>اختر ثيم الهيدر الافتراضي</small>
+                </div>
+                <div class="form-group">
+                  <label for="headerPosition">موقع الهيدر</label>
+                  <select id="headerPosition" class="form-input">
+                    <option value="static">Static (عادي)</option>
+                    <option value="fixed">Fixed (ثابت عند التمرير)</option>
+                    <option value="sticky">Sticky (يلتصق عند التمرير)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="showSearch">إظهار البحث في الهيدر</label>
+                  <select id="showSearch" class="form-input">
+                    <option value="yes">نعم</option>
+                    <option value="no">لا</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="showLanguageSwitcher">إظهار تبديل اللغة</label>
+                  <select id="showLanguageSwitcher" class="form-input">
+                    <option value="yes">نعم</option>
+                    <option value="no">لا</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="headerCtaText">نص زر الحث في الهيدر</label>
+                  <input type="text" id="headerCtaText" class="form-input" placeholder="احصل على استشارة">
+                </div>
+                <div class="form-group">
+                  <label for="headerCtaLink">رابط زر الحث في الهيدر</label>
+                  <input type="text" id="headerCtaLink" class="form-input" placeholder="#contact">
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer Settings -->
+            <div class="settings-section">
+              <h3 class="settings-heading">إعدادات الفوتر (Footer)</h3>
+              <div class="settings-grid">
+                <div class="form-group">
+                  <label for="footerLayout">تخطيط الفوتر</label>
+                  <select id="footerLayout" class="form-input">
+                    <option value="3-columns">3 أعمدة</option>
+                    <option value="4-columns">4 أعمدة</option>
+                    <option value="2-columns">عمودان</option>
+                  </select>
+                  <small>اختر عدد الأعمدة في الفوتر</small>
+                </div>
+                <div class="form-group">
+                  <label for="showFooterCta">إظهار Call-to-Action في الفوتر</label>
+                  <select id="showFooterCta" class="form-input">
+                    <option value="yes">نعم</option>
+                    <option value="no">لا</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style="margin-top: 1.5rem;">
+                <label style="display: block; margin-bottom: 1rem; font-weight: 600;">
+                  <i class="fas fa-bars"></i> قوائم الفوتر
+                </label>
+                <div class="settings-grid">
+                  <div class="form-group">
+                    <label for="footerMenu1">قائمة العمود الأول</label>
+                    <select id="footerMenu1" class="form-input">
+                      <option value="">-- بدون قائمة --</option>
+                      <!-- Menu options will be loaded dynamically -->
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="footerMenu2">قائمة العمود الثاني</label>
+                    <select id="footerMenu2" class="form-input">
+                      <option value="">-- بدون قائمة --</option>
+                      <!-- Menu options will be loaded dynamically -->
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="footerMenu3">قائمة العمود الثالث</label>
+                    <select id="footerMenu3" class="form-input">
+                      <option value="">-- بدون قائمة --</option>
+                      <!-- Menu options will be loaded dynamically -->
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="footerMenu4">قائمة العمود الرابع</label>
+                    <select id="footerMenu4" class="form-input">
+                      <option value="">-- بدون قائمة --</option>
+                      <!-- Menu options will be loaded dynamically -->
+                    </select>
+                  </div>
+                </div>
+                <small style="display: block; margin-top: 0.5rem; color: var(--text-secondary);">
+                  اختر القوائم التي تريد عرضها في كل عمود. يمكنك إنشاء القوائم من صفحة "القوائم".
+                </small>
               </div>
             </div>
 
@@ -2209,6 +2347,88 @@
     </div>
   </div>
 
+  <!-- Menu Editor Modal -->
+  <div id="menuModal" class="modal">
+    <div class="modal-overlay" onclick="closeMenuModal()"></div>
+    <div class="modal-content" style="max-width: 800px;">
+      <div class="modal-header">
+        <h3 id="menuModalTitle">إضافة قائمة جديدة</h3>
+        <button class="modal-close" onclick="closeMenuModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="menuForm" onsubmit="saveMenu(event)">
+          <input type="hidden" id="menuId">
+
+          <div class="form-group">
+            <label for="menuName">اسم القائمة <span style="color: var(--error);">*</span></label>
+            <input type="text" id="menuName" required placeholder="القائمة الرئيسية">
+            <small>اسم تعريفي للقائمة لاستخدامها في لوحة التحكم</small>
+          </div>
+
+          <div class="form-group">
+            <label for="menuLocation">موقع القائمة</label>
+            <select id="menuLocation">
+              <option value="header">Header (الهيدر)</option>
+              <option value="footer-1">Footer Column 1 (عمود 1)</option>
+              <option value="footer-2">Footer Column 2 (عمود 2)</option>
+              <option value="footer-3">Footer Column 3 (عمود 3)</option>
+              <option value="sidebar">Sidebar (الشريط الجانبي)</option>
+              <option value="custom">مخصص (Custom)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label style="display: block; margin-bottom: 1rem; font-weight: 600;">
+              <i class="fas fa-list"></i> عناصر القائمة
+            </label>
+
+            <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+              <p style="margin-bottom: 1rem; color: var(--text-secondary); font-size: 0.9rem;">
+                اختر الصفحات التي تريد إضافتها للقائمة:
+              </p>
+              <div id="availablePages" style="display: grid; gap: 0.5rem;">
+                <!-- Available pages will be inserted here as checkboxes -->
+              </div>
+            </div>
+
+            <div style="margin-top: 1rem;">
+              <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
+                إضافة رابط مخصص:
+              </label>
+              <div style="display: grid; grid-template-columns: 2fr 2fr 1fr; gap: 0.5rem;">
+                <input type="text" id="customItemTitle" class="form-input" placeholder="العنوان">
+                <input type="text" id="customItemUrl" class="form-input" placeholder="الرابط">
+                <button type="button" class="btn btn-secondary" onclick="addCustomMenuItem()">
+                  <i class="fas fa-plus"></i> إضافة
+                </button>
+              </div>
+            </div>
+
+            <div style="margin-top: 1.5rem;">
+              <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
+                <i class="fas fa-sort"></i> ترتيب عناصر القائمة:
+              </label>
+              <div id="menuItemsList" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <!-- Selected menu items will appear here -->
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save"></i> حفظ القائمة
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="closeMenuModal()">
+              <i class="fas fa-times"></i> إلغاء
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <!-- Section Editor Modal (Page Builder) -->
   <div id="sectionEditorModal" class="modal">
     <div class="modal-overlay" onclick="closeSectionEditor()"></div>
@@ -2439,6 +2659,11 @@
             btnNewText.textContent = 'إضافة صفحة جديدة';
             btnNewPost.onclick = openPageModal;
             pagesManager.renderPagesList();
+          } else if (view === 'menus') {
+            pageTitle.textContent = 'إدارة القوائم';
+            btnNewText.textContent = 'إضافة قائمة جديدة';
+            btnNewPost.onclick = openMenuModal;
+            if (menusManager) menusManager.renderMenusList();
           } else if (view === 'media') {
             pageTitle.textContent = 'مكتبة الصور';
             btnNewPost.style.display = 'none';
@@ -2465,6 +2690,12 @@
           if (view === 'pages' && !pagesManager) {
             pagesManager = new PagesManager();
             pagesManager.init();
+          }
+
+          // Initialize menus manager when needed
+          if (view === 'menus' && !menusManager) {
+            menusManager = new MenusManager();
+            menusManager.init();
           }
         });
       });
