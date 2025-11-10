@@ -7,6 +7,7 @@ class BlogCMS {
   constructor() {
     this.posts = [];
     this.services = [];
+    this.projects = [];
     this.media = [];
   }
 
@@ -14,6 +15,7 @@ class BlogCMS {
     this.loadData();
     this.renderPostsList();
     this.renderServicesList();
+    this.renderProjectsList();
     this.renderMediaGrid();
   }
 
@@ -29,6 +31,10 @@ class BlogCMS {
     // Load services from localStorage
     const storedServices = localStorage.getItem('techksa_services');
     this.services = storedServices ? JSON.parse(storedServices) : [];
+
+    // Load projects from localStorage
+    const storedProjects = localStorage.getItem('techksa_projects');
+    this.projects = storedProjects ? JSON.parse(storedProjects) : [];
 
     // Load media from localStorage
     const storedMedia = localStorage.getItem('techksa_blog_media');
@@ -62,6 +68,11 @@ class BlogCMS {
   saveServices() {
     localStorage.setItem('techksa_services', JSON.stringify(this.services));
     this.renderServicesList();
+  }
+
+  saveProjects() {
+    localStorage.setItem('techksa_projects', JSON.stringify(this.projects));
+    this.renderProjectsList();
   }
 
   saveMedia() {
@@ -198,6 +209,74 @@ class BlogCMS {
               <i class="fas fa-edit"></i>
             </button>
             <button class="btn-icon btn-danger" onclick="deleteService('${service.id}')" title="حذف">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  // ==========================================
+  // PROJECT MANAGEMENT
+  // ==========================================
+
+  createProject(projectData) {
+    this.projects.unshift(projectData);
+    this.saveProjects();
+    this.showToast('تم إضافة المشروع بنجاح');
+  }
+
+  updateProject(projectData) {
+    const index = this.projects.findIndex(p => p.id === projectData.id);
+    if (index !== -1) {
+      this.projects[index] = projectData;
+      this.saveProjects();
+      this.showToast('تم تحديث المشروع بنجاح');
+    }
+  }
+
+  deleteProject(projectId) {
+    this.projects = this.projects.filter(p => p.id !== projectId);
+    this.saveProjects();
+    this.showToast('تم حذف المشروع بنجاح');
+  }
+
+  renderProjectsList() {
+    const tbody = document.getElementById('projectsTableBody');
+    if (!tbody) return;
+
+    if (this.projects.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="5" style="text-align: center; padding: 3rem; color: var(--text-secondary);">
+            <i class="fas fa-folder-open" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+            لا توجد مشاريع حالياً. اضغط "إضافة مشروع جديد" للبدء
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = this.projects.map(project => `
+      <tr>
+        <td>
+          <strong>${project.title}</strong>
+          ${project.description ? `<br><small style="color: var(--text-secondary);">${project.description.substring(0, 80)}...</small>` : ''}
+        </td>
+        <td>
+          <span class="badge badge-${project.category === 'مواقع' ? 'primary' : project.category === 'تطبيقات' ? 'info' : 'success'}">
+            ${project.category}
+          </span>
+        </td>
+        <td>${project.client || '-'}</td>
+        <td>${this.formatDate(project.date)}</td>
+        <td>
+          <div class="action-buttons">
+            <button class="btn-icon" onclick="editProject('${project.id}')" title="تعديل">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn-icon btn-danger" onclick="deleteProject('${project.id}')" title="حذف">
               <i class="fas fa-trash"></i>
             </button>
           </div>
