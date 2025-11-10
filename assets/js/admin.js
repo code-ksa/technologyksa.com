@@ -1112,6 +1112,7 @@ function loadComponents(type) {
 
 function getComponentTypeName(type) {
   const names = {
+    // Original (8)
     hero: 'Hero Section',
     cta: 'Call to Action',
     features: 'Features Grid',
@@ -1119,13 +1120,48 @@ function getComponentTypeName(type) {
     stats: 'Statistics',
     contact: 'Contact Form',
     team: 'Team Members',
-    pricing: 'Pricing Table'
+    pricing: 'Pricing Table',
+
+    // Section Types (15)
+    about: 'About Section',
+    services: 'Services Grid',
+    portfolio: 'Portfolio Grid',
+    blog: 'Blog Grid',
+    faq: 'FAQ - Accordion',
+    timeline: 'Timeline',
+    counter: 'Animated Counter',
+    video: 'Video Section',
+    gallery: 'Image Gallery',
+    map: 'Map Section',
+    newsletter: 'Newsletter Signup',
+    brands: 'Brands/Partners',
+    process: 'Process Steps',
+    comparison: 'Comparison Table',
+    accordion: 'Content Accordion',
+
+    // Content Types (15)
+    textblock: 'Text Block',
+    image: 'Image',
+    iconbox: 'Icon Box',
+    alert: 'Alert Box',
+    quote: 'Quote Block',
+    divider: 'Divider',
+    spacer: 'Spacer',
+    buttons: 'Button Group',
+    social: 'Social Share',
+    progress: 'Progress Bar',
+    tabs: 'Tabs',
+    cards: 'Cards Grid',
+    list: 'Styled List',
+    table: 'Data Table',
+    code: 'Code Block'
   };
   return names[type] || type;
 }
 
 function getComponentIcon(type) {
   const icons = {
+    // Original (8)
     hero: 'image',
     cta: 'bullhorn',
     features: 'th',
@@ -1133,7 +1169,41 @@ function getComponentIcon(type) {
     stats: 'chart-bar',
     contact: 'envelope',
     team: 'users',
-    pricing: 'tags'
+    pricing: 'tags',
+
+    // Section Types (15)
+    about: 'info-circle',
+    services: 'briefcase',
+    portfolio: 'folder-open',
+    blog: 'blog',
+    faq: 'question-circle',
+    timeline: 'stream',
+    counter: 'tachometer-alt',
+    video: 'play-circle',
+    gallery: 'images',
+    map: 'map-marker-alt',
+    newsletter: 'paper-plane',
+    brands: 'handshake',
+    process: 'tasks',
+    comparison: 'balance-scale',
+    accordion: 'list-alt',
+
+    // Content Types (15)
+    textblock: 'align-left',
+    image: 'file-image',
+    iconbox: 'cube',
+    alert: 'exclamation-triangle',
+    quote: 'quote-right',
+    divider: 'minus',
+    spacer: 'arrows-alt-v',
+    buttons: 'th-large',
+    social: 'share-alt',
+    progress: 'tasks',
+    tabs: 'folder',
+    cards: 'id-card',
+    list: 'list-ul',
+    table: 'table',
+    code: 'code'
   };
   return icons[type] || 'cube';
 }
