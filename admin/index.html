@@ -597,6 +597,7 @@
         <ul>
           <li class="active"><a href="#" data-view="posts"><i class="fas fa-file-alt"></i> المقالات</a></li>
           <li><a href="#" data-view="services"><i class="fas fa-briefcase"></i> الخدمات</a></li>
+          <li><a href="#" data-view="projects"><i class="fas fa-folder-open"></i> المشاريع</a></li>
           <li><a href="#" data-view="media"><i class="fas fa-images"></i> مكتبة الصور</a></li>
         </ul>
       </nav>
@@ -643,6 +644,24 @@
             </thead>
             <tbody id="servicesTableBody">
               <!-- Services will be inserted here -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Projects View -->
+        <div id="projectsView" class="admin-view">
+          <table class="posts-table" id="projectsTable">
+            <thead>
+              <tr>
+                <th>عنوان المشروع</th>
+                <th>التصنيف</th>
+                <th>العميل</th>
+                <th>التاريخ</th>
+                <th>الإجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="projectsTableBody">
+              <!-- Projects will be inserted here -->
             </tbody>
           </table>
         </div>
@@ -844,6 +863,108 @@
     </div>
   </div>
 
+  <!-- Project Editor Modal -->
+  <div id="projectModal" class="modal">
+    <div class="modal-overlay" onclick="closeProjectModal()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="projectModalTitle">إضافة مشروع جديد</h3>
+        <button class="modal-close" onclick="closeProjectModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="projectForm">
+          <input type="hidden" id="projectId">
+
+          <div class="form-group">
+            <label for="projectTitle">عنوان المشروع <span style="color: var(--error);">*</span></label>
+            <input type="text" id="projectTitle" required placeholder="مثال: منصة تجارة إلكترونية متكاملة">
+          </div>
+
+          <div class="form-group">
+            <label for="projectSlug">Slug</label>
+            <input type="text" id="projectSlug" placeholder="ecommerce-platform">
+            <small>سيتم التوليد تلقائياً من العنوان</small>
+          </div>
+
+          <div class="form-group">
+            <label for="projectCategory">التصنيف <span style="color: var(--error);">*</span></label>
+            <select id="projectCategory" required>
+              <option value="">اختر التصنيف</option>
+              <option value="مواقع">مواقع إلكترونية</option>
+              <option value="تطبيقات">تطبيقات جوال</option>
+              <option value="هوية">هوية تجارية</option>
+              <option value="تجارة">تجارة إلكترونية</option>
+              <option value="تصميم">تصميم</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="projectDescription">الوصف المختصر <span style="color: var(--error);">*</span></label>
+            <textarea id="projectDescription" rows="3" required placeholder="وصف مختصر عن المشروع"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="projectClient">اسم العميل</label>
+            <input type="text" id="projectClient" placeholder="مثال: شركة التجارة الحديثة">
+          </div>
+
+          <div class="form-group">
+            <label for="projectDate">تاريخ المشروع <span style="color: var(--error);">*</span></label>
+            <input type="date" id="projectDate" required>
+          </div>
+
+          <div class="form-group">
+            <label for="projectDuration">مدة التنفيذ</label>
+            <input type="text" id="projectDuration" placeholder="مثال: 6 أشهر">
+          </div>
+
+          <div class="form-group">
+            <label for="projectTags">التقنيات المستخدمة (افصل بفاصلة)</label>
+            <input type="text" id="projectTags" placeholder="React, Node.js, MongoDB">
+            <small>افصل التقنيات بفاصلة</small>
+          </div>
+
+          <div class="form-group">
+            <label>صورة المشروع</label>
+            <button type="button" class="btn btn-secondary" onclick="openImageSelectorForProject()">
+              <i class="fas fa-image"></i> اختيار صورة من المكتبة
+            </button>
+            <div id="projectFeaturedImagePreview" style="display: none;" class="featured-image-preview">
+              <img id="projectPreviewImage" src="" alt="">
+              <div class="image-actions">
+                <button type="button" class="btn-change-image" onclick="openImageSelectorForProject()">
+                  <i class="fas fa-sync"></i> تغيير الصورة
+                </button>
+                <button type="button" class="btn-remove-image" onclick="removeProjectFeaturedImage()">
+                  <i class="fas fa-trash"></i> حذف الصورة
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="projectContent">تفاصيل المشروع الكاملة</label>
+            <textarea id="projectContent" rows="5" placeholder="اكتب تفاصيل المشروع والتحديات والحلول..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="projectFeatures">المميزات الرئيسية (واحدة في كل سطر)</label>
+            <textarea id="projectFeatures" rows="5" placeholder="واجهة مستخدم حديثة&#10;نظام إدارة متقدم&#10;تكامل مع بوابات الدفع"></textarea>
+            <small>اكتب كل ميزة في سطر منفصل</small>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeProjectModal()">إلغاء</button>
+        <button type="button" class="btn btn-primary" onclick="saveProject()">
+          <i class="fas fa-save"></i> حفظ المشروع
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Image Selector Modal -->
   <div id="imageSelectorModal" class="modal">
     <div class="modal-overlay" onclick="closeImageSelector()"></div>
@@ -905,6 +1026,10 @@
             pageTitle.textContent = 'إدارة الخدمات';
             btnNewText.textContent = 'إضافة خدمة جديدة';
             btnNewPost.onclick = openServiceModal;
+          } else if (view === 'projects') {
+            pageTitle.textContent = 'إدارة المشاريع';
+            btnNewText.textContent = 'إضافة مشروع جديد';
+            btnNewPost.onclick = openProjectModal;
           } else if (view === 'media') {
             pageTitle.textContent = 'مكتبة الصور';
             btnNewPost.style.display = 'none';
@@ -960,6 +1085,13 @@
         const name = this.value;
         const slug = blogCMS.generateSlug(name);
         document.getElementById('serviceSlug').value = slug;
+      });
+
+      // Auto-generate slug from project title
+      document.getElementById('projectTitle').addEventListener('input', function() {
+        const title = this.value;
+        const slug = blogCMS.generateSlug(title);
+        document.getElementById('projectSlug').value = slug;
       });
     });
 
@@ -1050,8 +1182,10 @@
         if (currentImageTarget === 'post') {
           const postTitle = document.getElementById('postTitle').value || 'صورة المقال';
           showImagePreview(image.url, image.alt || postTitle);
-        } else {
+        } else if (currentImageTarget === 'service') {
           showServiceImagePreview(image.url);
+        } else if (currentImageTarget === 'project') {
+          showProjectImagePreview(image.url);
         }
         closeImageSelector();
       }
@@ -1198,6 +1332,114 @@
     function deleteService(serviceId) {
       if (confirm('هل أنت متأكد من حذف هذه الخدمة؟')) {
         blogCMS.deleteService(serviceId);
+      }
+    }
+
+    // === PROJECT FUNCTIONS ===
+    function openProjectModal(projectId = null) {
+      const modal = document.getElementById('projectModal');
+      const form = document.getElementById('projectForm');
+      form.reset();
+
+      if (projectId) {
+        const project = blogCMS.projects.find(p => p.id === projectId);
+        if (project) {
+          document.getElementById('projectModalTitle').textContent = 'تعديل المشروع';
+          document.getElementById('projectId').value = project.id;
+          document.getElementById('projectTitle').value = project.title;
+          document.getElementById('projectSlug').value = project.slug;
+          document.getElementById('projectCategory').value = project.category;
+          document.getElementById('projectDescription').value = project.description;
+          document.getElementById('projectClient').value = project.client || '';
+          document.getElementById('projectDate').value = project.date;
+          document.getElementById('projectDuration').value = project.duration || '';
+          document.getElementById('projectTags').value = project.tags ? project.tags.join(', ') : '';
+          document.getElementById('projectContent').value = project.content || '';
+          document.getElementById('projectFeatures').value = project.features ? project.features.join('\n') : '';
+
+          if (project.image) {
+            showProjectImagePreview(project.image);
+          }
+        }
+      } else {
+        document.getElementById('projectModalTitle').textContent = 'إضافة مشروع جديد';
+        document.getElementById('projectFeaturedImagePreview').style.display = 'none';
+        // Set default date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('projectDate').value = today;
+      }
+
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeProjectModal() {
+      const modal = document.getElementById('projectModal');
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function openImageSelectorForProject() {
+      currentImageTarget = 'project';
+      openImageSelector();
+    }
+
+    function showProjectImagePreview(url) {
+      document.getElementById('projectFeaturedImagePreview').style.display = 'block';
+      document.getElementById('projectPreviewImage').src = url;
+    }
+
+    function removeProjectFeaturedImage() {
+      document.getElementById('projectFeaturedImagePreview').style.display = 'none';
+      document.getElementById('projectPreviewImage').src = '';
+    }
+
+    function saveProject() {
+      const form = document.getElementById('projectForm');
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      // Parse tags
+      const tagsInput = document.getElementById('projectTags').value;
+      const tags = tagsInput ? tagsInput.split(',').map(t => t.trim()).filter(t => t) : [];
+
+      // Parse features
+      const featuresInput = document.getElementById('projectFeatures').value;
+      const features = featuresInput ? featuresInput.split('\n').map(f => f.trim()).filter(f => f) : [];
+
+      const projectData = {
+        id: document.getElementById('projectId').value || Date.now().toString(),
+        title: document.getElementById('projectTitle').value,
+        slug: document.getElementById('projectSlug').value,
+        category: document.getElementById('projectCategory').value,
+        description: document.getElementById('projectDescription').value,
+        client: document.getElementById('projectClient').value,
+        date: document.getElementById('projectDate').value,
+        duration: document.getElementById('projectDuration').value,
+        tags: tags,
+        image: document.getElementById('projectPreviewImage').src || '',
+        content: document.getElementById('projectContent').value,
+        features: features
+      };
+
+      if (document.getElementById('projectId').value) {
+        blogCMS.updateProject(projectData);
+      } else {
+        blogCMS.createProject(projectData);
+      }
+
+      closeProjectModal();
+    }
+
+    function editProject(projectId) {
+      openProjectModal(projectId);
+    }
+
+    function deleteProject(projectId) {
+      if (confirm('هل أنت متأكد من حذف هذا المشروع؟')) {
+        blogCMS.deleteProject(projectId);
       }
     }
 

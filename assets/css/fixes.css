@@ -1,0 +1,76 @@
+/**
+ * Technology KSA - Global Fixes & Overrides
+ * إصلاحات عامة للموقع
+ */
+
+/* إصلاح horizontal scroll */
+html,
+body {
+  overflow-x: hidden !important;
+  max-width: 100vw;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* منع العناصر من الخروج خارج الشاشة */
+.container,
+.hero-content,
+.section {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* إصلاح الصور الكبيرة */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* إصلاح الـ rows */
+.row {
+  margin-left: 0;
+  margin-right: 0;
+  max-width: 100%;
+}
+
+[class*="col-"] {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* إخفاء scrollbar الأفقي */
+body::-webkit-scrollbar-x {
+  display: none;
+}
+
+/* تحسين الأداء */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* إصلاح مشاكل الـ modals */
+.modal-open {
+  overflow: hidden;
+}
+
+/* إصلاح الـ navbar في الشاشات الصغيرة */
+@media (max-width: 768px) {
+  .navbar,
+  .hero,
+  .section {
+    overflow-x: hidden !important;
+  }
+
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
