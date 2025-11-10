@@ -892,6 +892,323 @@
         font-size: 0.9rem;
       }
     }
+
+    /* ==========================================
+       PAGE BUILDER STYLES
+       ========================================== */
+
+    .page-builder {
+      max-width: 100%;
+      height: 100%;
+    }
+
+    .builder-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .builder-header h2 {
+      font-size: 1.75rem;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .builder-header p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    .builder-actions {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .builder-container {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 2rem;
+      height: calc(100vh - 300px);
+    }
+
+    /* Sidebar with available components */
+    .builder-sidebar {
+      background: var(--bg-primary);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      overflow-y: auto;
+      max-height: 100%;
+    }
+
+    .sidebar-title {
+      font-size: 1.25rem;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .component-categories {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .component-category {
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+    }
+
+    .category-title {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+    }
+
+    .draggable-components {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .draggable-component {
+      background: var(--bg-primary);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.875rem;
+      cursor: grab;
+      transition: all 0.3s ease;
+    }
+
+    .draggable-component:hover {
+      border-color: var(--saudi-green);
+      box-shadow: var(--shadow-md);
+      transform: translateX(-2px);
+    }
+
+    .draggable-component:active {
+      cursor: grabbing;
+    }
+
+    .draggable-component h5 {
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .draggable-component p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    /* Canvas area for building the page */
+    .builder-canvas {
+      background: var(--bg-primary);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      overflow-y: auto;
+      max-height: 100%;
+    }
+
+    .canvas-title {
+      font-size: 1.25rem;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .page-canvas {
+      min-height: 400px;
+      background: var(--bg-secondary);
+      border: 2px dashed var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+    }
+
+    .canvas-empty {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-muted);
+    }
+
+    .canvas-empty i {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    .canvas-empty h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-secondary);
+    }
+
+    .canvas-empty p {
+      color: var(--text-muted);
+    }
+
+    /* Page section in canvas */
+    .page-section {
+      background: var(--bg-primary);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .page-section:hover {
+      border-color: var(--saudi-green);
+      box-shadow: var(--shadow-md);
+    }
+
+    .page-section.dragging {
+      opacity: 0.5;
+      border-style: dashed;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .section-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--saudi-green);
+      color: white;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .section-title-group h4 {
+      font-size: 1rem;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .section-title-group p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .section-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .section-actions .btn {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    .section-content {
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+    }
+
+    .section-content-preview {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .section-content-preview strong {
+      color: var(--text-primary);
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    /* Drag handle */
+    .drag-handle {
+      cursor: grab;
+      color: var(--text-muted);
+      padding: 0.25rem 0.5rem;
+      margin-right: 0.5rem;
+    }
+
+    .drag-handle:active {
+      cursor: grabbing;
+    }
+
+    /* Drop zone indicator */
+    .drop-zone {
+      border: 3px dashed var(--saudi-green);
+      background: rgba(12, 74, 47, 0.1);
+      padding: 2rem;
+      border-radius: var(--radius-md);
+      margin: 1rem 0;
+      text-align: center;
+      color: var(--saudi-green);
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .builder-container {
+        grid-template-columns: 250px 1fr;
+        gap: 1rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .builder-header {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .builder-actions {
+        width: 100%;
+        flex-wrap: wrap;
+      }
+
+      .builder-actions .btn {
+        flex: 1;
+        min-width: 140px;
+      }
+
+      .builder-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        height: auto;
+      }
+
+      .builder-sidebar {
+        max-height: 300px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -910,6 +1227,7 @@
           <li><a href="#" data-view="projects"><i class="fas fa-folder-open"></i> المشاريع</a></li>
           <li><a href="#" data-view="media"><i class="fas fa-images"></i> مكتبة الصور</a></li>
           <li><a href="#" data-view="components"><i class="fas fa-cubes"></i> مكتبة العناصر</a></li>
+          <li><a href="#" data-view="pagebuilder"><i class="fas fa-hammer"></i> Page Builder</a></li>
           <li><a href="#" data-view="settings"><i class="fas fa-cog"></i> الإعدادات</a></li>
         </ul>
       </nav>
@@ -1203,6 +1521,101 @@
               <button class="btn btn-secondary btn-lg" onclick="resetSettings()">
                 <i class="fas fa-undo"></i> استعادة الإعدادات الافتراضية
               </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Page Builder View -->
+        <div id="pagebuilderView" class="admin-view">
+          <div class="page-builder">
+            <div class="builder-header">
+              <div>
+                <h2>Page Builder - بناء الصفحة الرئيسية</h2>
+                <p>قم بتصميم الصفحة الرئيسية باستخدام السحب والإفلات</p>
+              </div>
+              <div class="builder-actions">
+                <button class="btn btn-secondary" onclick="previewPage()">
+                  <i class="fas fa-eye"></i> معاينة
+                </button>
+                <button class="btn btn-primary" onclick="savePageLayout()">
+                  <i class="fas fa-save"></i> حفظ التخطيط
+                </button>
+                <button class="btn btn-success" onclick="publishPage()">
+                  <i class="fas fa-globe"></i> نشر الصفحة
+                </button>
+              </div>
+            </div>
+
+            <div class="builder-container">
+              <!-- Sidebar: Available Components -->
+              <div class="builder-sidebar">
+                <h3 class="sidebar-title">
+                  <i class="fas fa-cubes"></i>
+                  العناصر المتاحة
+                </h3>
+
+                <div class="component-categories">
+                  <!-- Hero Sections -->
+                  <div class="component-category">
+                    <h4 class="category-title">
+                      <i class="fas fa-image"></i>
+                      Hero Sections
+                    </h4>
+                    <div id="heroComponents" class="draggable-components"></div>
+                  </div>
+
+                  <!-- Call to Action -->
+                  <div class="component-category">
+                    <h4 class="category-title">
+                      <i class="fas fa-bullhorn"></i>
+                      Call to Action
+                    </h4>
+                    <div id="ctaComponents" class="draggable-components"></div>
+                  </div>
+
+                  <!-- Features Grid -->
+                  <div class="component-category">
+                    <h4 class="category-title">
+                      <i class="fas fa-th"></i>
+                      Features Grid
+                    </h4>
+                    <div id="featuresComponents" class="draggable-components"></div>
+                  </div>
+
+                  <!-- Testimonials -->
+                  <div class="component-category">
+                    <h4 class="category-title">
+                      <i class="fas fa-comments"></i>
+                      Testimonials
+                    </h4>
+                    <div id="testimonialsComponents" class="draggable-components"></div>
+                  </div>
+
+                  <!-- Statistics -->
+                  <div class="component-category">
+                    <h4 class="category-title">
+                      <i class="fas fa-chart-bar"></i>
+                      Statistics
+                    </h4>
+                    <div id="statsComponents" class="draggable-components"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Canvas: Page Layout -->
+              <div class="builder-canvas">
+                <h3 class="canvas-title">
+                  <i class="fas fa-file-alt"></i>
+                  تخطيط الصفحة
+                </h3>
+                <div id="pageCanvas" class="page-canvas">
+                  <div class="canvas-empty">
+                    <i class="fas fa-plus-circle"></i>
+                    <h3>ابدأ بإضافة عناصر إلى الصفحة</h3>
+                    <p>اسحب العناصر من الشريط الجانبي وأفلتها هنا</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1564,9 +1977,13 @@
             pageTitle.textContent = 'مكتبة العناصر';
             btnNewPost.style.display = 'none';
             initComponentsLibrary();
+          } else if (view === 'pagebuilder') {
+            pageTitle.textContent = 'Page Builder';
+            btnNewPost.style.display = 'none';
+            initPageBuilder();
           }
 
-          if (view !== 'media' && view !== 'settings' && view !== 'components') {
+          if (view !== 'media' && view !== 'settings' && view !== 'components' && view !== 'pagebuilder') {
             btnNewPost.style.display = 'flex';
           }
         });

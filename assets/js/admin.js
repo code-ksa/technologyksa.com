@@ -703,3 +703,274 @@ function createSampleComponents() {
     localStorage.setItem('techksa_components_cta', JSON.stringify(sampleCTA));
   }
 }
+
+// ==========================================
+// PAGE BUILDER FUNCTIONS
+// ==========================================
+
+let pageLayout = [];
+
+function initPageBuilder() {
+  // Load components from library into sidebar
+  loadPageComponents('hero', 'heroComponents');
+  loadPageComponents('cta', 'ctaComponents');
+  loadPageComponents('features', 'featuresComponents');
+  loadPageComponents('testimonials', 'testimonialsComponents');
+  loadPageComponents('stats', 'statsComponents');
+
+  // Load saved page layout
+  loadPageLayout();
+
+  // Setup drag and drop
+  setupDragAndDrop();
+}
+
+function loadPageComponents(type, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const components = JSON.parse(localStorage.getItem(`techksa_components_${type}`) || '[]');
+
+  if (components.length === 0) {
+    container.innerHTML = '<p style="font-size: 0.8rem; color: var(--text-muted); padding: 0.5rem;">لا توجد عناصر</p>';
+    return;
+  }
+
+  container.innerHTML = components.map(component => `
+    <div class="draggable-component" draggable="true" data-component='${JSON.stringify(component)}' data-type="${type}">
+      <h5>${component.title}</h5>
+      <p>${component.description || ''}</p>
+    </div>
+  `).join('');
+}
+
+function loadPageLayout() {
+  const saved = localStorage.getItem('techksa_page_layout');
+  pageLayout = saved ? JSON.parse(saved) : [];
+  renderPageCanvas();
+}
+
+function renderPageCanvas() {
+  const canvas = document.getElementById('pageCanvas');
+  if (!canvas) return;
+
+  if (pageLayout.length === 0) {
+    canvas.innerHTML = `
+      <div class="canvas-empty">
+        <i class="fas fa-plus-circle"></i>
+        <h3>ابدأ بإضافة عناصر إلى الصفحة</h3>
+        <p>اسحب العناصر من الشريط الجانبي وأفلتها هنا</p>
+      </div>
+    `;
+    return;
+  }
+
+  canvas.innerHTML = pageLayout.map((section, index) => `
+    <div class="page-section" draggable="true" data-index="${index}">
+      <div class="section-header">
+        <div class="section-info">
+          <span class="drag-handle">
+            <i class="fas fa-grip-vertical"></i>
+          </span>
+          <div class="section-icon">
+            <i class="fas fa-${getComponentIcon(section.type)}"></i>
+          </div>
+          <div class="section-title-group">
+            <h4>${section.title}</h4>
+            <p>${getComponentTypeName(section.type)}</p>
+          </div>
+        </div>
+        <div class="section-actions">
+          <button class="btn btn-secondary" onclick="moveSection(${index}, 'up')" ${index === 0 ? 'disabled' : ''}>
+            <i class="fas fa-arrow-up"></i>
+          </button>
+          <button class="btn btn-secondary" onclick="moveSection(${index}, 'down')" ${index === pageLayout.length - 1 ? 'disabled' : ''}>
+            <i class="fas fa-arrow-down"></i>
+          </button>
+          <button class="btn btn-primary" onclick="editSection(${index})">
+            <i class="fas fa-edit"></i> تعديل
+          </button>
+          <button class="btn btn-danger" onclick="deleteSection(${index})">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </div>
+      <div class="section-content">
+        <div class="section-content-preview">
+          ${renderSectionPreview(section)}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderSectionPreview(section) {
+  const content = section.content;
+  let preview = '';
+
+  switch(section.type) {
+    case 'hero':
+      preview = `
+        <strong>العنوان:</strong> ${content.title || 'غير محدد'}<br>
+        <strong>النص الفرعي:</strong> ${content.subtitle || 'غير محدد'}<br>
+        <strong>زر الحث:</strong> ${content.buttonText || 'غير محدد'}
+      `;
+      break;
+    case 'cta':
+      preview = `
+        <strong>العنوان:</strong> ${content.title || 'غير محدد'}<br>
+        <strong>الوصف:</strong> ${content.description || 'غير محدد'}<br>
+        <strong>زر الحث:</strong> ${content.buttonText || 'غير محدد'}
+      `;
+      break;
+    default:
+      preview = `<strong>محتوى العنصر</strong>`;
+  }
+
+  return preview;
+}
+
+function setupDragAndDrop() {
+  const canvas = document.getElementById('pageCanvas');
+  if (!canvas) return;
+
+  // Allow drop on canvas
+  canvas.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    canvas.style.borderColor = 'var(--saudi-green)';
+    canvas.style.backgroundColor = 'rgba(12, 74, 47, 0.05)';
+  });
+
+  canvas.addEventListener('dragleave', function(e) {
+    if (e.target === canvas) {
+      canvas.style.borderColor = '';
+      canvas.style.backgroundColor = '';
+    }
+  });
+
+  canvas.addEventListener('drop', function(e) {
+    e.preventDefault();
+    canvas.style.borderColor = '';
+    canvas.style.backgroundColor = '';
+
+    const componentData = e.dataTransfer.getData('component');
+    if (componentData) {
+      const component = JSON.parse(componentData);
+      addSectionToPage(component);
+    }
+  });
+
+  // Make components draggable
+  document.addEventListener('dragstart', function(e) {
+    if (e.target.classList.contains('draggable-component')) {
+      const componentData = e.target.getAttribute('data-component');
+      const type = e.target.getAttribute('data-type');
+      e.dataTransfer.setData('component', componentData);
+      e.dataTransfer.setData('type', type);
+    }
+  });
+}
+
+function addSectionToPage(component) {
+  const newSection = {
+    id: Date.now().toString(),
+    type: component.type || 'hero',
+    title: component.title,
+    description: component.description,
+    content: component.content || {}
+  };
+
+  pageLayout.push(newSection);
+  renderPageCanvas();
+  showToast('تم إضافة العنصر إلى الصفحة!', 'success');
+}
+
+function moveSection(index, direction) {
+  if (direction === 'up' && index > 0) {
+    [pageLayout[index], pageLayout[index - 1]] = [pageLayout[index - 1], pageLayout[index]];
+  } else if (direction === 'down' && index < pageLayout.length - 1) {
+    [pageLayout[index], pageLayout[index + 1]] = [pageLayout[index + 1], pageLayout[index]];
+  }
+  renderPageCanvas();
+}
+
+function editSection(index) {
+  // TODO: Implement section editor modal
+  showToast('سيتم إضافة محرر العناصر قريباً!', 'info');
+}
+
+function deleteSection(index) {
+  if (!confirm('هل أنت متأكد من حذف هذا العنصر من الصفحة؟')) return;
+
+  pageLayout.splice(index, 1);
+  renderPageCanvas();
+  showToast('تم حذف العنصر من الصفحة!', 'success');
+}
+
+function savePageLayout() {
+  localStorage.setItem('techksa_page_layout', JSON.stringify(pageLayout));
+  showToast('تم حفظ تخطيط الصفحة بنجاح!', 'success');
+}
+
+function previewPage() {
+  if (pageLayout.length === 0) {
+    showToast('لا توجد عناصر في الصفحة للمعاينة!', 'warning');
+    return;
+  }
+
+  // Generate HTML preview
+  let html = `
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>معاينة الصفحة</title>
+  <style>
+    body { font-family: 'Tajawal', sans-serif; margin: 0; padding: 20px; }
+    .section { margin-bottom: 40px; padding: 40px; background: #f5f5f5; border-radius: 8px; }
+    .section h2 { color: #0C4A2F; margin-bottom: 16px; }
+    .section p { color: #666; line-height: 1.6; }
+    .btn { display: inline-block; padding: 12px 24px; background: #0C4A2F; color: white; text-decoration: none; border-radius: 4px; }
+  </style>
+</head>
+<body>
+`;
+
+  pageLayout.forEach(section => {
+    html += `
+  <div class="section">
+    <h2>${section.title}</h2>
+    <p>${section.description || ''}</p>
+    ${section.content.title ? `<h3>${section.content.title}</h3>` : ''}
+    ${section.content.subtitle ? `<p>${section.content.subtitle}</p>` : ''}
+    ${section.content.buttonText ? `<a href="${section.content.buttonLink || '#'}" class="btn">${section.content.buttonText}</a>` : ''}
+  </div>
+`;
+  });
+
+  html += `
+</body>
+</html>
+`;
+
+  // Open in new window
+  const previewWindow = window.open('', 'preview', 'width=800,height=600');
+  previewWindow.document.write(html);
+  previewWindow.document.close();
+}
+
+function publishPage() {
+  if (pageLayout.length === 0) {
+    showToast('لا توجد عناصر في الصفحة للنشر!', 'warning');
+    return;
+  }
+
+  // Save before publishing
+  savePageLayout();
+
+  showToast('تم نشر الصفحة! يمكن الآن عرضها على الموقع الرئيسي.', 'success');
+
+  // TODO: Generate actual homepage HTML file or integrate with frontend
+  console.log('Page published:', pageLayout);
+}
