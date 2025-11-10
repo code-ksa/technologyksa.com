@@ -1,0 +1,255 @@
+/**
+ * Technology KSA - RTL (Right-to-Left) Stylesheet
+ * Complete RTL Support for Arabic Language
+ */
+
+/* ============================================
+   BASE RTL SETTINGS
+   ============================================ */
+
+[dir="rtl"] body {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] {
+  font-family: 'Tajawal', 'Cairo', sans-serif;
+}
+
+/* ============================================
+   NAVIGATION RTL
+   ============================================ */
+
+[dir="rtl"] .navbar {
+  flex-direction: row;
+}
+
+[dir="rtl"] .nav-menu {
+  flex-direction: row;
+}
+
+[dir="rtl"] .nav-actions {
+  flex-direction: row;
+}
+
+[dir="rtl"] .dropdown-menu {
+  right: 0;
+  left: auto;
+  text-align: right;
+}
+
+[dir="rtl"] .dropdown-item {
+  text-align: right;
+}
+
+/* ============================================
+   ICONS & ARROWS RTL
+   ============================================ */
+
+[dir="rtl"] .fa-arrow-left {
+  transform: scaleX(-1);
+}
+
+[dir="rtl"] .fa-arrow-right {
+  transform: scaleX(-1);
+}
+
+[dir="rtl"] .fa-chevron-left {
+  transform: scaleX(-1);
+}
+
+[dir="rtl"] .fa-chevron-right {
+  transform: scaleX(-1);
+}
+
+/* ============================================
+   HERO SECTION RTL
+   ============================================ */
+
+[dir="rtl"] .hero-content {
+  direction: rtl;
+}
+
+[dir="rtl"] .hero-cta {
+  direction: rtl;
+}
+
+/* ============================================
+   SERVICES RTL
+   ============================================ */
+
+[dir="rtl"] .service-link {
+  direction: rtl;
+}
+
+/* ============================================
+   PROCESS TIMELINE RTL
+   ============================================ */
+
+[dir="rtl"] .process-step {
+  direction: rtl;
+}
+
+[dir="rtl"] .step-content {
+  direction: rtl;
+}
+
+/* ============================================
+   BLOG RTL
+   ============================================ */
+
+[dir="rtl"] .blog-meta {
+  direction: rtl;
+}
+
+[dir="rtl"] .blog-link {
+  direction: rtl;
+}
+
+/* ============================================
+   FORMS RTL
+   ============================================ */
+
+[dir="rtl"] input,
+[dir="rtl"] textarea,
+[dir="rtl"] select {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir="rtl"] .form-group label {
+  text-align: right;
+}
+
+[dir="rtl"] .checkbox-group {
+  flex-direction: row;
+}
+
+/* ============================================
+   FOOTER RTL
+   ============================================ */
+
+[dir="rtl"] .footer-grid {
+  direction: rtl;
+}
+
+[dir="rtl"] .footer-column {
+  text-align: right;
+}
+
+[dir="rtl"] .footer-links {
+  text-align: right;
+}
+
+[dir="rtl"] .footer-links a:hover {
+  padding-right: 0;
+  padding-left: var(--space-2);
+}
+
+[dir="rtl"] .newsletter-input-group {
+  direction: rtl;
+}
+
+[dir="rtl"] .footer-bottom-content {
+  direction: rtl;
+}
+
+/* ============================================
+   FLOATING ELEMENTS RTL
+   ============================================ */
+
+[dir="rtl"] .whatsapp-float {
+  right: auto;
+  left: 30px;
+}
+
+[dir="rtl"] .scroll-to-top {
+  left: auto;
+  right: 30px;
+}
+
+/* ============================================
+   CAROUSEL RTL
+   ============================================ */
+
+[dir="rtl"] .carousel-btn.next {
+  /* Swap button positions */
+}
+
+[dir="rtl"] .carousel-btn.prev {
+  /* Swap button positions */
+}
+
+/* ============================================
+   SEARCH MODAL RTL
+   ============================================ */
+
+[dir="rtl"] .search-modal-content {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] .search-close {
+  left: auto;
+  right: var(--space-4);
+}
+
+[dir="rtl"] .search-input-wrapper {
+  direction: rtl;
+}
+
+/* ============================================
+   COOKIE BANNER RTL
+   ============================================ */
+
+[dir="rtl"] .cookie-content {
+  direction: rtl;
+  text-align: right;
+}
+
+/* ============================================
+   LISTS RTL
+   ============================================ */
+
+[dir="rtl"] ul,
+[dir="rtl"] ol {
+  padding-right: 1.5rem;
+  padding-left: 0;
+}
+
+/* ============================================
+   TEXT ALIGNMENT RTL
+   ============================================ */
+
+[dir="rtl"] .text-left {
+  text-align: right;
+}
+
+[dir="rtl"] .text-right {
+  text-align: left;
+}
+
+/* ============================================
+   SOCIAL ICONS (Keep LTR)
+   ============================================ */
+
+[dir="rtl"] .social-links,
+[dir="rtl"] .footer-social {
+  direction: ltr;
+}
+
+/* ============================================
+   MOBILE RTL
+   ============================================ */
+
+@media (max-width: 768px) {
+  [dir="rtl"] .nav-menu {
+    right: auto;
+    left: 0;
+    transform: translateX(-100%);
+  }
+
+  [dir="rtl"] .nav-menu.active {
+    transform: translateX(0);
+  }
+}
