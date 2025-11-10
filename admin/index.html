@@ -1209,6 +1209,77 @@
         max-height: 300px;
       }
     }
+
+    /* ==========================================
+       DYNAMIC ITEMS (Features, Testimonials, Stats)
+       ========================================== */
+
+    .dynamic-item {
+      background: var(--bg-secondary);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .dynamic-item:hover {
+      border-color: var(--saudi-green);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .dynamic-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .dynamic-item-header h6 {
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .dynamic-item-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .dynamic-item-actions button {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.85rem;
+    }
+
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+    }
+
+    .item-fields {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .item-fields .form-group {
+      margin-bottom: 0;
+    }
+
+    .item-fields input,
+    .item-fields textarea,
+    .item-fields select {
+      font-size: 0.9rem;
+      padding: 0.625rem 0.875rem;
+    }
+
+    .item-fields label {
+      font-size: 0.85rem;
+      margin-bottom: 0.25rem;
+    }
   </style>
 </head>
 <body>
@@ -2052,32 +2123,83 @@
 
           <!-- Features Fields -->
           <div id="featuresFields" class="section-fields" style="display: none;">
-            <h4 style="color: var(--text-primary); margin-bottom: 1rem;">
+            <h4 style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
               <i class="fas fa-th"></i> محتوى Features Grid
             </h4>
-            <p style="color: var(--text-muted); margin-bottom: 1rem;">
-              سيتم إضافة محرر Features Grid في التحديثات القادمة
-            </p>
+
+            <div class="form-group">
+              <label for="featuresTitle">عنوان القسم</label>
+              <input type="text" id="featuresTitle" placeholder="خدماتنا المميزة">
+            </div>
+
+            <div class="form-group">
+              <label for="featuresSubtitle">نص فرعي</label>
+              <textarea id="featuresSubtitle" rows="2" placeholder="نقدم مجموعة متكاملة من الخدمات"></textarea>
+            </div>
+
+            <div style="margin-top: 1.5rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h5 style="color: var(--text-primary); margin: 0;">الميزات</h5>
+                <button type="button" class="btn btn-primary btn-sm" onclick="addFeatureItem()">
+                  <i class="fas fa-plus"></i> إضافة ميزة
+                </button>
+              </div>
+              <div id="featuresList"></div>
+            </div>
           </div>
 
           <!-- Testimonials Fields -->
           <div id="testimonialsFields" class="section-fields" style="display: none;">
-            <h4 style="color: var(--text-primary); margin-bottom: 1rem;">
+            <h4 style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
               <i class="fas fa-comments"></i> محتوى Testimonials
             </h4>
-            <p style="color: var(--text-muted); margin-bottom: 1rem;">
-              سيتم إضافة محرر Testimonials في التحديثات القادمة
-            </p>
+
+            <div class="form-group">
+              <label for="testimonialsTitle">عنوان القسم</label>
+              <input type="text" id="testimonialsTitle" placeholder="آراء عملائنا">
+            </div>
+
+            <div class="form-group">
+              <label for="testimonialsSubtitle">نص فرعي</label>
+              <textarea id="testimonialsSubtitle" rows="2" placeholder="ماذا يقول عملاؤنا عنا"></textarea>
+            </div>
+
+            <div style="margin-top: 1.5rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h5 style="color: var(--text-primary); margin: 0;">الشهادات</h5>
+                <button type="button" class="btn btn-primary btn-sm" onclick="addTestimonialItem()">
+                  <i class="fas fa-plus"></i> إضافة شهادة
+                </button>
+              </div>
+              <div id="testimonialsList"></div>
+            </div>
           </div>
 
           <!-- Statistics Fields -->
           <div id="statsFields" class="section-fields" style="display: none;">
-            <h4 style="color: var(--text-primary); margin-bottom: 1rem;">
+            <h4 style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
               <i class="fas fa-chart-bar"></i> محتوى Statistics
             </h4>
-            <p style="color: var(--text-muted); margin-bottom: 1rem;">
-              سيتم إضافة محرر Statistics في التحديثات القادمة
-            </p>
+
+            <div class="form-group">
+              <label for="statsTitle">عنوان القسم</label>
+              <input type="text" id="statsTitle" placeholder="إنجازاتنا بالأرقام">
+            </div>
+
+            <div class="form-group">
+              <label for="statsSubtitle">نص فرعي</label>
+              <textarea id="statsSubtitle" rows="2" placeholder="أرقام تتحدث عن خبرتنا"></textarea>
+            </div>
+
+            <div style="margin-top: 1.5rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h5 style="color: var(--text-primary); margin: 0;">الإحصائيات</h5>
+                <button type="button" class="btn btn-primary btn-sm" onclick="addStatItem()">
+                  <i class="fas fa-plus"></i> إضافة إحصائية
+                </button>
+              </div>
+              <div id="statsList"></div>
+            </div>
           </div>
 
           <div class="form-actions">

@@ -843,6 +843,27 @@ function renderSectionPreview(section) {
         <strong>زر الحث:</strong> ${content.buttonText || 'غير محدد'}
       `;
       break;
+    case 'features':
+      const featuresCount = content.items?.length || 0;
+      preview = `
+        <strong>عنوان القسم:</strong> ${content.title || 'غير محدد'}<br>
+        <strong>عدد الميزات:</strong> ${featuresCount} ${featuresCount > 0 ? '✅' : '⚠️'}
+      `;
+      break;
+    case 'testimonials':
+      const testimonialsCount = content.items?.length || 0;
+      preview = `
+        <strong>عنوان القسم:</strong> ${content.title || 'غير محدد'}<br>
+        <strong>عدد الشهادات:</strong> ${testimonialsCount} ${testimonialsCount > 0 ? '✅' : '⚠️'}
+      `;
+      break;
+    case 'stats':
+      const statsCount = content.items?.length || 0;
+      preview = `
+        <strong>عنوان القسم:</strong> ${content.title || 'غير محدد'}<br>
+        <strong>عدد الإحصائيات:</strong> ${statsCount} ${statsCount > 0 ? '✅' : '⚠️'}
+      `;
+      break;
     default:
       preview = `<strong>محتوى العنصر</strong>`;
   }
@@ -955,14 +976,26 @@ function editSection(index) {
 
     case 'features':
       document.getElementById('featuresFields').style.display = 'block';
+      document.getElementById('featuresTitle').value = content.title || '';
+      document.getElementById('featuresSubtitle').value = content.subtitle || '';
+      currentFeatureItems = content.items || [];
+      renderFeaturesList();
       break;
 
     case 'testimonials':
       document.getElementById('testimonialsFields').style.display = 'block';
+      document.getElementById('testimonialsTitle').value = content.title || '';
+      document.getElementById('testimonialsSubtitle').value = content.subtitle || '';
+      currentTestimonialItems = content.items || [];
+      renderTestimonialsList();
       break;
 
     case 'stats':
       document.getElementById('statsFields').style.display = 'block';
+      document.getElementById('statsTitle').value = content.title || '';
+      document.getElementById('statsSubtitle').value = content.subtitle || '';
+      currentStatItems = content.items || [];
+      renderStatsList();
       break;
   }
 
@@ -1013,18 +1046,27 @@ function saveSectionEdit(event) {
       break;
 
     case 'features':
-      // TODO: Implement features content
-      content = pageLayout[index].content || {};
+      content = {
+        title: document.getElementById('featuresTitle').value,
+        subtitle: document.getElementById('featuresSubtitle').value,
+        items: collectFeatureItems()
+      };
       break;
 
     case 'testimonials':
-      // TODO: Implement testimonials content
-      content = pageLayout[index].content || {};
+      content = {
+        title: document.getElementById('testimonialsTitle').value,
+        subtitle: document.getElementById('testimonialsSubtitle').value,
+        items: collectTestimonialItems()
+      };
       break;
 
     case 'stats':
-      // TODO: Implement stats content
-      content = pageLayout[index].content || {};
+      content = {
+        title: document.getElementById('statsTitle').value,
+        subtitle: document.getElementById('statsSubtitle').value,
+        items: collectStatItems()
+      };
       break;
   }
 
@@ -1114,4 +1156,241 @@ function publishPage() {
 
   // TODO: Generate actual homepage HTML file or integrate with frontend
   console.log('Page published:', pageLayout);
+}
+
+// ==========================================
+// FEATURES EDITOR FUNCTIONS
+// ==========================================
+
+let currentFeatureItems = [];
+
+function addFeatureItem() {
+  const item = {
+    id: Date.now().toString(),
+    icon: 'fa-star',
+    title: '',
+    description: ''
+  };
+  currentFeatureItems.push(item);
+  renderFeaturesList();
+}
+
+function removeFeatureItem(id) {
+  currentFeatureItems = currentFeatureItems.filter(item => item.id !== id);
+  renderFeaturesList();
+}
+
+function renderFeaturesList() {
+  const container = document.getElementById('featuresList');
+  if (!container) return;
+
+  if (currentFeatureItems.length === 0) {
+    container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1rem;">لا توجد ميزات. اضغط "إضافة ميزة" للبدء</p>';
+    return;
+  }
+
+  container.innerHTML = currentFeatureItems.map((item, index) => `
+    <div class="dynamic-item" data-id="${item.id}">
+      <div class="dynamic-item-header">
+        <h6><i class="fas fa-cube"></i> ميزة ${index + 1}</h6>
+        <div class="dynamic-item-actions">
+          <button type="button" class="btn btn-danger btn-sm" onclick="removeFeatureItem('${item.id}')">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </div>
+      <div class="item-fields">
+        <div class="form-group">
+          <label>أيقونة FontAwesome</label>
+          <input type="text" class="feature-icon" data-id="${item.id}" value="${item.icon}" placeholder="fa-star">
+          <small>مثال: fa-star, fa-rocket, fa-check</small>
+        </div>
+        <div class="form-group">
+          <label>عنوان الميزة</label>
+          <input type="text" class="feature-title" data-id="${item.id}" value="${item.title}" placeholder="خدمة مميزة">
+        </div>
+        <div class="form-group">
+          <label>وصف الميزة</label>
+          <textarea class="feature-description" data-id="${item.id}" rows="2" placeholder="وصف مختصر للميزة">${item.description}</textarea>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function collectFeatureItems() {
+  currentFeatureItems.forEach(item => {
+    item.icon = document.querySelector(`.feature-icon[data-id="${item.id}"]`)?.value || '';
+    item.title = document.querySelector(`.feature-title[data-id="${item.id}"]`)?.value || '';
+    item.description = document.querySelector(`.feature-description[data-id="${item.id}"]`)?.value || '';
+  });
+  return currentFeatureItems;
+}
+
+// ==========================================
+// TESTIMONIALS EDITOR FUNCTIONS
+// ==========================================
+
+let currentTestimonialItems = [];
+
+function addTestimonialItem() {
+  const item = {
+    id: Date.now().toString(),
+    name: '',
+    position: '',
+    company: '',
+    image: '',
+    rating: 5,
+    text: ''
+  };
+  currentTestimonialItems.push(item);
+  renderTestimonialsList();
+}
+
+function removeTestimonialItem(id) {
+  currentTestimonialItems = currentTestimonialItems.filter(item => item.id !== id);
+  renderTestimonialsList();
+}
+
+function renderTestimonialsList() {
+  const container = document.getElementById('testimonialsList');
+  if (!container) return;
+
+  if (currentTestimonialItems.length === 0) {
+    container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1rem;">لا توجد شهادات. اضغط "إضافة شهادة" للبدء</p>';
+    return;
+  }
+
+  container.innerHTML = currentTestimonialItems.map((item, index) => `
+    <div class="dynamic-item" data-id="${item.id}">
+      <div class="dynamic-item-header">
+        <h6><i class="fas fa-quote-right"></i> شهادة ${index + 1}</h6>
+        <div class="dynamic-item-actions">
+          <button type="button" class="btn btn-danger btn-sm" onclick="removeTestimonialItem('${item.id}')">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </div>
+      <div class="item-fields">
+        <div class="form-group">
+          <label>اسم العميل</label>
+          <input type="text" class="testimonial-name" data-id="${item.id}" value="${item.name}" placeholder="محمد أحمد">
+        </div>
+        <div class="form-group">
+          <label>المنصب</label>
+          <input type="text" class="testimonial-position" data-id="${item.id}" value="${item.position}" placeholder="مدير تقني">
+        </div>
+        <div class="form-group">
+          <label>الشركة</label>
+          <input type="text" class="testimonial-company" data-id="${item.id}" value="${item.company}" placeholder="شركة ABC">
+        </div>
+        <div class="form-group">
+          <label>رابط الصورة</label>
+          <input type="text" class="testimonial-image" data-id="${item.id}" value="${item.image}" placeholder="https://...">
+        </div>
+        <div class="form-group">
+          <label>التقييم (من 5)</label>
+          <select class="testimonial-rating" data-id="${item.id}">
+            <option value="5" ${item.rating === 5 ? 'selected' : ''}>⭐⭐⭐⭐⭐</option>
+            <option value="4" ${item.rating === 4 ? 'selected' : ''}>⭐⭐⭐⭐</option>
+            <option value="3" ${item.rating === 3 ? 'selected' : ''}>⭐⭐⭐</option>
+            <option value="2" ${item.rating === 2 ? 'selected' : ''}>⭐⭐</option>
+            <option value="1" ${item.rating === 1 ? 'selected' : ''}>⭐</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>نص الشهادة</label>
+          <textarea class="testimonial-text" data-id="${item.id}" rows="3" placeholder="رأي العميل عن الخدمة...">${item.text}</textarea>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function collectTestimonialItems() {
+  currentTestimonialItems.forEach(item => {
+    item.name = document.querySelector(`.testimonial-name[data-id="${item.id}"]`)?.value || '';
+    item.position = document.querySelector(`.testimonial-position[data-id="${item.id}"]`)?.value || '';
+    item.company = document.querySelector(`.testimonial-company[data-id="${item.id}"]`)?.value || '';
+    item.image = document.querySelector(`.testimonial-image[data-id="${item.id}"]`)?.value || '';
+    item.rating = parseInt(document.querySelector(`.testimonial-rating[data-id="${item.id}"]`)?.value) || 5;
+    item.text = document.querySelector(`.testimonial-text[data-id="${item.id}"]`)?.value || '';
+  });
+  return currentTestimonialItems;
+}
+
+// ==========================================
+// STATISTICS EDITOR FUNCTIONS
+// ==========================================
+
+let currentStatItems = [];
+
+function addStatItem() {
+  const item = {
+    id: Date.now().toString(),
+    icon: 'fa-users',
+    number: '',
+    suffix: '+',
+    label: ''
+  };
+  currentStatItems.push(item);
+  renderStatsList();
+}
+
+function removeStatItem(id) {
+  currentStatItems = currentStatItems.filter(item => item.id !== id);
+  renderStatsList();
+}
+
+function renderStatsList() {
+  const container = document.getElementById('statsList');
+  if (!container) return;
+
+  if (currentStatItems.length === 0) {
+    container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1rem;">لا توجد إحصائيات. اضغط "إضافة إحصائية" للبدء</p>';
+    return;
+  }
+
+  container.innerHTML = currentStatItems.map((item, index) => `
+    <div class="dynamic-item" data-id="${item.id}">
+      <div class="dynamic-item-header">
+        <h6><i class="fas fa-chart-line"></i> إحصائية ${index + 1}</h6>
+        <div class="dynamic-item-actions">
+          <button type="button" class="btn btn-danger btn-sm" onclick="removeStatItem('${item.id}')">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </div>
+      <div class="item-fields">
+        <div class="form-group">
+          <label>أيقونة FontAwesome</label>
+          <input type="text" class="stat-icon" data-id="${item.id}" value="${item.icon}" placeholder="fa-users">
+          <small>مثال: fa-users, fa-project-diagram, fa-trophy</small>
+        </div>
+        <div class="form-group">
+          <label>الرقم</label>
+          <input type="text" class="stat-number" data-id="${item.id}" value="${item.number}" placeholder="500">
+        </div>
+        <div class="form-group">
+          <label>لاحقة الرقم</label>
+          <input type="text" class="stat-suffix" data-id="${item.id}" value="${item.suffix}" placeholder="+">
+          <small>مثال: +, %, K</small>
+        </div>
+        <div class="form-group">
+          <label>التسمية</label>
+          <input type="text" class="stat-label" data-id="${item.id}" value="${item.label}" placeholder="عميل سعيد">
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function collectStatItems() {
+  currentStatItems.forEach(item => {
+    item.icon = document.querySelector(`.stat-icon[data-id="${item.id}"]`)?.value || '';
+    item.number = document.querySelector(`.stat-number[data-id="${item.id}"]`)?.value || '';
+    item.suffix = document.querySelector(`.stat-suffix[data-id="${item.id}"]`)?.value || '';
+    item.label = document.querySelector(`.stat-label[data-id="${item.id}"]`)?.value || '';
+  });
+  return currentStatItems;
 }
