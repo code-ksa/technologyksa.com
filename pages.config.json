@@ -1,0 +1,187 @@
+{
+  "site": {
+    "name": "Technology KSA",
+    "nameAr": "التقنية السعودية",
+    "url": "https://technologyksa.com",
+    "description": "شركة تقنية سعودية رائدة في تطوير المواقع والتطبيقات",
+    "logo": "/assets/images/logo.png",
+    "defaultLanguage": "ar",
+    "languages": ["ar", "en"]
+  },
+  "build": {
+    "outputDir": "dist",
+    "templatesDir": "templates",
+    "partialsDir": "templates/partials",
+    "cleanBeforeBuild": true,
+    "minifyHTML": false,
+    "generateSitemap": true,
+    "generateRobots": true
+  },
+  "pages": [
+    {
+      "id": "home",
+      "slug": "",
+      "slugAr": "",
+      "title": "Technology KSA - الرئيسية",
+      "titleAr": "التقنية السعودية - الرئيسية",
+      "description": "شركة تقنية سعودية متخصصة في تطوير المواقع والتطبيقات",
+      "template": "page",
+      "layout": "default",
+      "sections": [
+        "hero",
+        "features",
+        "services",
+        "stats",
+        "testimonials",
+        "cta"
+      ],
+      "priority": 1.0
+    },
+    {
+      "id": "about",
+      "slug": "about",
+      "slugAr": "عن-الشركة",
+      "title": "About Us - Technology KSA",
+      "titleAr": "عن الشركة - التقنية السعودية",
+      "description": "تعرف على شركة التقنية السعودية",
+      "template": "page",
+      "layout": "default",
+      "sections": [
+        "about-hero",
+        "about-story",
+        "team",
+        "values"
+      ],
+      "priority": 0.8
+    },
+    {
+      "id": "services",
+      "slug": "services",
+      "slugAr": "خدماتنا",
+      "title": "Our Services - Technology KSA",
+      "titleAr": "خدماتنا - التقنية السعودية",
+      "description": "خدمات تطوير المواقع والتطبيقات",
+      "template": "services",
+      "layout": "default",
+      "sections": [
+        "services-hero",
+        "services-grid",
+        "services-process"
+      ],
+      "priority": 0.9
+    },
+    {
+      "id": "blog",
+      "slug": "blog",
+      "slugAr": "المدونة",
+      "title": "Blog - Technology KSA",
+      "titleAr": "المدونة - التقنية السعودية",
+      "description": "آخر الأخبار والمقالات التقنية",
+      "template": "blog",
+      "layout": "default",
+      "sections": [
+        "blog-hero",
+        "blog-grid"
+      ],
+      "dynamic": true,
+      "priority": 0.7
+    },
+    {
+      "id": "portfolio",
+      "slug": "portfolio",
+      "slugAr": "أعمالنا",
+      "title": "Portfolio - Technology KSA",
+      "titleAr": "أعمالنا - التقنية السعودية",
+      "description": "مشاريعنا السابقة",
+      "template": "portfolio",
+      "layout": "default",
+      "sections": [
+        "portfolio-hero",
+        "portfolio-grid",
+        "portfolio-cta"
+      ],
+      "dynamic": true,
+      "priority": 0.8
+    },
+    {
+      "id": "contact",
+      "slug": "contact",
+      "slugAr": "اتصل-بنا",
+      "title": "Contact Us - Technology KSA",
+      "titleAr": "اتصل بنا - التقنية السعودية",
+      "description": "تواصل معنا",
+      "template": "contact",
+      "layout": "default",
+      "sections": [
+        "contact-hero",
+        "contact-form",
+        "contact-info"
+      ],
+      "priority": 0.6
+    }
+  ],
+  "navigation": {
+    "main": [
+      {
+        "label": "الرئيسية",
+        "labelEn": "Home",
+        "url": "/",
+        "icon": "home"
+      },
+      {
+        "label": "عن الشركة",
+        "labelEn": "About",
+        "url": "/about",
+        "icon": "info-circle"
+      },
+      {
+        "label": "خدماتنا",
+        "labelEn": "Services",
+        "url": "/services",
+        "icon": "briefcase"
+      },
+      {
+        "label": "أعمالنا",
+        "labelEn": "Portfolio",
+        "url": "/portfolio",
+        "icon": "th"
+      },
+      {
+        "label": "المدونة",
+        "labelEn": "Blog",
+        "url": "/blog",
+        "icon": "newspaper"
+      },
+      {
+        "label": "اتصل بنا",
+        "labelEn": "Contact",
+        "url": "/contact",
+        "icon": "envelope"
+      }
+    ],
+    "footer": [
+      {
+        "label": "سياسة الخصوصية",
+        "url": "/privacy"
+      },
+      {
+        "label": "شروط الاستخدام",
+        "url": "/terms"
+      }
+    ]
+  },
+  "social": {
+    "facebook": "https://facebook.com/technologyksa",
+    "twitter": "https://twitter.com/technologyksa",
+    "instagram": "https://instagram.com/technologyksa",
+    "linkedin": "https://linkedin.com/company/technologyksa",
+    "youtube": "https://youtube.com/@technologyksa"
+  },
+  "contact": {
+    "email": "info@technologyksa.com",
+    "phone": "+966 50 123 4567",
+    "whatsapp": "+966501234567",
+    "address": "الرياض، المملكة العربية السعودية",
+    "addressEn": "Riyadh, Saudi Arabia"
+  }
+}
