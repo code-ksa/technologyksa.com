@@ -154,7 +154,7 @@ class PagesManager {
         menu.items.push({
           id: 'item-' + Date.now(),
           title: page.title,
-          url: page.slug + '.html',
+          url: '/' + page.slug,
           type: 'page',
           pageId: page.id
         });
@@ -223,9 +223,9 @@ class MenusManager {
         location: 'header',
         date: new Date().toISOString().split('T')[0],
         items: [
-          { id: 'item-1', title: 'الرئيسية', url: 'index.html', type: 'page', pageId: 'home' },
-          { id: 'item-2', title: 'خدماتنا', url: 'services.html', type: 'custom' },
-          { id: 'item-3', title: 'المدونة', url: 'blog.html', type: 'custom' },
+          { id: 'item-1', title: 'الرئيسية', url: '/', type: 'page', pageId: 'home' },
+          { id: 'item-2', title: 'خدماتنا', url: '/services', type: 'custom' },
+          { id: 'item-3', title: 'المدونة', url: '/blog', type: 'custom' },
           { id: 'item-4', title: 'اتصل بنا', url: '#contact', type: 'custom' }
         ]
       }
@@ -315,10 +315,10 @@ class MenusManager {
         <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; background: var(--bg-primary); border-radius: 4px; cursor: pointer;">
           <input type="checkbox"
             ${isChecked ? 'checked' : ''}
-            onchange="menusManager.togglePageInMenu('${page.id}', '${page.title}', '${page.slug}.html', this.checked)"
+            onchange="menusManager.togglePageInMenu('${page.id}', '${page.title}', '/${page.slug}', this.checked)"
             style="width: 18px; height: 18px;">
           <span>${page.title}</span>
-          <code style="margin-right: auto; font-size: 0.85rem; color: var(--text-secondary);">${page.slug}</code>
+          <code style="margin-right: auto; font-size: 0.85rem; color: var(--text-secondary);">/${page.slug}</code>
         </label>
       `;
     }).join('');
@@ -1112,6 +1112,7 @@ function loadComponents(type) {
 
 function getComponentTypeName(type) {
   const names = {
+    // Original (8)
     hero: 'Hero Section',
     cta: 'Call to Action',
     features: 'Features Grid',
@@ -1119,13 +1120,48 @@ function getComponentTypeName(type) {
     stats: 'Statistics',
     contact: 'Contact Form',
     team: 'Team Members',
-    pricing: 'Pricing Table'
+    pricing: 'Pricing Table',
+
+    // Section Types (15)
+    about: 'About Section',
+    services: 'Services Grid',
+    portfolio: 'Portfolio Grid',
+    blog: 'Blog Grid',
+    faq: 'FAQ - Accordion',
+    timeline: 'Timeline',
+    counter: 'Animated Counter',
+    video: 'Video Section',
+    gallery: 'Image Gallery',
+    map: 'Map Section',
+    newsletter: 'Newsletter Signup',
+    brands: 'Brands/Partners',
+    process: 'Process Steps',
+    comparison: 'Comparison Table',
+    accordion: 'Content Accordion',
+
+    // Content Types (15)
+    textblock: 'Text Block',
+    image: 'Image',
+    iconbox: 'Icon Box',
+    alert: 'Alert Box',
+    quote: 'Quote Block',
+    divider: 'Divider',
+    spacer: 'Spacer',
+    buttons: 'Button Group',
+    social: 'Social Share',
+    progress: 'Progress Bar',
+    tabs: 'Tabs',
+    cards: 'Cards Grid',
+    list: 'Styled List',
+    table: 'Data Table',
+    code: 'Code Block'
   };
   return names[type] || type;
 }
 
 function getComponentIcon(type) {
   const icons = {
+    // Original (8)
     hero: 'image',
     cta: 'bullhorn',
     features: 'th',
@@ -1133,7 +1169,41 @@ function getComponentIcon(type) {
     stats: 'chart-bar',
     contact: 'envelope',
     team: 'users',
-    pricing: 'tags'
+    pricing: 'tags',
+
+    // Section Types (15)
+    about: 'info-circle',
+    services: 'briefcase',
+    portfolio: 'folder-open',
+    blog: 'blog',
+    faq: 'question-circle',
+    timeline: 'stream',
+    counter: 'tachometer-alt',
+    video: 'play-circle',
+    gallery: 'images',
+    map: 'map-marker-alt',
+    newsletter: 'paper-plane',
+    brands: 'handshake',
+    process: 'tasks',
+    comparison: 'balance-scale',
+    accordion: 'list-alt',
+
+    // Content Types (15)
+    textblock: 'align-left',
+    image: 'file-image',
+    iconbox: 'cube',
+    alert: 'exclamation-triangle',
+    quote: 'quote-right',
+    divider: 'minus',
+    spacer: 'arrows-alt-v',
+    buttons: 'th-large',
+    social: 'share-alt',
+    progress: 'tasks',
+    tabs: 'folder',
+    cards: 'id-card',
+    list: 'list-ul',
+    table: 'table',
+    code: 'code'
   };
   return icons[type] || 'cube';
 }
@@ -1261,21 +1331,95 @@ function createSampleComponents() {
 let pageLayout = [];
 
 function initPageBuilder() {
-  // Load components from library into sidebar
-  loadPageComponents('hero', 'heroComponents');
-  loadPageComponents('cta', 'ctaComponents');
-  loadPageComponents('features', 'featuresComponents');
-  loadPageComponents('testimonials', 'testimonialsComponents');
-  loadPageComponents('stats', 'statsComponents');
-  loadPageComponents('contact', 'contactComponents');
-  loadPageComponents('team', 'teamComponents');
-  loadPageComponents('pricing', 'pricingComponents');
+  // Build dynamic sidebar with all component types
+  buildDynamicSidebar();
 
   // Load saved page layout
   loadPageLayout();
 
   // Setup drag and drop
   setupDragAndDrop();
+}
+
+function buildDynamicSidebar() {
+  const sidebar = document.querySelector('.component-categories');
+  if (!sidebar || typeof COMPONENT_TYPES === 'undefined') {
+    console.warn('COMPONENT_TYPES not loaded or sidebar not found');
+    return;
+  }
+
+  // Clear existing content
+  sidebar.innerHTML = '';
+
+  // Group components by category
+  const sections = {};
+  const contents = {};
+
+  Object.entries(COMPONENT_TYPES).forEach(([type, data]) => {
+    if (data.category === 'sections') {
+      sections[type] = data;
+    } else if (data.category === 'content') {
+      contents[type] = data;
+    }
+  });
+
+  // Add Sections category
+  sidebar.innerHTML += `
+    <div class="category-group">
+      <h3 style="color: var(--primary); padding: 1rem; margin: 0; border-bottom: 2px solid var(--primary); font-size: 1rem;">
+        <i class="fas fa-layer-group"></i> قوالب الأقسام (Sections)
+      </h3>
+  `;
+
+  Object.entries(sections).forEach(([type, data]) => {
+    sidebar.innerHTML += `
+      <div class="component-category">
+        <h4 class="category-title">
+          <i class="fas fa-${data.icon}"></i>
+          ${data.name}
+        </h4>
+        <div id="${type}Components" class="draggable-components">
+          <div class="draggable-component" draggable="true" data-type="${type}">
+            <div style="padding: 0.75rem;">
+              <h5 style="margin: 0 0 0.5rem 0; font-size: 0.9rem;">${data.name}</h5>
+              <p style="margin: 0; font-size: 0.75rem; color: var(--text-secondary);">${data.description}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  sidebar.innerHTML += `</div>`;
+
+  // Add Content category
+  sidebar.innerHTML += `
+    <div class="category-group" style="margin-top: 1rem;">
+      <h3 style="color: var(--secondary); padding: 1rem; margin: 0; border-bottom: 2px solid var(--secondary); font-size: 1rem;">
+        <i class="fas fa-puzzle-piece"></i> عناصر المحتوى (Content)
+      </h3>
+  `;
+
+  Object.entries(contents).forEach(([type, data]) => {
+    sidebar.innerHTML += `
+      <div class="component-category">
+        <h4 class="category-title">
+          <i class="fas fa-${data.icon}"></i>
+          ${data.name}
+        </h4>
+        <div id="${type}Components" class="draggable-components">
+          <div class="draggable-component" draggable="true" data-type="${type}">
+            <div style="padding: 0.75rem;">
+              <h5 style="margin: 0 0 0.5rem 0; font-size: 0.9rem;">${data.name}</h5>
+              <p style="margin: 0; font-size: 0.75rem; color: var(--text-secondary);">${data.description}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  sidebar.innerHTML += `</div>`;
 }
 
 function loadPageComponents(type, containerId) {
@@ -1360,48 +1504,65 @@ function renderPageCanvas() {
   `).join('');
 }
 
+// ====================================
+// DYNAMIC SECTION PREVIEW
+// ====================================
+
 function renderSectionPreview(section) {
-  const content = section.content;
+  const content = section.content || {};
+  const componentType = section.type;
+
+  // Check if component type exists in COMPONENT_TYPES
+  if (typeof COMPONENT_TYPES === 'undefined' || !COMPONENT_TYPES[componentType]) {
+    return `<strong>نوع العنصر:</strong> ${componentType}<br><em style="color: var(--text-muted);">لا توجد بيانات معاينة</em>`;
+  }
+
+  const componentData = COMPONENT_TYPES[componentType];
   let preview = '';
 
-  switch(section.type) {
-    case 'hero':
-      preview = `
-        <strong>العنوان:</strong> ${content.title || 'غير محدد'}<br>
-        <strong>النص الفرعي:</strong> ${content.subtitle || 'غير محدد'}<br>
-        <strong>زر الحث:</strong> ${content.buttonText || 'غير محدد'}
-      `;
-      break;
-    case 'cta':
-      preview = `
-        <strong>العنوان:</strong> ${content.title || 'غير محدد'}<br>
-        <strong>الوصف:</strong> ${content.description || 'غير محدد'}<br>
-        <strong>زر الحث:</strong> ${content.buttonText || 'غير محدد'}
-      `;
-      break;
-    case 'features':
-      const featuresCount = content.items?.length || 0;
-      preview = `
-        <strong>عنوان القسم:</strong> ${content.title || 'غير محدد'}<br>
-        <strong>عدد الميزات:</strong> ${featuresCount} ${featuresCount > 0 ? '✅' : '⚠️'}
-      `;
-      break;
-    case 'testimonials':
-      const testimonialsCount = content.items?.length || 0;
-      preview = `
-        <strong>عنوان القسم:</strong> ${content.title || 'غير محدد'}<br>
-        <strong>عدد الشهادات:</strong> ${testimonialsCount} ${testimonialsCount > 0 ? '✅' : '⚠️'}
-      `;
-      break;
-    case 'stats':
-      const statsCount = content.items?.length || 0;
-      preview = `
-        <strong>عنوان القسم:</strong> ${content.title || 'غير محدد'}<br>
-        <strong>عدد الإحصائيات:</strong> ${statsCount} ${statsCount > 0 ? '✅' : '⚠️'}
-      `;
-      break;
-    default:
-      preview = `<strong>محتوى العنصر</strong>`;
+  // Show title if exists
+  if (content.title) {
+    preview += `<strong>العنوان:</strong> ${content.title}<br>`;
+  }
+
+  // Show subtitle/description if exists
+  if (content.subtitle) {
+    preview += `<strong>النص الفرعي:</strong> ${content.subtitle.substring(0, 60)}${content.subtitle.length > 60 ? '...' : ''}<br>`;
+  } else if (content.description) {
+    preview += `<strong>الوصف:</strong> ${content.description.substring(0, 60)}${content.description.length > 60 ? '...' : ''}<br>`;
+  }
+
+  // Show button if exists
+  if (content.buttonText) {
+    preview += `<strong>زر:</strong> ${content.buttonText}<br>`;
+  }
+
+  // Show items count if component has items
+  if (componentData.hasItems) {
+    const itemsCount = content.items?.length || 0;
+    preview += `<strong>العناصر:</strong> ${itemsCount} ${itemsCount > 0 ? '✅' : '⚠️'}<br>`;
+  }
+
+  // Show specific fields based on component type
+  if (content.columns) {
+    preview += `<strong>الأعمدة:</strong> ${content.columns}<br>`;
+  }
+
+  if (content.image) {
+    preview += `<strong>الصورة:</strong> ✅<br>`;
+  }
+
+  if (content.video) {
+    preview += `<strong>الفيديو:</strong> ✅<br>`;
+  }
+
+  if (content.code) {
+    preview += `<strong>كود:</strong> ${content.language || 'text'}<br>`;
+  }
+
+  // If no preview content, show default
+  if (preview === '') {
+    preview = `<em style="color: var(--text-muted);">لم يتم إضافة محتوى بعد</em>`;
   }
 
   return preview;
@@ -1489,6 +1650,282 @@ function duplicateSection(index) {
   showToast('تم تكرار العنصر بنجاح!', 'success');
 }
 
+// ====================================
+// DYNAMIC FORM BUILDER
+// ====================================
+
+/**
+ * Build dynamic form fields based on component type
+ */
+function buildDynamicFormFields(componentType, content = {}) {
+  if (typeof COMPONENT_TYPES === 'undefined' || !COMPONENT_TYPES[componentType]) {
+    console.warn('Component type not found:', componentType);
+    return '<p>نوع العنصر غير معروف</p>';
+  }
+
+  const componentData = COMPONENT_TYPES[componentType];
+  const fields = componentData.fields || [];
+
+  let html = `<div class="dynamic-fields" id="dynamicFields_${componentType}">`;
+
+  fields.forEach(field => {
+    // Skip items field (handled separately)
+    if (field === 'items') return;
+
+    const fieldId = `field_${componentType}_${field}`;
+    const fieldValue = content[field] || '';
+    const fieldLabel = getFieldLabel(field);
+
+    html += `
+      <div class="form-group">
+        <label for="${fieldId}">${fieldLabel}</label>
+        ${getFieldInput(fieldId, field, fieldValue, componentType)}
+      </div>
+    `;
+  });
+
+  // Handle items if component has them
+  if (componentData.hasItems) {
+    html += `
+      <div class="form-group">
+        <label>العناصر</label>
+        <div id="itemsContainer_${componentType}" class="items-container"></div>
+        <button type="button" class="btn btn-secondary" onclick="addComponentItem('${componentType}')">
+          <i class="fas fa-plus"></i> إضافة عنصر
+        </button>
+      </div>
+    `;
+  }
+
+  // Advanced Settings
+  const advanced = content.advanced || {};
+  html += `
+    <div class="form-group" style="margin-top: 2rem;">
+      <details>
+        <summary style="cursor: pointer; padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-md); font-weight: 600; color: var(--saudi-green); user-select: none;">
+          <i class="fas fa-cog"></i> إعدادات متقدمة
+        </summary>
+        <div style="padding: 1rem; border: 1px solid var(--border-color); border-top: none; border-radius: 0 0 var(--radius-md) var(--radius-md); margin-top: 0;">
+
+          <div class="form-group">
+            <label>CSS Class مخصص</label>
+            <input type="text" id="adv_${componentType}_customClass" class="form-control" value="${advanced.customClass || ''}" placeholder="my-custom-class">
+            <small>أضف CSS classes مخصصة لهذا العنصر</small>
+          </div>
+
+          <div class="form-group">
+            <label>الحركة (Animation)</label>
+            <select id="adv_${componentType}_animation" class="form-control">
+              <option value="">بدون حركة</option>
+              <option value="fade-up" ${advanced.animation === 'fade-up' ? 'selected' : ''}>ظهور من الأسفل</option>
+              <option value="fade-down" ${advanced.animation === 'fade-down' ? 'selected' : ''}>ظهور من الأعلى</option>
+              <option value="fade-left" ${advanced.animation === 'fade-left' ? 'selected' : ''}>ظهور من اليسار</option>
+              <option value="fade-right" ${advanced.animation === 'fade-right' ? 'selected' : ''}>ظهور من اليمين</option>
+              <option value="zoom-in" ${advanced.animation === 'zoom-in' ? 'selected' : ''}>تكبير</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>الخلفية</label>
+            <input type="text" id="adv_${componentType}_bgColor" class="form-control" value="${advanced.bgColor || ''}" placeholder="#ffffff أو transparent">
+          </div>
+
+          <div class="form-group">
+            <label>المسافة العلوية (px)</label>
+            <input type="number" id="adv_${componentType}_marginTop" class="form-control" value="${advanced.marginTop || ''}" min="0" max="200">
+          </div>
+
+          <div class="form-group">
+            <label>المسافة السفلية (px)</label>
+            <input type="number" id="adv_${componentType}_marginBottom" class="form-control" value="${advanced.marginBottom || ''}" min="0" max="200">
+          </div>
+
+        </div>
+      </details>
+    </div>
+  `;
+
+  html += '</div>';
+  return html;
+}
+
+/**
+ * Get field label in Arabic
+ */
+function getFieldLabel(field) {
+  const labels = {
+    title: 'العنوان',
+    subtitle: 'العنوان الفرعي',
+    description: 'الوصف',
+    text: 'النص',
+    content: 'المحتوى',
+    buttonText: 'نص الزر',
+    buttonLink: 'رابط الزر',
+    buttonStyle: 'نمط الزر',
+    backgroundImage: 'صورة الخلفية',
+    backgroundColor: 'لون الخلفية',
+    overlay: 'شفافية الخلفية',
+    image: 'الصورة',
+    imageAlt: 'وصف الصورة',
+    icon: 'الأيقونة',
+    columns: 'عدد الأعمدة',
+    alignment: 'المحاذاة',
+    video: 'رابط الفيديو',
+    videoThumbnail: 'صورة معاينة الفيديو',
+    height: 'الارتفاع',
+    width: 'العرض',
+    code: 'الكود',
+    language: 'اللغة',
+    name: 'الاسم',
+    email: 'البريد الإلكتروني',
+    phone: 'الهاتف',
+    message: 'الرسالة',
+    latitude: 'خط العرض',
+    longitude: 'خط الطول',
+    zoom: 'التكبير',
+    items: 'العناصر',
+    layout: 'التخطيط',
+    animation: 'الحركة',
+    spacing: 'المسافات',
+    borderColor: 'لون الحدود',
+    borderWidth: 'عرض الحدود',
+    borderRadius: 'انحناء الحدود',
+    shadow: 'الظل'
+  };
+  return labels[field] || field;
+}
+
+/**
+ * Get appropriate input field based on field type
+ */
+function getFieldInput(fieldId, fieldName, fieldValue, componentType) {
+  // Text areas for long content
+  if (['description', 'text', 'content', 'message', 'code'].includes(fieldName)) {
+    return `<textarea id="${fieldId}" class="form-control" rows="4">${fieldValue}</textarea>`;
+  }
+
+  // Color pickers
+  if (fieldName.includes('Color') || fieldName === 'backgroundColor' || fieldName === 'borderColor') {
+    return `
+      <div style="display: flex; gap: 0.5rem;">
+        <input type="color" id="${fieldId}_picker" value="${fieldValue.startsWith('#') ? fieldValue : '#10B981'}" style="width: 60px; height: 40px;">
+        <input type="text" id="${fieldId}" class="form-control" value="${fieldValue}" placeholder="#10B981 أو gradient">
+      </div>
+    `;
+  }
+
+  // Number inputs
+  if (['columns', 'rating', 'zoom', 'overlay', 'borderWidth', 'borderRadius', 'height', 'width', 'spacing'].includes(fieldName)) {
+    const max = fieldName === 'columns' ? 12 : (fieldName === 'rating' ? 5 : (fieldName === 'overlay' ? 1 : 1000));
+    const step = ['overlay', 'zoom'].includes(fieldName) ? '0.1' : '1';
+    return `<input type="number" id="${fieldId}" class="form-control" value="${fieldValue}" min="0" max="${max}" step="${step}">`;
+  }
+
+  // Select for button style
+  if (fieldName === 'buttonStyle') {
+    return `
+      <select id="${fieldId}" class="form-control">
+        <option value="primary" ${fieldValue === 'primary' ? 'selected' : ''}>أساسي</option>
+        <option value="secondary" ${fieldValue === 'secondary' ? 'selected' : ''}>ثانوي</option>
+        <option value="outline" ${fieldValue === 'outline' ? 'selected' : ''}>حدود</option>
+      </select>
+    `;
+  }
+
+  // Select for alignment
+  if (fieldName === 'alignment') {
+    return `
+      <select id="${fieldId}" class="form-control">
+        <option value="right" ${fieldValue === 'right' ? 'selected' : ''}>يمين</option>
+        <option value="center" ${fieldValue === 'center' ? 'selected' : ''}>وسط</option>
+        <option value="left" ${fieldValue === 'left' ? 'selected' : ''}>يسار</option>
+      </select>
+    `;
+  }
+
+  // Select for layout
+  if (fieldName === 'layout') {
+    return `
+      <select id="${fieldId}" class="form-control">
+        <option value="grid" ${fieldValue === 'grid' ? 'selected' : ''}>شبكة</option>
+        <option value="list" ${fieldValue === 'list' ? 'selected' : ''}>قائمة</option>
+        <option value="carousel" ${fieldValue === 'carousel' ? 'selected' : ''}>شريط متحرك</option>
+      </select>
+    `;
+  }
+
+  // Select for language (code blocks)
+  if (fieldName === 'language') {
+    return `
+      <select id="${fieldId}" class="form-control">
+        <option value="javascript" ${fieldValue === 'javascript' ? 'selected' : ''}>JavaScript</option>
+        <option value="html" ${fieldValue === 'html' ? 'selected' : ''}>HTML</option>
+        <option value="css" ${fieldValue === 'css' ? 'selected' : ''}>CSS</option>
+        <option value="php" ${fieldValue === 'php' ? 'selected' : ''}>PHP</option>
+        <option value="python" ${fieldValue === 'python' ? 'selected' : ''}>Python</option>
+      </select>
+    `;
+  }
+
+  // Default text input
+  return `<input type="text" id="${fieldId}" class="form-control" value="${fieldValue}">`;
+}
+
+/**
+ * Collect form data dynamically
+ */
+function collectDynamicFormData(componentType) {
+  if (typeof COMPONENT_TYPES === 'undefined' || !COMPONENT_TYPES[componentType]) {
+    return {};
+  }
+
+  const componentData = COMPONENT_TYPES[componentType];
+  const fields = componentData.fields || [];
+  const content = {};
+
+  fields.forEach(field => {
+    if (field === 'items') {
+      // Items handled separately
+      return;
+    }
+
+    const fieldId = `field_${componentType}_${field}`;
+    const element = document.getElementById(fieldId);
+
+    if (element) {
+      content[field] = element.value;
+    }
+  });
+
+  // Handle items if component has them
+  if (componentData.hasItems) {
+    content.items = window[`current_${componentType}_items`] || [];
+  }
+
+  // Collect advanced settings
+  const advanced = {};
+  const advFields = ['customClass', 'animation', 'bgColor', 'marginTop', 'marginBottom'];
+
+  advFields.forEach(field => {
+    const fieldId = `adv_${componentType}_${field}`;
+    const element = document.getElementById(fieldId);
+    if (element && element.value) {
+      advanced[field] = element.value;
+    }
+  });
+
+  // Only add advanced if it has values
+  if (Object.keys(advanced).length > 0) {
+    content.advanced = advanced;
+  }
+
+  return content;
+}
+
+// ====================================
+// UPDATED EDIT SECTION (DYNAMIC)
+// ====================================
+
 function editSection(index) {
   const section = pageLayout[index];
   if (!section) return;
@@ -1501,56 +1938,21 @@ function editSection(index) {
   document.getElementById('sectionTitle').value = section.title;
   document.getElementById('sectionDescription').value = section.description || '';
 
-  // Hide all field groups
-  document.querySelectorAll('.section-fields').forEach(field => {
-    field.style.display = 'none';
-  });
+  // Get dynamic fields container
+  const fieldsContainer = document.getElementById('dynamicFieldsContainer');
+  if (!fieldsContainer) {
+    console.error('Dynamic fields container not found');
+    return;
+  }
 
-  // Show and populate fields based on type
+  // Build and insert dynamic form fields
   const content = section.content || {};
+  fieldsContainer.innerHTML = buildDynamicFormFields(section.type, content);
 
-  switch(section.type) {
-    case 'hero':
-      document.getElementById('heroFields').style.display = 'block';
-      document.getElementById('heroTitle').value = content.title || '';
-      document.getElementById('heroSubtitle').value = content.subtitle || '';
-      document.getElementById('heroButtonText').value = content.buttonText || '';
-      document.getElementById('heroButtonLink').value = content.buttonLink || '';
-      document.getElementById('heroBackgroundImage').value = content.backgroundImage || '';
-      document.getElementById('heroBackgroundColor').value = content.backgroundColor || '';
-      break;
-
-    case 'cta':
-      document.getElementById('ctaFields').style.display = 'block';
-      document.getElementById('ctaTitle').value = content.title || '';
-      document.getElementById('ctaDescription').value = content.description || '';
-      document.getElementById('ctaButtonText').value = content.buttonText || '';
-      document.getElementById('ctaButtonLink').value = content.buttonLink || '';
-      break;
-
-    case 'features':
-      document.getElementById('featuresFields').style.display = 'block';
-      document.getElementById('featuresTitle').value = content.title || '';
-      document.getElementById('featuresSubtitle').value = content.subtitle || '';
-      currentFeatureItems = content.items || [];
-      renderFeaturesList();
-      break;
-
-    case 'testimonials':
-      document.getElementById('testimonialsFields').style.display = 'block';
-      document.getElementById('testimonialsTitle').value = content.title || '';
-      document.getElementById('testimonialsSubtitle').value = content.subtitle || '';
-      currentTestimonialItems = content.items || [];
-      renderTestimonialsList();
-      break;
-
-    case 'stats':
-      document.getElementById('statsFields').style.display = 'block';
-      document.getElementById('statsTitle').value = content.title || '';
-      document.getElementById('statsSubtitle').value = content.subtitle || '';
-      currentStatItems = content.items || [];
-      renderStatsList();
-      break;
+  // If component has items, load them
+  if (typeof COMPONENT_TYPES !== 'undefined' && COMPONENT_TYPES[section.type]?.hasItems) {
+    window[`current_${section.type}_items`] = content.items || [];
+    renderComponentItems(section.type);
   }
 
   // Update modal title
@@ -1565,6 +1967,191 @@ function closeSectionEditor() {
   document.getElementById('sectionForm').reset();
 }
 
+// ====================================
+// DYNAMIC ITEMS MANAGEMENT
+// ====================================
+
+/**
+ * Render component items dynamically
+ */
+function renderComponentItems(componentType) {
+  if (typeof COMPONENT_TYPES === 'undefined' || !COMPONENT_TYPES[componentType]) {
+    return;
+  }
+
+  const componentData = COMPONENT_TYPES[componentType];
+  if (!componentData.hasItems) return;
+
+  const container = document.getElementById(`itemsContainer_${componentType}`);
+  if (!container) return;
+
+  const items = window[`current_${componentType}_items`] || [];
+
+  if (items.length === 0) {
+    container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">لا توجد عناصر</p>';
+    return;
+  }
+
+  container.innerHTML = items.map((item, index) => {
+    const previewText = item.title || item.name || item.text || 'عنصر';
+    return `
+      <div class="item-card">
+        <div class="item-info">
+          <strong>${previewText}</strong>
+          ${item.description ? `<p>${item.description.substring(0, 50)}...</p>` : ''}
+        </div>
+        <div class="item-actions">
+          <button type="button" class="btn-icon" onclick="editComponentItem('${componentType}', ${index})" title="تعديل">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button type="button" class="btn-icon" onclick="deleteComponentItem('${componentType}', ${index})" title="حذف">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+/**
+ * Add new component item
+ */
+function addComponentItem(componentType) {
+  if (typeof COMPONENT_TYPES === 'undefined' || !COMPONENT_TYPES[componentType]) {
+    return;
+  }
+
+  const componentData = COMPONENT_TYPES[componentType];
+  if (!componentData.hasItems || !componentData.itemFields) return;
+
+  // Create new item with empty values
+  const newItem = {};
+  componentData.itemFields.forEach(field => {
+    newItem[field] = '';
+  });
+
+  // Initialize array if doesn't exist
+  if (!window[`current_${componentType}_items`]) {
+    window[`current_${componentType}_items`] = [];
+  }
+
+  // Add item and open editor
+  const items = window[`current_${componentType}_items`];
+  items.push(newItem);
+  editComponentItem(componentType, items.length - 1);
+}
+
+/**
+ * Edit component item
+ */
+function editComponentItem(componentType, itemIndex) {
+  if (typeof COMPONENT_TYPES === 'undefined' || !COMPONENT_TYPES[componentType]) {
+    return;
+  }
+
+  const componentData = COMPONENT_TYPES[componentType];
+  if (!componentData.hasItems) return;
+
+  const items = window[`current_${componentType}_items`] || [];
+  const item = items[itemIndex];
+  if (!item) return;
+
+  // Build item editor form
+  let formHTML = `<div class="item-editor-form">`;
+
+  componentData.itemFields.forEach(field => {
+    const fieldLabel = getFieldLabel(field);
+    const fieldValue = item[field] || '';
+    const fieldId = `itemField_${field}_${itemIndex}`;
+
+    if (['description', 'text', 'message'].includes(field)) {
+      formHTML += `
+        <div class="form-group">
+          <label for="${fieldId}">${fieldLabel}</label>
+          <textarea id="${fieldId}" class="form-control" rows="3">${fieldValue}</textarea>
+        </div>
+      `;
+    } else if (field === 'rating') {
+      formHTML += `
+        <div class="form-group">
+          <label for="${fieldId}">${fieldLabel}</label>
+          <input type="number" id="${fieldId}" class="form-control" value="${fieldValue}" min="0" max="5" step="0.5">
+        </div>
+      `;
+    } else {
+      formHTML += `
+        <div class="form-group">
+          <label for="${fieldId}">${fieldLabel}</label>
+          <input type="text" id="${fieldId}" class="form-control" value="${fieldValue}">
+        </div>
+      `;
+    }
+  });
+
+  formHTML += `
+    <div class="form-actions" style="display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1rem;">
+      <button type="button" class="btn btn-secondary" onclick="cancelItemEdit('${componentType}')">إلغاء</button>
+      <button type="button" class="btn btn-primary" onclick="saveComponentItem('${componentType}', ${itemIndex})">حفظ</button>
+    </div>
+  </div>`;
+
+  // Show in modal or inline
+  const container = document.getElementById(`itemsContainer_${componentType}`);
+  if (container) {
+    container.innerHTML = formHTML;
+  }
+}
+
+/**
+ * Save component item
+ */
+function saveComponentItem(componentType, itemIndex) {
+  if (typeof COMPONENT_TYPES === 'undefined' || !COMPONENT_TYPES[componentType]) {
+    return;
+  }
+
+  const componentData = COMPONENT_TYPES[componentType];
+  const items = window[`current_${componentType}_items`] || [];
+  const item = items[itemIndex];
+  if (!item) return;
+
+  // Collect field values
+  componentData.itemFields.forEach(field => {
+    const fieldId = `itemField_${field}_${itemIndex}`;
+    const element = document.getElementById(fieldId);
+    if (element) {
+      item[field] = element.value;
+    }
+  });
+
+  // Re-render items list
+  renderComponentItems(componentType);
+  showToast('تم حفظ العنصر بنجاح!', 'success');
+}
+
+/**
+ * Cancel item edit
+ */
+function cancelItemEdit(componentType) {
+  renderComponentItems(componentType);
+}
+
+/**
+ * Delete component item
+ */
+function deleteComponentItem(componentType, itemIndex) {
+  if (!confirm('هل أنت متأكد من حذف هذا العنصر؟')) return;
+
+  const items = window[`current_${componentType}_items`] || [];
+  items.splice(itemIndex, 1);
+  renderComponentItems(componentType);
+  showToast('تم حذف العنصر!', 'success');
+}
+
+// ====================================
+// UPDATED SAVE SECTION (DYNAMIC)
+// ====================================
+
 function saveSectionEdit(event) {
   event.preventDefault();
 
@@ -1575,54 +2162,8 @@ function saveSectionEdit(event) {
   pageLayout[index].title = document.getElementById('sectionTitle').value;
   pageLayout[index].description = document.getElementById('sectionDescription').value;
 
-  // Update content based on type
-  let content = {};
-
-  switch(type) {
-    case 'hero':
-      content = {
-        title: document.getElementById('heroTitle').value,
-        subtitle: document.getElementById('heroSubtitle').value,
-        buttonText: document.getElementById('heroButtonText').value,
-        buttonLink: document.getElementById('heroButtonLink').value,
-        backgroundImage: document.getElementById('heroBackgroundImage').value,
-        backgroundColor: document.getElementById('heroBackgroundColor').value
-      };
-      break;
-
-    case 'cta':
-      content = {
-        title: document.getElementById('ctaTitle').value,
-        description: document.getElementById('ctaDescription').value,
-        buttonText: document.getElementById('ctaButtonText').value,
-        buttonLink: document.getElementById('ctaButtonLink').value
-      };
-      break;
-
-    case 'features':
-      content = {
-        title: document.getElementById('featuresTitle').value,
-        subtitle: document.getElementById('featuresSubtitle').value,
-        items: collectFeatureItems()
-      };
-      break;
-
-    case 'testimonials':
-      content = {
-        title: document.getElementById('testimonialsTitle').value,
-        subtitle: document.getElementById('testimonialsSubtitle').value,
-        items: collectTestimonialItems()
-      };
-      break;
-
-    case 'stats':
-      content = {
-        title: document.getElementById('statsTitle').value,
-        subtitle: document.getElementById('statsSubtitle').value,
-        items: collectStatItems()
-      };
-      break;
-  }
+  // Collect content dynamically
+  const content = collectDynamicFormData(type);
 
   pageLayout[index].content = content;
 
@@ -2139,7 +2680,7 @@ function openQuickPageModal() {
     menusManager.currentMenuItems.push({
       id: 'item-' + Date.now(),
       title: title,
-      url: slug + '.html',
+      url: '/' + slug,
       type: 'page',
       pageId: pageData.id
     });
@@ -2176,74 +2717,26 @@ function addQuickElement(type) {
     return;
   }
 
-  const defaultElements = {
-    hero: {
-      id: Date.now().toString(),
-      type: 'hero',
-      title: 'Hero Section',
-      description: 'قسم رئيسي في الصفحة',
-      content: {
-        title: 'عنوان رئيسي',
-        subtitle: 'نص فرعي يوضح المحتوى',
-        buttonText: 'ابدأ الآن',
-        buttonLink: '#',
-        backgroundImage: '',
-        backgroundColor: 'linear-gradient(135deg, #0C4A2F 0%, #10B981 100%)'
-      }
-    },
-    cta: {
-      id: Date.now().toString(),
-      type: 'cta',
-      title: 'Call to Action',
-      description: 'دعوة لاتخاذ إجراء',
-      content: {
-        title: 'هل لديك مشروع؟',
-        description: 'تواصل معنا الآن',
-        buttonText: 'اتصل بنا',
-        buttonLink: '#contact'
-      }
-    },
-    features: {
-      id: Date.now().toString(),
-      type: 'features',
-      title: 'Features Grid',
-      description: 'عرض الميزات',
-      content: {
-        title: 'خدماتنا',
-        subtitle: 'نقدم خدمات متنوعة',
-        items: []
-      }
-    },
-    testimonials: {
-      id: Date.now().toString(),
-      type: 'testimonials',
-      title: 'Testimonials',
-      description: 'آراء العملاء',
-      content: {
-        title: 'آراء عملائنا',
-        subtitle: 'ماذا يقول عملاؤنا',
-        items: []
-      }
-    },
-    stats: {
-      id: Date.now().toString(),
-      type: 'stats',
-      title: 'Statistics',
-      description: 'الإحصائيات',
-      content: {
-        title: 'إنجازاتنا',
-        subtitle: 'بالأرقام',
-        items: []
-      }
-    }
+  // Get component data from COMPONENT_TYPES
+  if (typeof COMPONENT_TYPES === 'undefined' || !COMPONENT_TYPES[type]) {
+    showToast('نوع العنصر غير موجود!', 'error');
+    return;
+  }
+
+  const componentData = COMPONENT_TYPES[type];
+
+  // Create element with default content
+  const element = {
+    id: Date.now().toString(),
+    type: type,
+    title: componentData.name,
+    description: componentData.description,
+    content: { ...componentData.defaultContent }
   };
 
-  const element = defaultElements[type];
-  if (element) {
-    pageLayout.push(element);
-    renderPageCanvas();
-    showToast(`تم إضافة ${getComponentTypeName(type)} بنجاح!`, 'success');
-  }
+  pageLayout.push(element);
+  renderPageCanvas();
+  showToast(`تم إضافة ${componentData.name} بنجاح!`, 'success');
 }
 
 // Update savePageLayout to save to current page

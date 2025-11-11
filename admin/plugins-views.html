@@ -1,0 +1,579 @@
+<!-- ========================================== -->
+<!-- PLUGINS VIEW -->
+<!-- ========================================== -->
+
+<div id="pluginsView" class="admin-view">
+  <div class="view-header">
+    <h2>متجر الإضافات</h2>
+    <p>قم بتفعيل الإضافات التي تحتاجها لإضافة مميزات جديدة لموقعك</p>
+  </div>
+
+  <div id="pluginsList" class="plugins-grid">
+    <!-- Plugins will be loaded here -->
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- PRODUCTS VIEW (eCommerce Plugin) -->
+<!-- ========================================== -->
+
+<div id="productsView" class="admin-view">
+  <div class="view-header">
+    <div>
+      <h2>إدارة المنتجات</h2>
+      <p>أضف وأدر منتجات متجرك الإلكتروني</p>
+    </div>
+    <button class="btn btn-primary" onclick="openProductModal()">
+      <i class="fas fa-plus"></i> إضافة منتج جديد
+    </button>
+  </div>
+
+  <div class="products-tabs">
+    <button class="tab-btn active" onclick="switchProductTab('all')">
+      <i class="fas fa-list"></i> جميع المنتجات
+    </button>
+    <button class="tab-btn" onclick="switchProductTab('categories')">
+      <i class="fas fa-folder"></i> الفئات
+    </button>
+    <button class="tab-btn" onclick="switchProductTab('attributes')">
+      <i class="fas fa-tags"></i> الخصائص
+    </button>
+  </div>
+
+  <div id="productsTabContent">
+    <div id="allProductsTab" class="tab-content active">
+      <div id="productsList"></div>
+    </div>
+
+    <div id="categoriesTab" class="tab-content">
+      <button class="btn btn-primary mb-3" onclick="openCategoryModal()">
+        <i class="fas fa-plus"></i> إضافة فئة جديدة
+      </button>
+      <div id="categoriesList"></div>
+    </div>
+
+    <div id="attributesTab" class="tab-content">
+      <button class="btn btn-primary mb-3" onclick="openAttributeModal()">
+        <i class="fas fa-plus"></i> إضافة خاصية جديدة
+      </button>
+      <div id="attributesList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- PRODUCT MODAL -->
+<!-- ========================================== -->
+
+<div id="productModal" class="modal">
+  <div class="modal-overlay" onclick="closeProductModal()"></div>
+  <div class="modal-content" style="max-width: 900px;">
+    <div class="modal-header">
+      <h3 id="productModalTitle">إضافة منتج جديد</h3>
+      <button class="modal-close" onclick="closeProductModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <form id="productForm">
+        <input type="hidden" id="productId">
+
+        <!-- Product Tabs -->
+        <div class="product-modal-tabs">
+          <button type="button" class="tab-btn active" onclick="switchProductModalTab('general')">عام</button>
+          <button type="button" class="tab-btn" onclick="switchProductModalTab('inventory')">المخزون</button>
+          <button type="button" class="tab-btn" onclick="switchProductModalTab('images')">الصور</button>
+          <button type="button" class="tab-btn" onclick="switchProductModalTab('attributes')">الخصائص</button>
+          <button type="button" class="tab-btn" onclick="switchProductModalTab('seo')">SEO</button>
+        </div>
+
+        <!-- General Tab -->
+        <div id="generalTab" class="product-tab-content active">
+          <div class="form-group">
+            <label for="productName">اسم المنتج <span style="color: var(--error);">*</span></label>
+            <input type="text" id="productName" required placeholder="مثال: هاتف iPhone 15 Pro">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="productSKU">رمز المنتج (SKU)</label>
+              <input type="text" id="productSKU" placeholder="SKU-001">
+            </div>
+            <div class="form-group">
+              <label for="productType">نوع المنتج</label>
+              <select id="productType" onchange="handleProductTypeChange()">
+                <option value="simple">منتج بسيط</option>
+                <option value="variable">منتج متغير</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="productShortDescription">وصف مختصر</label>
+            <textarea id="productShortDescription" rows="3" placeholder="وصف قصير يظهر في قوائم المنتجات"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="productDescription">الوصف الكامل</label>
+            <textarea id="productDescription" rows="6" placeholder="وصف تفصيلي للمنتج"></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="productRegularPrice">السعر الأساسي (ريال)</label>
+              <input type="number" id="productRegularPrice" step="0.01" min="0" placeholder="299.99">
+            </div>
+            <div class="form-group">
+              <label for="productSalePrice">سعر الخصم (ريال)</label>
+              <input type="number" id="productSalePrice" step="0.01" min="0" placeholder="249.99">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="productCategories">الفئات</label>
+            <select id="productCategories" multiple style="height: 120px;">
+              <!-- Categories will be loaded here -->
+            </select>
+            <small>اضغط Ctrl للاختيار المتعدد</small>
+          </div>
+
+          <div class="form-group">
+            <label>
+              <input type="checkbox" id="productFeatured">
+              منتج مميز
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label for="productStatus">حالة المنتج</label>
+            <select id="productStatus">
+              <option value="publish">منشور</option>
+              <option value="draft">مسودة</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Inventory Tab -->
+        <div id="inventoryTab" class="product-tab-content">
+          <div class="form-group">
+            <label>
+              <input type="checkbox" id="productManageStock" onchange="toggleStockFields()">
+              إدارة المخزون
+            </label>
+          </div>
+
+          <div id="stockFields" style="display: none;">
+            <div class="form-group">
+              <label for="productStock">كمية المخزون</label>
+              <input type="number" id="productStock" min="0" value="0">
+            </div>
+
+            <div class="form-group">
+              <label for="productStockStatus">حالة المخزون</label>
+              <select id="productStockStatus">
+                <option value="instock">متوفر</option>
+                <option value="outofstock">نفذ المخزون</option>
+                <option value="onbackorder">قيد الطلب</option>
+              </select>
+            </div>
+          </div>
+
+          <hr>
+
+          <h4>معلومات الشحن</h4>
+
+          <div class="form-group">
+            <label for="productWeight">الوزن (كجم)</label>
+            <input type="number" id="productWeight" step="0.01" min="0" placeholder="1.5">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="productLength">الطول (سم)</label>
+              <input type="number" id="productLength" step="0.1" min="0" placeholder="30">
+            </div>
+            <div class="form-group">
+              <label for="productWidth">العرض (سم)</label>
+              <input type="number" id="productWidth" step="0.1" min="0" placeholder="20">
+            </div>
+            <div class="form-group">
+              <label for="productHeight">الارتفاع (سم)</label>
+              <input type="number" id="productHeight" step="0.1" min="0" placeholder="10">
+            </div>
+          </div>
+        </div>
+
+        <!-- Images Tab -->
+        <div id="imagesTab" class="product-tab-content">
+          <div class="form-group">
+            <label>صور المنتج</label>
+            <div id="productImages" class="product-images-grid">
+              <button type="button" class="add-image-btn" onclick="openMediaForProduct()">
+                <i class="fas fa-plus"></i>
+                <span>إضافة صورة</span>
+              </button>
+            </div>
+            <small>اضغط على الصورة لحذفها</small>
+          </div>
+        </div>
+
+        <!-- Attributes Tab -->
+        <div id="attributesTabProduct" class="product-tab-content">
+          <p>الخصائص والمتغيرات (مثل: اللون، الحجم، إلخ)</p>
+          <div id="productAttributesList">
+            <!-- Attributes will be added here -->
+          </div>
+          <button type="button" class="btn btn-secondary" onclick="addProductAttribute()">
+            <i class="fas fa-plus"></i> إضافة خاصية
+          </button>
+        </div>
+
+        <!-- SEO Tab -->
+        <div id="seoTab" class="product-tab-content">
+          <div class="form-group">
+            <label for="productSlug">الرابط (Slug)</label>
+            <input type="text" id="productSlug" placeholder="product-name">
+            <small>سيتم توليده تلقائياً من اسم المنتج</small>
+          </div>
+
+          <div class="form-group">
+            <label for="productMetaTitle">عنوان Meta</label>
+            <input type="text" id="productMetaTitle" placeholder="عنوان الصفحة في محركات البحث">
+          </div>
+
+          <div class="form-group">
+            <label for="productMetaDescription">وصف Meta</label>
+            <textarea id="productMetaDescription" rows="3" placeholder="وصف المنتج في نتائج البحث"></textarea>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" onclick="closeProductModal()">إلغاء</button>
+      <button type="button" class="btn btn-primary" onclick="saveProduct()">
+        <i class="fas fa-save"></i> حفظ المنتج
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- CATEGORY MODAL -->
+<!-- ========================================== -->
+
+<div id="categoryModal" class="modal">
+  <div class="modal-overlay" onclick="closeCategoryModal()"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>إضافة فئة جديدة</h3>
+      <button class="modal-close" onclick="closeCategoryModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <form id="categoryForm">
+        <input type="hidden" id="categoryId">
+
+        <div class="form-group">
+          <label for="categoryName">اسم الفئة <span style="color: var(--error);">*</span></label>
+          <input type="text" id="categoryName" required>
+        </div>
+
+        <div class="form-group">
+          <label for="categorySlug">Slug</label>
+          <input type="text" id="categorySlug">
+        </div>
+
+        <div class="form-group">
+          <label for="categoryDescription">الوصف</label>
+          <textarea id="categoryDescription" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="categoryParent">الفئة الأب</label>
+          <select id="categoryParent">
+            <option value="">لا يوجد (فئة رئيسية)</option>
+            <!-- Categories will be loaded here -->
+          </select>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" onclick="closeCategoryModal()">إلغاء</button>
+      <button type="button" class="btn btn-primary" onclick="saveCategory()">
+        <i class="fas fa-save"></i> حفظ
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Plugins Grid */
+.plugins-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.plugin-card {
+  background: var(--bg-primary);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+  transition: all 0.3s;
+}
+
+.plugin-card:hover {
+  border-color: var(--saudi-green);
+  box-shadow: 0 4px 12px rgba(12, 74, 47, 0.1);
+}
+
+.plugin-card.active {
+  border-color: var(--success);
+  background: linear-gradient(to bottom, var(--bg-primary), rgba(16, 185, 129, 0.05));
+}
+
+.plugin-header {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.plugin-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--saudi-green), var(--saudi-green-light));
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.plugin-info h3 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-primary);
+}
+
+.plugin-info p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.plugin-meta {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.plugin-features {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+}
+
+.plugin-features h4 {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.plugin-features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.plugin-features li {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.plugin-features i {
+  color: var(--success);
+  margin-left: 0.5rem;
+}
+
+.plugin-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+/* Products Tabs */
+.products-tabs {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 2px solid var(--border-color);
+  margin: 1.5rem 0;
+}
+
+.tab-btn {
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+  font-size: 0.95rem;
+}
+
+.tab-btn:hover {
+  color: var(--saudi-green);
+  background: var(--bg-secondary);
+}
+
+.tab-btn.active {
+  color: var(--saudi-green);
+  border-bottom-color: var(--saudi-green);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Product Image Thumb */
+.product-image-thumb {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-secondary);
+}
+
+.product-image-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-image-thumb i {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+}
+
+/* Stock Badge */
+.stock-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.stock-badge.instock {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success);
+}
+
+.stock-badge.outofstock {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--error);
+}
+
+.stock-badge.onbackorder {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--warning);
+}
+
+/* Product Modal Tabs */
+.product-modal-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.product-tab-content {
+  display: none;
+}
+
+.product-tab-content.active {
+  display: block;
+}
+
+/* Product Images Grid */
+.product-images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.add-image-btn {
+  aspect-ratio: 1;
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.add-image-btn:hover {
+  border-color: var(--saudi-green);
+  background: rgba(12, 74, 47, 0.05);
+}
+
+.add-image-btn i {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+}
+
+/* Category Item */
+.category-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  margin-bottom: 0.75rem;
+}
+
+.category-info h4 {
+  margin: 0 0 0.25rem 0;
+  color: var(--text-primary);
+}
+
+.category-info p {
+  margin: 0 0 0.25rem 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.category-info small {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.category-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+</style>

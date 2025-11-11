@@ -146,7 +146,7 @@ class SiteLoader {
     header.innerHTML = `
       <div class="container">
         <nav class="navbar">
-          <a href="index.html" class="logo">
+          <a href="/" class="logo">
             <img src="${logoSrc}" alt="${this.settings.siteName}">
           </a>
 
@@ -186,10 +186,10 @@ class SiteLoader {
 
   getDefaultMenuHTML() {
     return `
-      <li><a href="index.html" class="active">الرئيسية</a></li>
-      <li><a href="services.html">خدماتنا</a></li>
-      <li><a href="portfolio.html">أعمالنا</a></li>
-      <li><a href="blog.html">المدونة</a></li>
+      <li><a href="/" class="active">الرئيسية</a></li>
+      <li><a href="/services">خدماتنا</a></li>
+      <li><a href="/portfolio">أعمالنا</a></li>
+      <li><a href="/blog">المدونة</a></li>
       <li><a href="#contact">اتصل بنا</a></li>
     `;
   }
@@ -323,12 +323,27 @@ class SiteLoader {
   // ==========================================
 
   updateAllLinks() {
-    // Highlight current page in navigation
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    // Highlight current page in navigation (Clean URLs)
+    const currentPath = window.location.pathname;
+
     document.querySelectorAll('.nav-menu a, .footer-links a').forEach(link => {
       const href = link.getAttribute('href');
-      if (href === currentPage || href === `./${currentPage}`) {
-        link.classList.add('active');
+
+      // Handle root page
+      if (currentPath === '/' || currentPath === '/index.html' || currentPath === '/index') {
+        if (href === '/' || href === '/index' || href === 'index.html') {
+          link.classList.add('active');
+        }
+      }
+      // Handle other pages
+      else {
+        // Remove trailing slash and .html for comparison
+        const cleanPath = currentPath.replace(/\/$/, '').replace(/\.html$/, '');
+        const cleanHref = href.replace(/\/$/, '').replace(/\.html$/, '');
+
+        if (cleanHref === cleanPath || href === currentPath) {
+          link.classList.add('active');
+        }
       }
     });
 

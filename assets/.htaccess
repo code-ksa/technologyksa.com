@@ -1,0 +1,8 @@
+# Protect assets directory from direct browsing
+Options -Indexes
+
+# Allow access to files
+<FilesMatch "\.(css|js|jpg|jpeg|png|gif|svg|webp|woff|woff2|ttf|eot)$">
+    Order allow,deny
+    Allow from all
+</FilesMatch>
