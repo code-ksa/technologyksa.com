@@ -1,0 +1,33 @@
+{
+  "name": "technologyksa-website",
+  "version": "1.0.0",
+  "description": "Technology KSA - Complete Website with SSG Build System",
+  "main": "build.js",
+  "scripts": {
+    "build": "node build.js",
+    "build:pages": "node build.js --pages",
+    "build:ar": "node build.js --lang=ar",
+    "build:watch": "nodemon build.js",
+    "clean": "node build.js --clean",
+    "serve": "npx http-server ./dist -p 8080 -o",
+    "dev": "npm run build && npm run serve"
+  },
+  "keywords": [
+    "website",
+    "ssg",
+    "static-site-generator",
+    "arabic",
+    "technology"
+  ],
+  "author": "Technology KSA",
+  "license": "MIT",
+  "devDependencies": {
+    "chalk": "^4.1.2",
+    "fs-extra": "^11.1.1",
+    "glob": "^10.3.10",
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
