@@ -148,6 +148,71 @@ const AVAILABLE_PLUGINS = {
       saveContactFormSubmissions: true,
       notifyOnNewEmail: true
     }
+  },
+
+  integrations: {
+    id: 'integrations',
+    name: 'التكاملات والتتبع - Integrations',
+    description: 'نظام شامل للتكامل مع منصات التحليل والتتبع (Google Analytics، Meta Pixel، TikTok، Perfex CRM وغيرها)',
+    version: '1.0.0',
+    author: 'Technology KSA',
+    icon: 'plug',
+    features: [
+      'Google Analytics 4 (GA4)',
+      'Meta Pixel (Facebook Pixel)',
+      'TikTok Pixel',
+      'Snapchat Pixel',
+      'Microsoft Clarity',
+      'Bing Ads (UET)',
+      'Yandex Metrica',
+      'Perfex CRM Integration',
+      'Custom Scripts & Tags',
+      'Event Tracking',
+      'Conversion Tracking',
+      'إدارة مركزية لجميع التكاملات'
+    ],
+    settings: {
+      // Google Analytics
+      ga_enabled: false,
+      ga_measurement_id: '', // G-XXXXXXXXXX
+      ga_send_page_view: true,
+
+      // Meta Pixel (Facebook)
+      meta_enabled: false,
+      meta_pixel_id: '',
+      meta_track_page_view: true,
+
+      // TikTok Pixel
+      tiktok_enabled: false,
+      tiktok_pixel_id: '',
+
+      // Snapchat Pixel
+      snapchat_enabled: false,
+      snapchat_pixel_id: '',
+
+      // Microsoft Clarity
+      clarity_enabled: false,
+      clarity_project_id: '',
+
+      // Bing Ads (UET)
+      bing_enabled: false,
+      bing_uet_tag_id: '',
+
+      // Yandex Metrica
+      yandex_enabled: false,
+      yandex_counter_id: '',
+
+      // Perfex CRM
+      perfex_enabled: false,
+      perfex_url: '',
+      perfex_api_key: '',
+      perfex_sync_contacts: true,
+
+      // Custom Scripts
+      custom_head_scripts: '',
+      custom_body_scripts: '',
+      custom_footer_scripts: ''
+    }
   }
 };
 

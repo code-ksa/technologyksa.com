@@ -1,0 +1,957 @@
+<!-- ==========================================
+     INTEGRATIONS VIEW
+     ========================================== -->
+
+<div id="integrationsView" class="admin-view" style="display: none;">
+  <div class="view-header">
+    <div>
+      <h2><i class="fas fa-plug"></i> التكاملات والتتبع</h2>
+      <p>إدارة جميع تكاملات موقعك مع منصات التحليل والتتبع</p>
+    </div>
+    <div class="view-actions">
+      <button class="btn btn-primary" onclick="openIntegrationsSettings()">
+        <i class="fas fa-cog"></i> إعدادات التكاملات
+      </button>
+    </div>
+  </div>
+
+  <!-- Statistics -->
+  <div class="stats-grid" style="margin-bottom: 30px;">
+    <div class="stat-card">
+      <div class="stat-icon" style="background: #dbeafe;">
+        <i class="fas fa-plug" style="color: #2563eb;"></i>
+      </div>
+      <div class="stat-info">
+        <h3 id="enabledIntegrationsCount">0</h3>
+        <p>تكاملات نشطة</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background: #dcfce7;">
+        <i class="fas fa-chart-line" style="color: #16a34a;"></i>
+      </div>
+      <div class="stat-info">
+        <h3 id="totalEventsCount">0</h3>
+        <p>إجمالي الأحداث</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="integrations-tabs" style="margin: 20px 0; border-bottom: 2px solid var(--border-color);">
+    <button class="tab-btn active" onclick="switchIntegrationTab('dashboard')">
+      <i class="fas fa-tachometer-alt"></i> لوحة التحكم
+    </button>
+    <button class="tab-btn" onclick="switchIntegrationTab('analytics')">
+      <i class="fas fa-chart-bar"></i> التحليل والإحصاءات
+    </button>
+    <button class="tab-btn" onclick="switchIntegrationTab('social')">
+      <i class="fas fa-share-alt"></i> وسائل التواصل
+    </button>
+    <button class="tab-btn" onclick="switchIntegrationTab('crm')">
+      <i class="fas fa-users-cog"></i> CRM
+    </button>
+    <button class="tab-btn" onclick="switchIntegrationTab('custom')">
+      <i class="fas fa-code"></i> سكريبتات مخصصة
+    </button>
+    <button class="tab-btn" onclick="switchIntegrationTab('events')">
+      <i class="fas fa-bolt"></i> الأحداث
+    </button>
+  </div>
+
+  <!-- Tab Content -->
+  <div id="integrationsTabContent">
+
+    <!-- Dashboard Tab -->
+    <div id="dashboardTab" class="tab-content active">
+      <div class="integrations-grid">
+        <!-- Google Analytics Card -->
+        <div class="integration-card">
+          <div class="integration-header">
+            <div class="integration-icon" style="background: #fbbc04;">
+              <i class="fab fa-google"></i>
+            </div>
+            <h3>Google Analytics</h3>
+          </div>
+          <p>تتبع وتحليل حركة المرور على موقعك</p>
+          <div class="integration-status" id="gaStatus">
+            <div class="status-indicator status-inactive"></div>
+            <span>غير نشط</span>
+          </div>
+        </div>
+
+        <!-- Meta Pixel Card -->
+        <div class="integration-card">
+          <div class="integration-header">
+            <div class="integration-icon" style="background: #1877f2;">
+              <i class="fab fa-facebook"></i>
+            </div>
+            <h3>Meta Pixel</h3>
+          </div>
+          <p>تتبع الإعلانات والتحويلات على Facebook و Instagram</p>
+          <div class="integration-status" id="metaStatus">
+            <div class="status-indicator status-inactive"></div>
+            <span>غير نشط</span>
+          </div>
+        </div>
+
+        <!-- TikTok Pixel Card -->
+        <div class="integration-card">
+          <div class="integration-header">
+            <div class="integration-icon" style="background: #000;">
+              <i class="fab fa-tiktok"></i>
+            </div>
+            <h3>TikTok Pixel</h3>
+          </div>
+          <p>تتبع حملات TikTok الإعلانية</p>
+          <div class="integration-status" id="tiktokStatus">
+            <div class="status-indicator status-inactive"></div>
+            <span>غير نشط</span>
+          </div>
+        </div>
+
+        <!-- Snapchat Pixel Card -->
+        <div class="integration-card">
+          <div class="integration-header">
+            <div class="integration-icon" style="background: #fffc00;">
+              <i class="fab fa-snapchat-ghost" style="color: #000;"></i>
+            </div>
+            <h3>Snapchat Pixel</h3>
+          </div>
+          <p>تتبع حملات Snapchat الإعلانية</p>
+          <div class="integration-status" id="snapchatStatus">
+            <div class="status-indicator status-inactive"></div>
+            <span>غير نشط</span>
+          </div>
+        </div>
+
+        <!-- Microsoft Clarity Card -->
+        <div class="integration-card">
+          <div class="integration-header">
+            <div class="integration-icon" style="background: #00a4ef;">
+              <i class="fab fa-microsoft"></i>
+            </div>
+            <h3>Microsoft Clarity</h3>
+          </div>
+          <p>تسجيل جلسات المستخدمين وتحليل السلوك</p>
+          <div class="integration-status" id="clarityStatus">
+            <div class="status-indicator status-inactive"></div>
+            <span>غير نشط</span>
+          </div>
+        </div>
+
+        <!-- Bing Ads Card -->
+        <div class="integration-card">
+          <div class="integration-header">
+            <div class="integration-icon" style="background: #008373;">
+              <i class="fab fa-edge"></i>
+            </div>
+            <h3>Bing Ads (UET)</h3>
+          </div>
+          <p>تتبع حملات Bing الإعلانية</p>
+          <div class="integration-status" id="bingStatus">
+            <div class="status-indicator status-inactive"></div>
+            <span>غير نشط</span>
+          </div>
+        </div>
+
+        <!-- Yandex Metrica Card -->
+        <div class="integration-card">
+          <div class="integration-header">
+            <div class="integration-icon" style="background: #fc3f1d;">
+              <i class="fab fa-yandex"></i>
+            </div>
+            <h3>Yandex Metrica</h3>
+          </div>
+          <p>تحليل الزوار من روسيا ودول الاتحاد السوفيتي</p>
+          <div class="integration-status" id="yandexStatus">
+            <div class="status-indicator status-inactive"></div>
+            <span>غير نشط</span>
+          </div>
+        </div>
+
+        <!-- Perfex CRM Card -->
+        <div class="integration-card">
+          <div class="integration-header">
+            <div class="integration-icon" style="background: #3772ff;">
+              <i class="fas fa-project-diagram"></i>
+            </div>
+            <h3>Perfex CRM</h3>
+          </div>
+          <p>مزامنة جهات الاتصال والعملاء المحتملين</p>
+          <div class="integration-status" id="perfexStatus">
+            <div class="status-indicator status-inactive"></div>
+            <span>غير نشط</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analytics Tab -->
+    <div id="analyticsTab" class="tab-content">
+      <div class="info-card">
+        <h3><i class="fas fa-chart-bar"></i> تكاملات التحليل والإحصاءات</h3>
+        <p>قم بإعداد Google Analytics و Microsoft Clarity و Yandex Metrica لتحليل شامل لموقعك.</p>
+
+        <div class="integration-details-grid">
+          <!-- Google Analytics -->
+          <div class="integration-detail-card">
+            <div class="detail-header">
+              <i class="fab fa-google fa-2x" style="color: #fbbc04;"></i>
+              <h4>Google Analytics 4</h4>
+            </div>
+            <ul class="feature-list">
+              <li><i class="fas fa-check"></i> تتبع الزوار في الوقت الفعلي</li>
+              <li><i class="fas fa-check"></i> تحليل سلوك المستخدمين</li>
+              <li><i class="fas fa-check"></i> تقارير مخصصة</li>
+              <li><i class="fas fa-check"></i> تتبع التحويلات</li>
+            </ul>
+            <p class="mt-3"><strong>معرف القياس:</strong> G-XXXXXXXXXX</p>
+          </div>
+
+          <!-- Microsoft Clarity -->
+          <div class="integration-detail-card">
+            <div class="detail-header">
+              <i class="fab fa-microsoft fa-2x" style="color: #00a4ef;"></i>
+              <h4>Microsoft Clarity</h4>
+            </div>
+            <ul class="feature-list">
+              <li><i class="fas fa-check"></i> تسجيل جلسات المستخدمين</li>
+              <li><i class="fas fa-check"></i> خرائط حرارية (Heatmaps)</li>
+              <li><i class="fas fa-check"></i> تحليل النقرات</li>
+              <li><i class="fas fa-check"></i> مجاني بالكامل</li>
+            </ul>
+            <p class="mt-3"><strong>معرف المشروع:</strong> XXXXXXXXXX</p>
+          </div>
+
+          <!-- Yandex Metrica -->
+          <div class="integration-detail-card">
+            <div class="detail-header">
+              <i class="fab fa-yandex fa-2x" style="color: #fc3f1d;"></i>
+              <h4>Yandex Metrica</h4>
+            </div>
+            <ul class="feature-list">
+              <li><i class="fas fa-check"></i> تحليل شامل للزوار</li>
+              <li><i class="fas fa-check"></i> Webvisor لتسجيل الجلسات</li>
+              <li><i class="fas fa-check"></i> تتبع النماذج</li>
+              <li><i class="fas fa-check"></i> مثالي للسوق الروسي</li>
+            </ul>
+            <p class="mt-3"><strong>معرف العداد:</strong> XXXXXXXX</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Social Media Tab -->
+    <div id="socialTab" class="tab-content">
+      <div class="info-card">
+        <h3><i class="fas fa-share-alt"></i> تكاملات وسائل التواصل الاجتماعي</h3>
+        <p>اربط موقعك مع منصات التواصل الاجتماعي لتتبع الحملات الإعلانية والتحويلات.</p>
+
+        <div class="integration-details-grid">
+          <!-- Meta Pixel -->
+          <div class="integration-detail-card">
+            <div class="detail-header">
+              <i class="fab fa-facebook fa-2x" style="color: #1877f2;"></i>
+              <h4>Meta Pixel (Facebook & Instagram)</h4>
+            </div>
+            <ul class="feature-list">
+              <li><i class="fas fa-check"></i> تتبع التحويلات</li>
+              <li><i class="fas fa-check"></i> إعادة الاستهداف</li>
+              <li><i class="fas fa-check"></i> تحسين الحملات</li>
+              <li><i class="fas fa-check"></i> Custom Audiences</li>
+            </ul>
+            <div class="alert alert-info mt-3">
+              <i class="fas fa-info-circle"></i>
+              <p>احصل على Pixel ID من Facebook Business Manager</p>
+            </div>
+          </div>
+
+          <!-- TikTok Pixel -->
+          <div class="integration-detail-card">
+            <div class="detail-header">
+              <i class="fab fa-tiktok fa-2x"></i>
+              <h4>TikTok Pixel</h4>
+            </div>
+            <ul class="feature-list">
+              <li><i class="fas fa-check"></i> تتبع أحداث الموقع</li>
+              <li><i class="fas fa-check"></i> تحسين الإعلانات</li>
+              <li><i class="fas fa-check"></i> جماهير مخصصة</li>
+              <li><i class="fas fa-check"></i> قياس ROI</li>
+            </ul>
+            <div class="alert alert-info mt-3">
+              <i class="fas fa-info-circle"></i>
+              <p>احصل على Pixel ID من TikTok Ads Manager</p>
+            </div>
+          </div>
+
+          <!-- Snapchat Pixel -->
+          <div class="integration-detail-card">
+            <div class="detail-header">
+              <i class="fab fa-snapchat-ghost fa-2x" style="color: #fffc00;"></i>
+              <h4>Snapchat Pixel</h4>
+            </div>
+            <ul class="feature-list">
+              <li><i class="fas fa-check"></i> تتبع Snap Ads</li>
+              <li><i class="fas fa-check"></i> قياس التحويلات</li>
+              <li><i class="fas fa-check"></i> تحسين الحملات</li>
+              <li><i class="fas fa-check"></i> Snap Audience Network</li>
+            </ul>
+            <div class="alert alert-info mt-3">
+              <i class="fas fa-info-circle"></i>
+              <p>احصل على Pixel ID من Snapchat Ads Manager</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CRM Tab -->
+    <div id="crmTab" class="tab-content">
+      <div class="info-card">
+        <h3><i class="fas fa-users-cog"></i> تكامل Perfex CRM</h3>
+        <p>قم بربط موقعك مع Perfex CRM لمزامنة جهات الاتصال والعملاء المحتملين تلقائياً.</p>
+
+        <div class="perfex-crm-section">
+          <div class="crm-features">
+            <h4>الميزات:</h4>
+            <ul class="feature-list">
+              <li><i class="fas fa-check"></i> مزامنة تلقائية لجهات الاتصال من نماذج الموقع</li>
+              <li><i class="fas fa-check"></i> إنشاء عملاء محتملين (Leads) تلقائياً</li>
+              <li><i class="fas fa-check"></i> ربط API كامل مع Perfex</li>
+              <li><i class="fas fa-check"></i> تتبع التفاعلات</li>
+            </ul>
+          </div>
+
+          <div class="crm-setup">
+            <h4>الإعداد:</h4>
+            <ol>
+              <li>احصل على API Key من Perfex CRM → Setup → API</li>
+              <li>فعّل API Access في إعدادات Perfex</li>
+              <li>أدخل رابط موقع Perfex الخاص بك</li>
+              <li>أدخل API Key</li>
+              <li>اضغط "اختبار الاتصال"</li>
+            </ol>
+          </div>
+
+          <div class="crm-test-actions" style="margin-top: 20px;">
+            <button class="btn btn-secondary" onclick="testPerfexConnection()">
+              <i class="fas fa-plug"></i> اختبار الاتصال
+            </button>
+            <button class="btn btn-primary" onclick="syncTestContact()">
+              <i class="fas fa-sync"></i> إنشاء جهة اتصال تجريبية
+            </button>
+          </div>
+
+          <div class="alert alert-warning mt-3">
+            <i class="fas fa-exclamation-triangle"></i>
+            <strong>ملاحظة:</strong> تأكد من أن Perfex CRM الخاص بك يدعم API v1 أو أعلى
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom Scripts Tab -->
+    <div id="customTab" class="tab-content">
+      <div class="info-card">
+        <h3><i class="fas fa-code"></i> سكريبتات وأكواد مخصصة</h3>
+        <p>أضف أي سكريبتات أو أكواد تتبع مخصصة إلى موقعك.</p>
+
+        <div class="alert alert-info">
+          <i class="fas fa-info-circle"></i>
+          <p>يمكنك إضافة أكواد Google Tag Manager، أو أي سكريبتات تتبع أخرى هنا.</p>
+        </div>
+
+        <div class="custom-scripts-preview">
+          <div class="script-section">
+            <h4>سكريبتات Head (قبل &lt;/head&gt;)</h4>
+            <p class="text-secondary">مثالي لـ Google Tag Manager، أو Meta Tags</p>
+            <pre class="code-preview" id="headScriptsPreview"><!-- لا توجد سكريبتات --></pre>
+          </div>
+
+          <div class="script-section">
+            <h4>سكريبتات Body (بعد &lt;body&gt;)</h4>
+            <p class="text-secondary">يتم تحميلها في بداية الصفحة</p>
+            <pre class="code-preview" id="bodyScriptsPreview"><!-- لا توجد سكريبتات --></pre>
+          </div>
+
+          <div class="script-section">
+            <h4>سكريبتات Footer (قبل &lt;/body&gt;)</h4>
+            <p class="text-secondary">يتم تحميلها في نهاية الصفحة (موصى به للأداء)</p>
+            <pre class="code-preview" id="footerScriptsPreview"><!-- لا توجد سكريبتات --></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Events Tab -->
+    <div id="eventsTab" class="tab-content">
+      <div class="info-card">
+        <h3><i class="fas fa-bolt"></i> إدارة الأحداث والتتبع</h3>
+        <p>اختبر تتبع الأحداث وشاهد الأحداث المسجلة.</p>
+
+        <!-- Event Testing -->
+        <div class="event-testing-section">
+          <h4>اختبار الأحداث</h4>
+          <div class="test-form">
+            <div class="form-row">
+              <div class="form-group" style="flex: 2;">
+                <label>اسم الحدث:</label>
+                <input type="text" id="testEventName" class="form-control" placeholder="مثال: button_click">
+              </div>
+              <div class="form-group" style="flex: 1;">
+                <label>القيمة (اختياري):</label>
+                <input type="number" id="testEventValue" class="form-control" placeholder="100">
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-primary" onclick="testEventTracking()">
+                <i class="fas fa-paper-plane"></i> إرسال حدث تجريبي
+              </button>
+              <button class="btn btn-secondary" onclick="testPageView()">
+                <i class="fas fa-eye"></i> اختبار Page View
+              </button>
+              <button class="btn btn-success" onclick="testConversion()">
+                <i class="fas fa-shopping-cart"></i> اختبار Conversion
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Events -->
+        <div class="recent-events-section">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h4>الأحداث الأخيرة</h4>
+            <button class="btn btn-sm btn-danger" onclick="clearAllEvents()">
+              <i class="fas fa-trash"></i> مسح الكل
+            </button>
+          </div>
+          <div id="recentEventsList" class="events-list">
+            <!-- Events will be loaded here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==========================================
+     INTEGRATIONS SETTINGS MODAL
+     ========================================== -->
+
+<div id="integrationsSettingsModal" class="modal">
+  <div class="modal-content modal-xl">
+    <div class="modal-header">
+      <h3><i class="fas fa-cog"></i> إعدادات التكاملات</h3>
+      <button class="modal-close" onclick="closeIntegrationsSettings()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form onsubmit="event.preventDefault(); saveIntegrationsSettings();">
+
+        <!-- Google Analytics -->
+        <div class="settings-section">
+          <h4><i class="fab fa-google"></i> Google Analytics 4</h4>
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="gaEnabled">
+              <span>تفعيل Google Analytics</span>
+            </label>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>معرف القياس (Measurement ID):</label>
+              <input type="text" id="gaMeasurementId" class="form-control" placeholder="G-XXXXXXXXXX">
+              <small class="form-hint">يبدأ بـ G- (مثال: G-ABC123DEF4)</small>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="gaSendPageView">
+                <span>إرسال Page View تلقائياً</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- Meta Pixel -->
+        <div class="settings-section">
+          <h4><i class="fab fa-facebook"></i> Meta Pixel (Facebook)</h4>
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="metaEnabled">
+              <span>تفعيل Meta Pixel</span>
+            </label>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Pixel ID:</label>
+              <input type="text" id="metaPixelId" class="form-control" placeholder="123456789012345">
+              <small class="form-hint">15 رقم من Facebook Business Manager</small>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="metaTrackPageView">
+                <span>تتبع Page View تلقائياً</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- TikTok Pixel -->
+        <div class="settings-section">
+          <h4><i class="fab fa-tiktok"></i> TikTok Pixel</h4>
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="tiktokEnabled">
+              <span>تفعيل TikTok Pixel</span>
+            </label>
+          </div>
+          <div class="form-group">
+            <label>Pixel ID:</label>
+            <input type="text" id="tiktokPixelId" class="form-control" placeholder="C1234567890ABCDEFG">
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- Snapchat Pixel -->
+        <div class="settings-section">
+          <h4><i class="fab fa-snapchat-ghost"></i> Snapchat Pixel</h4>
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="snapchatEnabled">
+              <span>تفعيل Snapchat Pixel</span>
+            </label>
+          </div>
+          <div class="form-group">
+            <label>Pixel ID:</label>
+            <input type="text" id="snapchatPixelId" class="form-control" placeholder="12345678-1234-1234-1234-123456789012">
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- Microsoft Clarity -->
+        <div class="settings-section">
+          <h4><i class="fab fa-microsoft"></i> Microsoft Clarity</h4>
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="clarityEnabled">
+              <span>تفعيل Microsoft Clarity</span>
+            </label>
+          </div>
+          <div class="form-group">
+            <label>Project ID:</label>
+            <input type="text" id="clarityProjectId" class="form-control" placeholder="abcdefghij">
+            <small class="form-hint">من clarity.microsoft.com</small>
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- Bing UET -->
+        <div class="settings-section">
+          <h4><i class="fab fa-edge"></i> Bing Ads (UET)</h4>
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="bingEnabled">
+              <span>تفعيل Bing UET</span>
+            </label>
+          </div>
+          <div class="form-group">
+            <label>UET Tag ID:</label>
+            <input type="text" id="bingUetTagId" class="form-control" placeholder="12345678">
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- Yandex Metrica -->
+        <div class="settings-section">
+          <h4><i class="fab fa-yandex"></i> Yandex Metrica</h4>
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="yandexEnabled">
+              <span>تفعيل Yandex Metrica</span>
+            </label>
+          </div>
+          <div class="form-group">
+            <label>Counter ID:</label>
+            <input type="text" id="yandexCounterId" class="form-control" placeholder="12345678">
+            <small class="form-hint">من metrica.yandex.com</small>
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- Perfex CRM -->
+        <div class="settings-section">
+          <h4><i class="fas fa-project-diagram"></i> Perfex CRM</h4>
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="perfexEnabled">
+              <span>تفعيل Perfex CRM</span>
+            </label>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>رابط Perfex:</label>
+              <input type="url" id="perfexUrl" class="form-control" placeholder="https://crm.example.com">
+              <small class="form-hint">رابط نظام Perfex الخاص بك</small>
+            </div>
+            <div class="form-group">
+              <label>API Key:</label>
+              <input type="text" id="perfexApiKey" class="form-control" placeholder="your-api-key-here">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="perfexSyncContacts">
+              <span>مزامنة جهات الاتصال من نماذج الموقع تلقائياً</span>
+            </label>
+          </div>
+          <button type="button" class="btn btn-secondary" onclick="testPerfexConnection()">
+            <i class="fas fa-plug"></i> اختبار الاتصال
+          </button>
+        </div>
+
+        <hr>
+
+        <!-- Custom Scripts -->
+        <div class="settings-section">
+          <h4><i class="fas fa-code"></i> سكريبتات مخصصة</h4>
+
+          <div class="form-group">
+            <label>سكريبتات Head (قبل &lt;/head&gt;):</label>
+            <textarea id="customHeadScripts" class="form-control code-editor" rows="5" placeholder="<!-- Google Tag Manager -->"></textarea>
+            <small class="form-hint">مثالي لـ GTM أو Meta Tags</small>
+          </div>
+
+          <div class="form-group">
+            <label>سكريبتات Body (بعد &lt;body&gt;):</label>
+            <textarea id="customBodyScripts" class="form-control code-editor" rows="5"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>سكريبتات Footer (قبل &lt;/body&gt;):</label>
+            <textarea id="customFooterScripts" class="form-control code-editor" rows="5"></textarea>
+            <small class="form-hint">موصى به للأداء</small>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeIntegrationsSettings()">
+            <i class="fas fa-times"></i> إلغاء
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> حفظ الإعدادات
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================
+     INTEGRATIONS STYLES
+     ========================================== -->
+
+<style>
+/* Integrations Grid */
+.integrations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.integration-card {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  transition: all 0.2s;
+}
+
+.integration-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.integration-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.integration-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.integration-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.integration-card p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin: 10px 0;
+  min-height: 40px;
+}
+
+.integration-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 15px;
+  border-top: 1px solid var(--border-color);
+  margin-top: 15px;
+}
+
+.status-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.status-indicator.status-active {
+  background: var(--success);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+}
+
+.status-indicator.status-inactive {
+  background: var(--text-secondary);
+}
+
+/* Integration Details Grid */
+.integration-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.integration-detail-card {
+  background: #f9fafb;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 20px;
+}
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.detail-header h4 {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 15px 0;
+}
+
+.feature-list li {
+  padding: 8px 0;
+  color: var(--text-secondary);
+}
+
+.feature-list li i {
+  color: var(--success);
+  margin-left: 10px;
+}
+
+/* Perfex CRM Section */
+.perfex-crm-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.perfex-crm-section h4 {
+  color: var(--primary);
+  margin-bottom: 15px;
+}
+
+.perfex-crm-section ol {
+  padding-right: 20px;
+  color: var(--text-secondary);
+}
+
+.perfex-crm-section ol li {
+  padding: 5px 0;
+}
+
+.crm-test-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 10px;
+}
+
+/* Custom Scripts Preview */
+.custom-scripts-preview {
+  margin-top: 20px;
+}
+
+.script-section {
+  margin-bottom: 30px;
+}
+
+.script-section h4 {
+  color: var(--primary);
+  margin-bottom: 5px;
+}
+
+.script-section .text-secondary {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.code-preview {
+  background: #1e293b;
+  color: #e2e8f0;
+  padding: 15px;
+  border-radius: var(--radius-md);
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  overflow-x: auto;
+  max-height: 200px;
+}
+
+/* Event Testing */
+.event-testing-section {
+  background: #f9fafb;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.event-testing-section h4 {
+  color: var(--primary);
+  margin-bottom: 15px;
+}
+
+.test-form .form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+/* Events List */
+.events-list {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 15px;
+  background: white;
+}
+
+.event-item {
+  padding: 12px;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 10px;
+}
+
+.event-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.event-name {
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 5px;
+}
+
+.event-time {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 5px;
+}
+
+.event-data {
+  background: #f9fafb;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 5px;
+}
+
+/* Settings Section */
+.settings-section {
+  margin-bottom: 30px;
+}
+
+.settings-section h4 {
+  color: var(--primary);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--primary);
+}
+
+/* Alert */
+.alert {
+  padding: 15px;
+  border-radius: var(--radius-md);
+  margin: 15px 0;
+}
+
+.alert-info {
+  background: #dbeafe;
+  border: 1px solid #3b82f6;
+  color: #1e40af;
+}
+
+.alert-warning {
+  background: #fef3c7;
+  border: 1px solid #fbbf24;
+  color: #92400e;
+}
+
+.alert i {
+  margin-left: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .integrations-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .integration-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .perfex-crm-section {
+    grid-template-columns: 1fr;
+  }
+
+  .test-form .form-actions {
+    flex-direction: column;
+  }
+}
+</style>
