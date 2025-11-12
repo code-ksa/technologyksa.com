@@ -87,9 +87,8 @@ class DataImportManager {
 
   importMenus(menus) {
     if (menus && Object.keys(menus).length > 0) {
-      // تحويل object إلى array للتخزين
-      const menusArray = Object.values(menus);
-      localStorage.setItem('techksa_menus', JSON.stringify(menusArray));
+      // الاحتفاظ بصيغة object (لا تحويل إلى array)
+      localStorage.setItem('techksa_menus', JSON.stringify(menus));
     }
   }
 

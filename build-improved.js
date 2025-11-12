@@ -108,7 +108,20 @@ class TemplateEngine {
     this.config = config;
     this.data = data || {};
     this.headerFooterSettings = data.headerFooterSettings || null;
-    this.menus = data.menus || null;
+
+    // التحقق من صحة بيانات القوائم: يجب أن تكون object وليست array
+    let menus = data.menus || null;
+    if (menus && Array.isArray(menus)) {
+      log('تحويل القوائم من array إلى object', 'warning');
+      const menusObject = {};
+      menus.forEach(menu => {
+        if (menu && menu.id) {
+          menusObject[menu.id] = menu;
+        }
+      });
+      menus = menusObject;
+    }
+    this.menus = menus;
   }
 
   getBaseHTML(page, content) {

@@ -16,8 +16,8 @@ class DataSyncManager {
     const pages = JSON.parse(localStorage.getItem('techksa_pages') || '[]');
     const media = JSON.parse(localStorage.getItem('techksa_media') || '[]');
     const menusData = localStorage.getItem('techksa_menus');
-    const settingsData = localStorage.getItem('techksa_headerFooter');
-    const siteSettings = localStorage.getItem('techksa_siteSettings');
+    const settingsData = localStorage.getItem('techksa_header_footer_settings');
+    const siteSettings = localStorage.getItem('techksa_site_settings');
 
     // Parse menus
     let menus = {
