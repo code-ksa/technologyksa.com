@@ -107,11 +107,17 @@ class TemplateEngine {
   constructor(config, data) {
     this.config = config;
     this.data = data || {};
+    this.headerFooterSettings = data.headerFooterSettings || null;
+    this.menus = data.menus || null;
   }
 
   getBaseHTML(page, content) {
     const lang = page.lang || 'ar';
     const dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+    // Use custom header/footer if available
+    const headerHTML = this.renderHeader();
+    const footerHTML = this.renderFooter();
 
     return `<!DOCTYPE html>
 <html lang="${lang}" dir="${dir}">
@@ -136,61 +142,14 @@ class TemplateEngine {
 </head>
 <body>
 
-  <!-- Header -->
-  <header class="site-header">
-    <nav class="nav-container">
-      <div class="nav-logo">
-        <a href="/">
-          <img src="/assets/images/logo.png" alt="${this.config.site?.name || 'Technology KSA'}">
-        </a>
-      </div>
-      <ul class="nav-menu" id="main-menu">
-        ${this.renderMenu()}
-      </ul>
-      <div class="nav-toggle" onclick="toggleMenu()">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </nav>
-  </header>
+${headerHTML}
 
   <!-- Main Content -->
   <main class="site-main">
 ${content}
   </main>
 
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="footer-container">
-      <div class="footer-grid">
-        <div class="footer-col">
-          <h3>${this.config.site?.name || 'Technology KSA'}</h3>
-          <p>${this.config.site?.description || ''}</p>
-        </div>
-        <div class="footer-col">
-          <h4>روابط سريعة</h4>
-          <ul>
-            ${this.renderFooterLinks()}
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>تواصل معنا</h4>
-          <p><i class="fas fa-envelope"></i> ${this.config.contact?.email || ''}</p>
-          <p><i class="fas fa-phone"></i> ${this.config.contact?.phone || ''}</p>
-        </div>
-        <div class="footer-col">
-          <h4>تابعنا</h4>
-          <div class="social-links">
-            ${this.renderSocialLinks()}
-          </div>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; ${new Date().getFullYear()} ${this.config.site?.name || 'Technology KSA'}. جميع الحقوق محفوظة.</p>
-      </div>
-    </div>
-  </footer>
+${footerHTML}
 
   <script src="/assets/js/main.js"></script>
   <script src="/assets/js/site-loader.js"></script>
@@ -203,7 +162,100 @@ ${content}
 </html>`;
   }
 
+  renderHeader() {
+    const settings = this.headerFooterSettings?.header || {};
+    const logo = this.headerFooterSettings?.logo || {};
+
+    // Logo HTML
+    const logoHTML = logo.type === 'image' && logo.imageUrl
+      ? `<img src="${logo.imageUrl}" alt="${logo.text || 'Logo'}" style="width:${logo.width || 150}px;height:${logo.height || 50}px;">`
+      : `<span class="logo-text">${logo.text || this.config.site?.name || 'Technology KSA'}</span>`;
+
+    // CTA Button
+    const ctaHTML = settings.showCTA
+      ? `<a href="${settings.ctaLink || '/contact'}" class="btn btn-${settings.ctaStyle || 'primary'}">${settings.ctaText || 'اتصل بنا'}</a>`
+      : '';
+
+    // Header styles
+    const headerStyles = settings.enabled ? `
+      background-color: ${settings.backgroundColor || '#ffffff'};
+      color: ${settings.textColor || '#333333'};
+      height: ${settings.height || 80}px;
+    ` : '';
+
+    return `  <!-- Header -->
+  <header class="site-header ${settings.sticky ? 'sticky' : ''}" style="${headerStyles}">
+    <nav class="nav-container">
+      <div class="nav-logo">
+        <a href="/">${logoHTML}</a>
+      </div>
+      <ul class="nav-menu" id="main-menu">
+        ${this.renderMenu()}
+      </ul>
+      ${ctaHTML}
+      <div class="nav-toggle" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </nav>
+  </header>`;
+  }
+
+  renderFooter() {
+    const settings = this.headerFooterSettings?.footer || {};
+    const company = settings.company || {};
+    const year = new Date().getFullYear();
+    const copyright = (settings.copyrightText || '© {year} Technology KSA. جميع الحقوق محفوظة.').replace('{year}', year);
+
+    // Footer styles
+    const footerStyles = settings.enabled ? `
+      background-color: ${settings.backgroundColor || '#1a1a1a'};
+      color: ${settings.textColor || '#ffffff'};
+    ` : '';
+
+    return `  <!-- Footer -->
+  <footer class="site-footer" style="${footerStyles}">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3>${company.name || this.config.site?.name || 'Technology KSA'}</h3>
+          <p>${company.description || this.config.site?.description || ''}</p>
+        </div>
+        <div class="footer-col">
+          <h4>روابط سريعة</h4>
+          <ul>
+            ${this.renderFooterLinks()}
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>تواصل معنا</h4>
+          <p><i class="fas fa-envelope"></i> ${company.email || this.config.contact?.email || ''}</p>
+          <p><i class="fas fa-phone"></i> ${company.phone || this.config.contact?.phone || ''}</p>
+          ${company.address ? `<p><i class="fas fa-map-marker-alt"></i> ${company.address}</p>` : ''}
+        </div>
+        ${settings.showSocial ? `
+        <div class="footer-col">
+          <h4>تابعنا</h4>
+          <div class="social-links">
+            ${this.renderSocialLinks()}
+          </div>
+        </div>` : ''}
+      </div>
+      <div class="footer-bottom">
+        <p>${copyright}</p>
+      </div>
+    </div>
+  </footer>`;
+  }
+
   renderMenu() {
+    // Use custom menus if available
+    if (this.menus && this.menus.primary) {
+      return this.renderMenuItems(this.menus.primary.items);
+    }
+
+    // Fallback to config
     if (!this.config.navigation?.main) return '';
 
     return this.config.navigation.main.map(item =>
@@ -211,7 +263,36 @@ ${content}
     ).join('\n        ');
   }
 
+  renderMenuItems(items, level = 0) {
+    if (!items || items.length === 0) return '';
+
+    return items.sort((a, b) => a.order - b.order).map(item => {
+      const icon = item.icon ? `<i class="fas fa-${item.icon}"></i> ` : '';
+      const hasChildren = item.children && item.children.length > 0;
+
+      let html = `<li class="menu-item${hasChildren ? ' has-submenu' : ''}">`;
+      html += `<a href="${item.url}" target="${item.target || '_self'}" class="${item.classes || ''}">${icon}${item.label}</a>`;
+
+      if (hasChildren && level < 2) {
+        html += `<ul class="submenu">`;
+        html += this.renderMenuItems(item.children, level + 1);
+        html += `</ul>`;
+      }
+
+      html += `</li>`;
+      return html;
+    }).join('\n        ');
+  }
+
   renderFooterLinks() {
+    // Use custom footer menu if available
+    if (this.menus && this.menus.footer) {
+      return this.menus.footer.items.sort((a, b) => a.order - b.order).map(item =>
+        `<li><a href="${item.url}">${item.label}</a></li>`
+      ).join('\n            ');
+    }
+
+    // Fallback to config
     if (!this.config.navigation?.footer) return '';
 
     return this.config.navigation.footer.map(item =>
@@ -220,12 +301,13 @@ ${content}
   }
 
   renderSocialLinks() {
-    if (!this.config.social) return '';
+    // Use custom social links if available
+    const social = this.headerFooterSettings?.footer?.social || this.config.social || {};
 
     const links = [];
-    for (const [platform, url] of Object.entries(this.config.social)) {
+    for (const [platform, url] of Object.entries(social)) {
       if (url) {
-        links.push(`<a href="${url}" target="_blank"><i class="fab fa-${platform}"></i></a>`);
+        links.push(`<a href="${url}" target="_blank" rel="noopener noreferrer"><i class="fab fa-${platform}"></i></a>`);
       }
     }
     return links.join('\n            ');
@@ -586,6 +668,14 @@ class EnhancedSiteBuilder {
       this.data = JSON.parse(readFile(dataPath));
       log('Data loaded from data.json', 'success');
       log(`Posts: ${this.data.posts?.length || 0}, Services: ${this.data.services?.length || 0}, Projects: ${this.data.projects?.length || 0}`, 'info');
+
+      // Check for header/footer settings and menus
+      if (this.data.headerFooterSettings) {
+        log('Custom header/footer settings found', 'info');
+      }
+      if (this.data.menus) {
+        log(`Menus found: ${Object.keys(this.data.menus).length}`, 'info');
+      }
     } else {
       this.data = { posts: [], services: [], projects: [], pages: [] };
       log('No data.json found, using empty data', 'warning');
