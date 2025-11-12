@@ -402,17 +402,27 @@ function initPageBuilder() {
 }
 
 function loadPageForBuilder() {
-  const data = blogCMS.loadData();
-  const pages = data.pages || [];
+  // Get pages from localStorage
+  const pagesData = localStorage.getItem('techksa_pages');
+  const pages = pagesData ? JSON.parse(pagesData) : [];
 
   if (pages.length === 0) {
     pageBuilderManager.showNotification('لا توجد صفحات. قم بإنشاء صفحة أولاً من قسم "الصفحات"', 'warning');
+    // Show empty canvas
+    const canvas = document.getElementById('pageCanvas');
+    if (canvas) {
+      const emptyState = canvas.querySelector('.canvas-empty');
+      if (emptyState) emptyState.style.display = 'flex';
+    }
     return;
   }
 
   // Load first page by default
   pageBuilderManager.currentPage = pages[0];
-  document.getElementById('currentPageName').textContent = pages[0].title;
+  const currentPageNameEl = document.getElementById('currentPageName');
+  if (currentPageNameEl) {
+    currentPageNameEl.textContent = pages[0].title;
+  }
 
   // Load existing layout if available
   if (pages[0].layout && pages[0].layout.length > 0) {
@@ -463,28 +473,31 @@ function renderExistingLayout() {
 }
 
 function selectPage() {
-  const data = blogCMS.loadData();
-  const pages = data.pages || [];
+  // Get pages from localStorage
+  const pagesData = localStorage.getItem('techksa_pages');
+  const pages = pagesData ? JSON.parse(pagesData) : [];
 
   if (pages.length === 0) {
-    pageBuilderManager.showNotification('لا توجد صفحات', 'warning');
+    pageBuilderManager.showNotification('لا توجد صفحات. أضف صفحة جديدة أولاً!', 'warning');
     return;
   }
 
   const pagesList = pages.map(page => `
     <div class="page-select-item" onclick="loadPageToBuilder('${page.id}')">
       <h4>${page.title}</h4>
-      <p>${page.slug}</p>
+      <p><code>/${page.slug}</code></p>
+      <small style="color: #6b7280;">${page.layout?.length || 0} عناصر</small>
     </div>
   `).join('');
 
   const modal = document.createElement('div');
   modal.className = 'modal active';
+  modal.style.zIndex = '999999';
   modal.innerHTML = `
     <div class="modal-overlay" onclick="this.parentElement.remove()"></div>
     <div class="modal-content">
       <div class="modal-header">
-        <h3>اختر صفحة</h3>
+        <h3><i class="fas fa-file"></i> اختر صفحة للتحرير</h3>
         <button class="modal-close" onclick="this.closest('.modal').remove()">
           <i class="fas fa-times"></i>
         </button>
@@ -494,18 +507,26 @@ function selectPage() {
           ${pagesList}
         </div>
       </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="this.closest('.modal').remove()">إلغاء</button>
+      </div>
     </div>
   `;
   document.body.appendChild(modal);
 }
 
 function loadPageToBuilder(pageId) {
-  const data = blogCMS.loadData();
-  const page = data.pages.find(p => p.id === pageId);
+  // Get pages from localStorage
+  const pagesData = localStorage.getItem('techksa_pages');
+  const pages = pagesData ? JSON.parse(pagesData) : [];
+  const page = pages.find(p => p.id === pageId);
 
   if (page) {
     pageBuilderManager.currentPage = page;
-    document.getElementById('currentPageName').textContent = page.title;
+    const currentPageNameEl = document.getElementById('currentPageName');
+    if (currentPageNameEl) {
+      currentPageNameEl.textContent = page.title;
+    }
 
     // Load layout
     if (page.layout && page.layout.length > 0) {
@@ -514,19 +535,21 @@ function loadPageToBuilder(pageId) {
     } else {
       // Clear canvas
       const canvas = document.getElementById('pageCanvas');
-      Array.from(canvas.children).forEach(child => {
-        if (!child.classList.contains('canvas-empty')) {
-          child.remove();
-        }
-      });
-      const emptyState = canvas.querySelector('.canvas-empty');
-      if (emptyState) emptyState.style.display = 'flex';
+      if (canvas) {
+        Array.from(canvas.children).forEach(child => {
+          if (!child.classList.contains('canvas-empty')) {
+            child.remove();
+          }
+        });
+        const emptyState = canvas.querySelector('.canvas-empty');
+        if (emptyState) emptyState.style.display = 'flex';
+      }
       pageBuilderManager.pageLayout = [];
     }
 
     // Close modal
     document.querySelector('.modal')?.remove();
-    pageBuilderManager.showNotification('تم تحميل الصفحة بنجاح', 'success');
+    pageBuilderManager.showNotification('تم تحميل الصفحة: ' + page.title, 'success');
   }
 }
 
@@ -667,16 +690,17 @@ function savePageLayout() {
 
   updateLayoutOrder();
 
-  // Save layout to page
-  const data = blogCMS.loadData();
-  const pageIndex = data.pages.findIndex(p => p.id === pageBuilderManager.currentPage.id);
+  // Save layout to page in localStorage
+  const pagesData = localStorage.getItem('techksa_pages');
+  const pages = pagesData ? JSON.parse(pagesData) : [];
+  const pageIndex = pages.findIndex(p => p.id === pageBuilderManager.currentPage.id);
 
   if (pageIndex !== -1) {
-    data.pages[pageIndex].layout = pageBuilderManager.pageLayout;
-    data.pages[pageIndex].updatedAt = new Date().toISOString();
+    pages[pageIndex].layout = pageBuilderManager.pageLayout;
+    pages[pageIndex].updatedAt = new Date().toISOString();
 
-    blogCMS.saveData(data);
-    pageBuilderManager.showNotification('تم حفظ التخطيط بنجاح', 'success');
+    localStorage.setItem('techksa_pages', JSON.stringify(pages));
+    pageBuilderManager.showNotification('✓ تم حفظ التخطيط بنجاح', 'success');
   }
 }
 
@@ -737,33 +761,45 @@ function publishPage() {
   // Save layout first
   savePageLayout();
 
-  // Update page status
-  const data = blogCMS.loadData();
-  const pageIndex = data.pages.findIndex(p => p.id === pageBuilderManager.currentPage.id);
+  // Update page status in localStorage
+  const pagesData = localStorage.getItem('techksa_pages');
+  const pages = pagesData ? JSON.parse(pagesData) : [];
+  const pageIndex = pages.findIndex(p => p.id === pageBuilderManager.currentPage.id);
 
   if (pageIndex !== -1) {
-    data.pages[pageIndex].status = 'published';
-    data.pages[pageIndex].publishedAt = new Date().toISOString();
-    blogCMS.saveData(data);
+    pages[pageIndex].status = 'published';
+    pages[pageIndex].publishedAt = new Date().toISOString();
+    localStorage.setItem('techksa_pages', JSON.stringify(pages));
 
     // Show success message with link
-    const pageUrl = `/${data.pages[pageIndex].slug}`;
+    const pageSlug = pages[pageIndex].slug === 'index' ? '' : pages[pageIndex].slug;
+    const pageUrl = `/${pageSlug}`;
     const message = `
       <div style="text-align: center;">
         <p style="font-size: 1.2rem; margin-bottom: 1rem;">✓ تم نشر الصفحة بنجاح!</p>
+        <p style="font-weight: bold; margin-bottom: 1rem;">${pages[pageIndex].title}</p>
         <p style="margin-bottom: 1rem;">لمعاينة الصفحة المنشورة:</p>
         <a href="${pageUrl}" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; background: white; color: #0C4A2F; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600;">
           <i class="fas fa-external-link-alt"></i>
-          افتح الصفحة: ${data.pages[pageIndex].title}
+          افتح الصفحة
         </a>
-        <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.9;">
-          <i class="fas fa-info-circle"></i>
-          لرؤية التغييرات على الموقع، قم بتشغيل أمر البناء: <code style="background: rgba(255,255,255,0.2); padding: 0.25rem 0.5rem; border-radius: 4px;">node build-improved.js</code>
-        </p>
+        <div style="background: #fef3c7; border: 2px solid #fbbf24; border-radius: 8px; padding: 1rem; margin-top: 1.5rem;">
+          <p style="color: #92400e; margin: 0; font-size: 0.95rem;">
+            <i class="fas fa-exclamation-triangle"></i> <strong>مهم جداً:</strong>
+          </p>
+          <p style="color: #92400e; margin: 0.5rem 0 0 0; font-size: 0.9rem;">
+            يجب تصدير البيانات وتشغيل أمر البناء لرؤية التغييرات على الموقع
+          </p>
+        </div>
       </div>
     `;
 
     showPublishSuccessModal(message, pageUrl);
+
+    // Show export reminder
+    setTimeout(() => {
+      dataSyncManager.showExportReminder();
+    }, 2000);
   }
 }
 

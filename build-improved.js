@@ -115,8 +115,12 @@ class TemplateEngine {
     const lang = page.lang || 'ar';
     const dir = lang === 'ar' ? 'rtl' : 'ltr';
 
+    // Calculate asset path depth based on slug
+    const depth = (page.slug || '').split('/').filter(s => s).length;
+    const assetPath = depth === 0 ? '' : '../'.repeat(depth);
+
     // Use custom header/footer if available
-    const headerHTML = this.renderHeader();
+    const headerHTML = this.renderHeader(assetPath);
     const footerHTML = this.renderFooter();
 
     return `<!DOCTYPE html>
@@ -135,8 +139,8 @@ class TemplateEngine {
 
   <title>${page.title}</title>
 
-  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
-  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="icon" type="image/png" href="${assetPath}assets/images/favicon.png">
+  <link rel="stylesheet" href="${assetPath}assets/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -151,8 +155,8 @@ ${content}
 
 ${footerHTML}
 
-  <script src="/assets/js/main.js"></script>
-  <script src="/assets/js/site-loader.js"></script>
+  <script src="${assetPath}assets/js/main.js"></script>
+  <script src="${assetPath}assets/js/site-loader.js"></script>
   <script>
     function toggleMenu() {
       document.querySelector('.nav-menu').classList.toggle('active');
@@ -162,13 +166,14 @@ ${footerHTML}
 </html>`;
   }
 
-  renderHeader() {
+  renderHeader(assetPath = '') {
     const settings = this.headerFooterSettings?.header || {};
     const logo = this.headerFooterSettings?.logo || {};
 
     // Logo HTML
-    const logoHTML = logo.type === 'image' && logo.imageUrl
-      ? `<img src="${logo.imageUrl}" alt="${logo.text || 'Logo'}" style="width:${logo.width || 150}px;height:${logo.height || 50}px;">`
+    const logoImageUrl = logo.imageUrl ? (logo.imageUrl.startsWith('http') ? logo.imageUrl : `${assetPath}${logo.imageUrl}`) : '';
+    const logoHTML = logo.type === 'image' && logoImageUrl
+      ? `<img src="${logoImageUrl}" alt="${logo.text || 'Logo'}" style="width:${logo.width || 150}px;height:${logo.height || 50}px;">`
       : `<span class="logo-text">${logo.text || this.config.site?.name || 'Technology KSA'}</span>`;
 
     // CTA Button

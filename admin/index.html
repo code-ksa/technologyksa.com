@@ -1386,9 +1386,14 @@
     <main class="admin-main">
       <div class="admin-header">
         <h1 id="pageTitle">إدارة المدونة</h1>
-        <button class="btn btn-primary" id="btnNewPost">
-          <i class="fas fa-plus"></i> <span id="btnNewText">إضافة مقال جديد</span>
-        </button>
+        <div style="display: flex; gap: 1rem;">
+          <button class="btn btn-success" onclick="dataSyncManager.showExportModal()" title="تصدير البيانات لـ data.json">
+            <i class="fas fa-download"></i> تصدير البيانات
+          </button>
+          <button class="btn btn-primary" id="btnNewPost">
+            <i class="fas fa-plus"></i> <span id="btnNewText">إضافة مقال جديد</span>
+          </button>
+        </div>
       </div>
 
       <div class="admin-content">
@@ -5491,5 +5496,8 @@
 
   <!-- CMS Extended Functions: Page Builder, Publish, Settings -->
   <script src="cms-extended.js"></script>
+
+  <!-- Data Sync Manager -->
+  <script src="data-sync.js"></script>
 </body>
 </html>
