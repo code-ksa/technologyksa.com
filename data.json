@@ -2,7 +2,25 @@
   "posts": [],
   "services": [],
   "projects": [],
-  "pages": [],
+  "pages": [
+    {
+      "id": "page-home",
+      "title": "الصفحة الرئيسية",
+      "slug": "index",
+      "content": "<h1>مرحباً بك في Technology KSA</h1><p>شركة تقنية سعودية متخصصة في تطوير المواقع والتطبيقات</p>",
+      "excerpt": "الصفحة الرئيسية لموقع Technology KSA",
+      "status": "draft",
+      "template": "default",
+      "layout": [],
+      "seo": {
+        "metaTitle": "Technology KSA - الصفحة الرئيسية",
+        "metaDescription": "شركة تقنية سعودية متخصصة في تطوير المواقع والتطبيقات",
+        "metaKeywords": "تطوير مواقع, تطوير تطبيقات, السعودية"
+      },
+      "createdAt": "2025-01-12T00:00:00.000Z",
+      "updatedAt": "2025-01-12T00:00:00.000Z"
+    }
+  ],
   "media": [],
   "menus": {
     "primary": {
