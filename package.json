@@ -2,13 +2,11 @@
   "name": "technologyksa-website",
   "version": "1.0.0",
   "description": "Technology KSA - Complete Website with SSG Build System",
-  "main": "build.js",
+  "main": "build-improved.js",
   "scripts": {
-    "build": "node build.js",
-    "build:pages": "node build.js --pages",
-    "build:ar": "node build.js --lang=ar",
-    "build:watch": "nodemon build.js",
-    "clean": "node build.js --clean",
+    "build": "node build-improved.js",
+    "build:old": "node build.js",
+    "build:watch": "nodemon build-improved.js",
     "serve": "npx http-server ./dist -p 8080 -o",
     "dev": "npm run build && npm run serve"
   },

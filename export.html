@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Export Data - Technology KSA</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      padding: 40px;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+      font-size: 2rem;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      border: 2px solid #e9ecef;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #667eea;
+      display: block;
+    }
+
+    .stat-label {
+      color: #666;
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
+
+    .actions {
+      display: grid;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      padding: 15px 30px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #5a6268;
+      transform: translateY(-2px);
+    }
+
+    .btn-success {
+      background: #28a745;
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #218838;
+    }
+
+    .alert {
+      padding: 15px 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .alert-success {
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+    }
+
+    .alert-info {
+      background: #d1ecf1;
+      border: 1px solid #bee5eb;
+      color: #0c5460;
+    }
+
+    .alert.show {
+      display: block;
+      animation: slideIn 0.3s;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .code-block {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 20px;
+      border-radius: 10px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      overflow-x: auto;
+      max-height: 300px;
+      overflow-y: auto;
+      margin-top: 20px;
+      display: none;
+    }
+
+    .code-block.show {
+      display: block;
+    }
+
+    .icon {
+      font-size: 1.2rem;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📦 تصدير البيانات</h1>
+    <p class="subtitle">تصدير جميع بيانات الموقع لاستخدامها في Build System</p>
+
+    <div id="alert" class="alert"></div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <span class="stat-number" id="pagesCount">0</span>
+        <span class="stat-label">صفحات</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="postsCount">0</span>
+        <span class="stat-label">مقالات</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="servicesCount">0</span>
+        <span class="stat-label">خدمات</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="projectsCount">0</span>
+        <span class="stat-label">مشاريع</span>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" onclick="exportAllData()">
+        <span class="icon">💾</span>
+        تصدير جميع البيانات
+      </button>
+      <button class="btn btn-secondary" onclick="downloadJSON()">
+        <span class="icon">⬇️</span>
+        تحميل ملف JSON
+      </button>
+      <button class="btn btn-success" onclick="copyToClipboard()">
+        <span class="icon">📋</span>
+        نسخ إلى الحافظة
+      </button>
+    </div>
+
+    <div id="codeBlock" class="code-block"></div>
+
+    <a href="/admin/" class="back-link">← العودة إلى لوحة التحكم</a>
+  </div>
+
+  <script>
+    let exportedData = null;
+
+    // Load statistics
+    function loadStats() {
+      const pages = JSON.parse(localStorage.getItem('techksa_pages') || '[]');
+      const posts = JSON.parse(localStorage.getItem('techksa_posts') || '[]');
+      const services = JSON.parse(localStorage.getItem('techksa_services') || '[]');
+      const projects = JSON.parse(localStorage.getItem('techksa_projects') || '[]');
+
+      document.getElementById('pagesCount').textContent = pages.length;
+      document.getElementById('postsCount').textContent = posts.length;
+      document.getElementById('servicesCount').textContent = services.length;
+      document.getElementById('projectsCount').textContent = projects.length;
+    }
+
+    // Export all data
+    function exportAllData() {
+      showAlert('جاري تصدير البيانات...', 'info');
+
+      try {
+        const data = {
+          timestamp: new Date().toISOString(),
+          version: '1.0.0',
+          site: {
+            name: 'Technology KSA',
+            url: 'https://technologyksa.com'
+          },
+          pages: JSON.parse(localStorage.getItem('techksa_pages') || '[]'),
+          posts: JSON.parse(localStorage.getItem('techksa_posts') || '[]'),
+          services: JSON.parse(localStorage.getItem('techksa_services') || '[]'),
+          projects: JSON.parse(localStorage.getItem('techksa_projects') || '[]'),
+          settings: JSON.parse(localStorage.getItem('techksa_settings') || '{}'),
+          menu: JSON.parse(localStorage.getItem('techksa_menu_items') || '[]'),
+          components: JSON.parse(localStorage.getItem('techksa_components') || '{}')
+        };
+
+        exportedData = data;
+
+        // Display in code block
+        const codeBlock = document.getElementById('codeBlock');
+        codeBlock.textContent = JSON.stringify(data, null, 2);
+        codeBlock.classList.add('show');
+
+        showAlert('✅ تم تصدير البيانات بنجاح! يمكنك الآن تحميل الملف أو نسخه.', 'success');
+      } catch (error) {
+        showAlert('❌ حدث خطأ أثناء التصدير: ' + error.message, 'error');
+      }
+    }
+
+    // Download as JSON file
+    function downloadJSON() {
+      if (!exportedData) {
+        showAlert('⚠️ يجب تصدير البيانات أولاً!', 'info');
+        return;
+      }
+
+      const dataStr = JSON.stringify(exportedData, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `techksa-data-${Date.now()}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      showAlert('✅ تم تحميل الملف بنجاح!', 'success');
+    }
+
+    // Copy to clipboard
+    function copyToClipboard() {
+      if (!exportedData) {
+        showAlert('⚠️ يجب تصدير البيانات أولاً!', 'info');
+        return;
+      }
+
+      const dataStr = JSON.stringify(exportedData, null, 2);
+      navigator.clipboard.writeText(dataStr).then(() => {
+        showAlert('✅ تم نسخ البيانات إلى الحافظة!', 'success');
+      }).catch(err => {
+        showAlert('❌ فشل النسخ: ' + err.message, 'error');
+      });
+    }
+
+    // Show alert
+    function showAlert(message, type) {
+      const alert = document.getElementById('alert');
+      alert.textContent = message;
+      alert.className = `alert alert-${type} show`;
+
+      setTimeout(() => {
+        alert.classList.remove('show');
+      }, 5000);
+    }
+
+    // Initialize
+    loadStats();
+  </script>
+</body>
+</html>
