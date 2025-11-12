@@ -1,0 +1,136 @@
+{
+  "posts": [],
+  "services": [],
+  "projects": [],
+  "pages": [],
+  "media": [],
+  "menus": {
+    "primary": {
+      "id": "primary",
+      "name": "القائمة الرئيسية",
+      "location": "header",
+      "items": [
+        {
+          "id": "menu-home",
+          "label": "الرئيسية",
+          "url": "/",
+          "target": "_self",
+          "icon": "home",
+          "order": 1,
+          "children": []
+        },
+        {
+          "id": "menu-services",
+          "label": "خدماتنا",
+          "url": "/services",
+          "target": "_self",
+          "icon": "briefcase",
+          "order": 2,
+          "children": []
+        },
+        {
+          "id": "menu-portfolio",
+          "label": "أعمالنا",
+          "url": "/portfolio",
+          "target": "_self",
+          "icon": "folder-open",
+          "order": 3,
+          "children": []
+        },
+        {
+          "id": "menu-blog",
+          "label": "المدونة",
+          "url": "/blog",
+          "target": "_self",
+          "icon": "newspaper",
+          "order": 4,
+          "children": []
+        },
+        {
+          "id": "menu-contact",
+          "label": "اتصل بنا",
+          "url": "/contact",
+          "target": "_self",
+          "icon": "envelope",
+          "order": 5,
+          "children": []
+        }
+      ]
+    },
+    "footer": {
+      "id": "footer",
+      "name": "قائمة التذييل",
+      "location": "footer",
+      "items": [
+        {
+          "id": "footer-about",
+          "label": "من نحن",
+          "url": "/about",
+          "target": "_self",
+          "order": 1
+        },
+        {
+          "id": "footer-privacy",
+          "label": "سياسة الخصوصية",
+          "url": "/privacy",
+          "target": "_self",
+          "order": 2
+        },
+        {
+          "id": "footer-terms",
+          "label": "شروط الاستخدام",
+          "url": "/terms",
+          "target": "_self",
+          "order": 3
+        }
+      ]
+    }
+  },
+  "headerFooterSettings": {
+    "header": {
+      "enabled": true,
+      "sticky": true,
+      "backgroundColor": "#ffffff",
+      "textColor": "#333333",
+      "height": 80,
+      "showCTA": true,
+      "ctaText": "اتصل بنا",
+      "ctaLink": "/contact",
+      "ctaStyle": "primary"
+    },
+    "footer": {
+      "enabled": true,
+      "backgroundColor": "#1a1a1a",
+      "textColor": "#ffffff",
+      "showSocial": true,
+      "copyrightText": "© {year} Technology KSA. جميع الحقوق محفوظة.",
+      "company": {
+        "name": "Technology KSA",
+        "description": "شركة تقنية سعودية متخصصة في تطوير المواقع والتطبيقات",
+        "email": "info@technologyksa.com",
+        "phone": "+966 50 123 4567",
+        "address": "الرياض، المملكة العربية السعودية"
+      },
+      "social": {
+        "twitter": "https://twitter.com/technologyksa",
+        "facebook": "https://facebook.com/technologyksa",
+        "linkedin": "https://linkedin.com/company/technologyksa",
+        "instagram": "https://instagram.com/technologyksa"
+      }
+    },
+    "logo": {
+      "type": "text",
+      "text": "Technology KSA",
+      "imageUrl": "",
+      "width": 150,
+      "height": 50
+    }
+  },
+  "siteSettings": {
+    "siteName": "Technology KSA",
+    "siteDescription": "شركة تقنية سعودية متخصصة في تطوير المواقع والتطبيقات",
+    "siteUrl": "https://technologyksa.com",
+    "language": "ar",
+    "timezone": "Asia/Riyadh"
+  }
+}
