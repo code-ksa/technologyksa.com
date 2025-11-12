@@ -596,6 +596,99 @@ ${footerHTML}
       </div>
     </article>`;
   }
+
+  renderCustomPage(page) {
+    // إذا كانت الصفحة تحتوي على layout من Page Builder
+    if (page.layout && page.layout.length > 0) {
+      const layoutHTML = page.layout.map(item => item.html || '').join('\n\n');
+      return `
+    <div class="custom-page">
+      ${layoutHTML}
+    </div>`;
+    }
+
+    // إذا كانت الصفحة تحتوي على محتوى نصي فقط
+    return `
+    <div class="custom-page">
+      <div class="container">
+        <h1>${page.title}</h1>
+        ${page.content || ''}
+      </div>
+    </div>`;
+  }
+
+  renderSingleService(service) {
+    return `
+    <article class="single-service">
+      <div class="container">
+        <div class="service-header">
+          <h1>${service.title}</h1>
+          ${service.excerpt ? `<p class="service-excerpt">${service.excerpt}</p>` : ''}
+        </div>
+
+        ${service.icon ? `
+        <div class="service-icon">
+          <i class="${service.icon}"></i>
+        </div>
+        ` : ''}
+
+        <div class="service-content">
+          ${service.content || service.description || ''}
+        </div>
+
+        ${service.features && service.features.length > 0 ? `
+        <div class="service-features">
+          <h3>المميزات</h3>
+          <ul>
+            ${service.features.map(feature => `<li>${feature}</li>`).join('')}
+          </ul>
+        </div>
+        ` : ''}
+
+        <div class="service-cta">
+          <a href="/contact" class="btn btn-primary">اطلب الخدمة الآن</a>
+        </div>
+      </div>
+    </article>`;
+  }
+
+  renderSingleProject(project) {
+    return `
+    <article class="single-project">
+      <div class="container">
+        <div class="project-header">
+          <h1>${project.title}</h1>
+          ${project.excerpt ? `<p class="project-excerpt">${project.excerpt}</p>` : ''}
+        </div>
+
+        ${project.image ? `
+        <div class="project-image">
+          <img src="${project.image}" alt="${project.title}">
+        </div>
+        ` : ''}
+
+        <div class="project-content">
+          ${project.content || project.description || ''}
+        </div>
+
+        ${project.technologies && project.technologies.length > 0 ? `
+        <div class="project-technologies">
+          <h3>التقنيات المستخدمة</h3>
+          <div class="tech-tags">
+            ${project.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join(' ')}
+          </div>
+        </div>
+        ` : ''}
+
+        ${project.link || project.demoUrl ? `
+        <div class="project-links">
+          ${project.link ? `<a href="${project.link}" class="btn btn-primary" target="_blank">زيارة المشروع</a>` : ''}
+          ${project.demoUrl ? `<a href="${project.demoUrl}" class="btn btn-secondary" target="_blank">معاينة حية</a>` : ''}
+        </div>
+        ` : ''}
+      </div>
+    </article>`;
+  }
 }
 
 // ==========================================
@@ -723,6 +816,33 @@ class EnhancedSiteBuilder {
   buildDynamicPages() {
     log('Building dynamic pages...', 'info');
 
+    // Build custom pages (from Page Builder and admin)
+    if (this.data.pages && this.data.pages.length > 0) {
+      this.data.pages.forEach(page => {
+        // بناء جميع الصفحات المنشورة أو المسودات (للمعاينة)
+        if (page.slug && page.slug !== 'index') {
+          try {
+            const content = this.templateEngine.renderCustomPage(page);
+            const html = this.templateEngine.getBaseHTML({
+              slug: page.slug,
+              title: page.seo?.metaTitle || `${page.title} - Technology KSA`,
+              description: page.seo?.metaDescription || page.excerpt || page.title,
+              keywords: page.seo?.metaKeywords || ''
+            }, content);
+
+            const filePath = path.join(CONFIG.outputDir, page.slug, 'index.html');
+            if (writeFile(filePath, html)) {
+              this.stats.pages++;
+              log(`Generated custom page: ${page.slug}`, 'success');
+            }
+          } catch (error) {
+            log(`Error building page ${page.slug}: ${error.message}`, 'error');
+            this.stats.errors++;
+          }
+        }
+      });
+    }
+
     // Build individual blog posts
     if (this.data.posts && this.data.posts.length > 0) {
       this.data.posts.forEach(post => {
@@ -748,7 +868,55 @@ class EnhancedSiteBuilder {
       });
     }
 
-    // TODO: Build individual service and project pages
+    // Build individual service pages
+    if (this.data.services && this.data.services.length > 0) {
+      this.data.services.forEach(service => {
+        if (service.slug) {
+          try {
+            const content = this.templateEngine.renderSingleService(service);
+            const html = this.templateEngine.getBaseHTML({
+              slug: `services/${service.slug}`,
+              title: `${service.title} - خدماتنا - Technology KSA`,
+              description: service.excerpt || service.description || service.title,
+              keywords: service.keywords || ''
+            }, content);
+
+            const filePath = path.join(CONFIG.outputDir, 'services', service.slug, 'index.html');
+            if (writeFile(filePath, html)) {
+              this.stats.pages++;
+            }
+          } catch (error) {
+            log(`Error building service ${service.slug}: ${error.message}`, 'error');
+            this.stats.errors++;
+          }
+        }
+      });
+    }
+
+    // Build individual project pages
+    if (this.data.projects && this.data.projects.length > 0) {
+      this.data.projects.forEach(project => {
+        if (project.slug) {
+          try {
+            const content = this.templateEngine.renderSingleProject(project);
+            const html = this.templateEngine.getBaseHTML({
+              slug: `portfolio/${project.slug}`,
+              title: `${project.title} - أعمالنا - Technology KSA`,
+              description: project.excerpt || project.description || project.title,
+              keywords: project.keywords || ''
+            }, content);
+
+            const filePath = path.join(CONFIG.outputDir, 'portfolio', project.slug, 'index.html');
+            if (writeFile(filePath, html)) {
+              this.stats.pages++;
+            }
+          } catch (error) {
+            log(`Error building project ${project.slug}: ${error.message}`, 'error');
+            this.stats.errors++;
+          }
+        }
+      });
+    }
   }
 
   copyAssets() {
