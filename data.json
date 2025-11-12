@@ -1,7 +1,53 @@
 {
-  "posts": [],
-  "services": [],
-  "projects": [],
+  "posts": [
+    {
+      "id": "post-1",
+      "title": "دليل تطوير المواقع الحديثة",
+      "slug": "modern-web-development-guide",
+      "content": "<p>دليل شامل لتطوير المواقع باستخدام أحدث التقنيات والأدوات.</p>",
+      "excerpt": "تعرف على أحدث تقنيات تطوير المواقع",
+      "author": "فريق Technology KSA",
+      "category": "تطوير ويب",
+      "tags": ["تطوير", "ويب", "تقنية"],
+      "status": "published",
+      "date": "2025-01-12T00:00:00.000Z",
+      "createdAt": "2025-01-12T00:00:00.000Z",
+      "updatedAt": "2025-01-12T00:00:00.000Z"
+    }
+  ],
+  "services": [
+    {
+      "id": "service-1",
+      "title": "تطوير المواقع الإلكترونية",
+      "slug": "web-development",
+      "content": "<p>نقدم خدمات تطوير مواقع إلكترونية احترافية باستخدام أحدث التقنيات.</p>",
+      "description": "خدمات تطوير مواقع متكاملة",
+      "excerpt": "نصمم ونطور مواقع إلكترونية احترافية",
+      "icon": "fas fa-code",
+      "features": ["تصميم عصري", "متجاوب", "سريع", "آمن"],
+      "price": "يبدأ من 5000 ريال",
+      "createdAt": "2025-01-12T00:00:00.000Z",
+      "updatedAt": "2025-01-12T00:00:00.000Z"
+    }
+  ],
+  "projects": [
+    {
+      "id": "project-1",
+      "title": "متجر إلكتروني للأزياء",
+      "slug": "fashion-ecommerce",
+      "content": "<p>متجر إلكتروني متكامل لبيع الأزياء عبر الإنترنت.</p>",
+      "description": "متجر إلكتروني احترافي",
+      "excerpt": "متجر متكامل مع نظام دفع آمن",
+      "image": "/assets/images/projects/fashion-store.jpg",
+      "technologies": ["React", "Node.js", "MongoDB"],
+      "link": "https://example.com",
+      "demoUrl": "https://demo.example.com",
+      "client": "شركة الأزياء الحديثة",
+      "date": "2025-01-12T00:00:00.000Z",
+      "createdAt": "2025-01-12T00:00:00.000Z",
+      "updatedAt": "2025-01-12T00:00:00.000Z"
+    }
+  ],
   "pages": [
     {
       "id": "page-home",
@@ -9,13 +55,30 @@
       "slug": "index",
       "content": "<h1>مرحباً بك في Technology KSA</h1><p>شركة تقنية سعودية متخصصة في تطوير المواقع والتطبيقات</p>",
       "excerpt": "الصفحة الرئيسية لموقع Technology KSA",
-      "status": "draft",
+      "status": "published",
       "template": "default",
       "layout": [],
       "seo": {
         "metaTitle": "Technology KSA - الصفحة الرئيسية",
         "metaDescription": "شركة تقنية سعودية متخصصة في تطوير المواقع والتطبيقات",
         "metaKeywords": "تطوير مواقع, تطوير تطبيقات, السعودية"
+      },
+      "createdAt": "2025-01-12T00:00:00.000Z",
+      "updatedAt": "2025-01-12T00:00:00.000Z"
+    },
+    {
+      "id": "page-test2",
+      "title": "صفحة اختبار 2",
+      "slug": "test2",
+      "content": "<h1>صفحة اختبار 2</h1><p>هذه صفحة اختبار لتجربة نظام البناء الديناميكي. تم إنشاؤها لاختبار أن الصفحات المخصصة يتم بناؤها بشكل صحيح.</p>",
+      "excerpt": "صفحة اختبار للتحقق من نظام البناء",
+      "status": "published",
+      "template": "default",
+      "layout": [],
+      "seo": {
+        "metaTitle": "صفحة اختبار 2 - Technology KSA",
+        "metaDescription": "صفحة اختبار لنظام البناء الديناميكي",
+        "metaKeywords": "اختبار"
       },
       "createdAt": "2025-01-12T00:00:00.000Z",
       "updatedAt": "2025-01-12T00:00:00.000Z"
