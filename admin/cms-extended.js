@@ -688,6 +688,17 @@ function savePageLayout() {
     return;
   }
 
+  // التحقق من صحة البيانات
+  if (!pageBuilderManager.currentPage.slug) {
+    pageBuilderManager.showNotification('الصفحة يجب أن تحتوي على slug', 'error');
+    return;
+  }
+
+  if (!pageBuilderManager.currentPage.title) {
+    pageBuilderManager.showNotification('الصفحة يجب أن تحتوي على عنوان', 'error');
+    return;
+  }
+
   updateLayoutOrder();
 
   // Save layout to page in localStorage
@@ -695,13 +706,16 @@ function savePageLayout() {
   const pages = pagesData ? JSON.parse(pagesData) : [];
   const pageIndex = pages.findIndex(p => p.id === pageBuilderManager.currentPage.id);
 
-  if (pageIndex !== -1) {
-    pages[pageIndex].layout = pageBuilderManager.pageLayout;
-    pages[pageIndex].updatedAt = new Date().toISOString();
-
-    localStorage.setItem('techksa_pages', JSON.stringify(pages));
-    pageBuilderManager.showNotification('✓ تم حفظ التخطيط بنجاح', 'success');
+  if (pageIndex === -1) {
+    pageBuilderManager.showNotification('لم يتم العثور على الصفحة', 'error');
+    return;
   }
+
+  pages[pageIndex].layout = pageBuilderManager.pageLayout;
+  pages[pageIndex].updatedAt = new Date().toISOString();
+
+  localStorage.setItem('techksa_pages', JSON.stringify(pages));
+  pageBuilderManager.showNotification('✓ تم حفظ التخطيط بنجاح', 'success');
 }
 
 function previewPage() {
@@ -796,9 +810,11 @@ function publishPage() {
 
     showPublishSuccessModal(message, pageUrl);
 
-    // Show export reminder
+    // Show export reminder - التحقق من وجود الكائن
     setTimeout(() => {
-      dataSyncManager.showExportReminder();
+      if (window.dataSyncManager && typeof window.dataSyncManager.showExportReminder === 'function') {
+        dataSyncManager.showExportReminder();
+      }
     }, 2000);
   }
 }

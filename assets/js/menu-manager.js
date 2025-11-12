@@ -45,7 +45,37 @@ class MenuManager {
     };
 
     const saved = localStorage.getItem('techksa_menus');
-    return saved ? JSON.parse(saved) : defaultMenus;
+    if (!saved) return defaultMenus;
+
+    try {
+      const parsed = JSON.parse(saved);
+
+      // التحقق من صحة البيانات: يجب أن تكون object وليست array
+      if (Array.isArray(parsed)) {
+        console.warn('تحويل القوائم من array إلى object');
+        // تحويل array إلى object بناءً على id
+        const menusObject = {};
+        parsed.forEach(menu => {
+          if (menu && menu.id) {
+            menusObject[menu.id] = menu;
+          }
+        });
+        // حفظ التنسيق الصحيح
+        localStorage.setItem('techksa_menus', JSON.stringify(menusObject));
+        return menusObject;
+      }
+
+      // التحقق من أن البيانات object صحيح
+      if (typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed)) {
+        return parsed;
+      }
+
+      console.warn('صيغة قوائم غير صحيحة، استخدام القيم الافتراضية');
+      return defaultMenus;
+    } catch (error) {
+      console.error('خطأ في تحليل القوائم:', error);
+      return defaultMenus;
+    }
   }
 
   saveMenus() {
