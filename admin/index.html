@@ -1387,6 +1387,9 @@
       <div class="admin-header">
         <h1 id="pageTitle">إدارة المدونة</h1>
         <div style="display: flex; gap: 1rem;">
+          <button class="btn btn-info" onclick="dataImportManager.showImportModal()" title="استيراد البيانات من data.json">
+            <i class="fas fa-upload"></i> استيراد البيانات
+          </button>
           <button class="btn btn-success" onclick="dataSyncManager.showExportModal()" title="تصدير البيانات لـ data.json">
             <i class="fas fa-download"></i> تصدير البيانات
           </button>
@@ -5499,5 +5502,8 @@
 
   <!-- Data Sync Manager -->
   <script src="data-sync.js"></script>
+
+  <!-- Data Import Manager -->
+  <script src="data-import.js"></script>
 </body>
 </html>

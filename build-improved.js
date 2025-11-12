@@ -166,8 +166,15 @@ ${footerHTML}
     const settings = this.headerFooterSettings?.header || {};
     const logo = this.headerFooterSettings?.logo || {};
 
-    // Logo HTML
-    const logoImageUrl = logo.imageUrl ? (logo.imageUrl.startsWith('http') ? logo.imageUrl : `${assetPath}${logo.imageUrl}`) : '';
+    // Logo HTML - always use absolute paths
+    let logoImageUrl = '';
+    if (logo.imageUrl) {
+      if (logo.imageUrl.startsWith('http') || logo.imageUrl.startsWith('/')) {
+        logoImageUrl = logo.imageUrl;
+      } else {
+        logoImageUrl = '/' + logo.imageUrl.replace(/^\.\//, '');
+      }
+    }
     const logoHTML = logo.type === 'image' && logoImageUrl
       ? `<img src="${logoImageUrl}" alt="${logo.text || 'Logo'}" style="width:${logo.width || 150}px;height:${logo.height || 50}px;">`
       : `<span class="logo-text">${logo.text || this.config.site?.name || 'Technology KSA'}</span>`;
