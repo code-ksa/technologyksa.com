@@ -115,12 +115,8 @@ class TemplateEngine {
     const lang = page.lang || 'ar';
     const dir = lang === 'ar' ? 'rtl' : 'ltr';
 
-    // Calculate asset path depth based on slug
-    const depth = (page.slug || '').split('/').filter(s => s).length;
-    const assetPath = depth === 0 ? '' : '../'.repeat(depth);
-
     // Use custom header/footer if available
-    const headerHTML = this.renderHeader(assetPath);
+    const headerHTML = this.renderHeader();
     const footerHTML = this.renderFooter();
 
     return `<!DOCTYPE html>
@@ -139,8 +135,8 @@ class TemplateEngine {
 
   <title>${page.title}</title>
 
-  <link rel="icon" type="image/png" href="${assetPath}assets/images/favicon.png">
-  <link rel="stylesheet" href="${assetPath}assets/css/main.css">
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link rel="stylesheet" href="/assets/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -155,8 +151,8 @@ ${content}
 
 ${footerHTML}
 
-  <script src="${assetPath}assets/js/main.js"></script>
-  <script src="${assetPath}assets/js/site-loader.js"></script>
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/site-loader.js"></script>
   <script>
     function toggleMenu() {
       document.querySelector('.nav-menu').classList.toggle('active');
