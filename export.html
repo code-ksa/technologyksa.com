@@ -258,7 +258,7 @@
       try {
         const data = {
           timestamp: new Date().toISOString(),
-          version: '1.0.0',
+          version: '2.0.0',
           site: {
             name: 'Technology KSA',
             url: 'https://technologyksa.com'
@@ -269,7 +269,13 @@
           projects: JSON.parse(localStorage.getItem('techksa_projects') || '[]'),
           settings: JSON.parse(localStorage.getItem('techksa_settings') || '{}'),
           menu: JSON.parse(localStorage.getItem('techksa_menu_items') || '[]'),
-          components: JSON.parse(localStorage.getItem('techksa_components') || '{}')
+          components: JSON.parse(localStorage.getItem('techksa_components') || '{}'),
+
+          // New: Header/Footer Customization (v2.0)
+          headerFooterSettings: JSON.parse(localStorage.getItem('techksa_header_footer_settings') || 'null'),
+
+          // New: Menu Manager (v2.0)
+          menus: JSON.parse(localStorage.getItem('techksa_menus') || 'null')
         };
 
         exportedData = data;
