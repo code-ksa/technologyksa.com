@@ -775,47 +775,54 @@ function publishPage() {
   // Save layout first
   savePageLayout();
 
-  // Update page status in localStorage
+  const page = pageBuilderManager.currentPage;
+
+  // Update page status
   const pagesData = localStorage.getItem('techksa_pages');
   const pages = pagesData ? JSON.parse(pagesData) : [];
-  const pageIndex = pages.findIndex(p => p.id === pageBuilderManager.currentPage.id);
+  const pageIndex = pages.findIndex(p => p.id === page.id);
 
   if (pageIndex !== -1) {
     pages[pageIndex].status = 'published';
     pages[pageIndex].publishedAt = new Date().toISOString();
     localStorage.setItem('techksa_pages', JSON.stringify(pages));
 
-    // Show success message with link
-    const pageSlug = pages[pageIndex].slug === 'index' ? '' : pages[pageIndex].slug;
-    const pageUrl = `/${pageSlug}`;
-    const message = `
-      <div style="text-align: center;">
-        <p style="font-size: 1.2rem; margin-bottom: 1rem;">✓ تم نشر الصفحة بنجاح!</p>
-        <p style="font-weight: bold; margin-bottom: 1rem;">${pages[pageIndex].title}</p>
-        <p style="margin-bottom: 1rem;">لمعاينة الصفحة المنشورة:</p>
-        <a href="${pageUrl}" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; background: white; color: #0C4A2F; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600;">
-          <i class="fas fa-external-link-alt"></i>
-          افتح الصفحة
-        </a>
-        <div style="background: #fef3c7; border: 2px solid #fbbf24; border-radius: 8px; padding: 1rem; margin-top: 1.5rem;">
-          <p style="color: #92400e; margin: 0; font-size: 0.95rem;">
-            <i class="fas fa-exclamation-triangle"></i> <strong>مهم جداً:</strong>
-          </p>
-          <p style="color: #92400e; margin: 0.5rem 0 0 0; font-size: 0.9rem;">
-            يجب تصدير البيانات وتشغيل أمر البناء لرؤية التغييرات على الموقع
-          </p>
-        </div>
-      </div>
-    `;
+    // Build page automatically using FrontendBuilder
+    if (window.frontendBuilder) {
+      try {
+        frontendBuilder.loadData();
+        const html = frontendBuilder.buildPage(pages[pageIndex]);
 
-    showPublishSuccessModal(message, pageUrl);
+        // Show success modal with download link
+        showPublishSuccessModalEnhanced(pages[pageIndex], html);
 
-    // Show export reminder - التحقق من وجود الكائن
-    setTimeout(() => {
-      if (window.dataSyncManager && typeof window.dataSyncManager.showExportReminder === 'function') {
-        dataSyncManager.showExportReminder();
+        // Ask about adding to menu
+        setTimeout(() => {
+          if (window.menusManager) {
+            const addToMenu = confirm(`هل تريد إضافة الصفحة "${page.title}" إلى القائمة الرئيسية؟`);
+            if (addToMenu && window.pagesManager) {
+              pagesManager.addToMenu(page.id);
+            }
+          }
+        }, 1000);
+
+      } catch (error) {
+        console.error('Build error:', error);
+        pageBuilderManager.showNotification('حدث خطأ أثناء بناء الصفحة', 'error');
       }
-    }, 2000);
+    } else {
+      // Fallback to old method
+      const pageSlug = pages[pageIndex].slug || 'index';
+      const pageUrl = `/${pageSlug}.html`;
+      const message = `
+        <div style="text-align: center;">
+          <p style="font-size: 1.2rem; margin-bottom: 1rem;">✓ تم نشر الصفحة!</p>
+          <p style="font-weight: bold; margin-bottom: 1rem;">${pages[pageIndex].title}</p>
+          <p style="margin-bottom: 1rem;">قم بتحميل الصفحة ورفعها للخادم</p>
+        </div>
+      `;
+      showPublishSuccessModal(message, pageUrl);
+    }
   }
 }
 
@@ -844,6 +851,68 @@ function showPublishSuccessModal(message, url) {
     </div>
   `;
   document.body.appendChild(modal);
+}
+
+function showPublishSuccessModalEnhanced(page, html) {
+  const pageUrl = `/${page.slug || 'index'}.html`;
+
+  const modal = document.createElement('div');
+  modal.className = 'modal active';
+  modal.style.zIndex = '999999';
+  modal.innerHTML = `
+    <div class="modal-overlay" onclick="this.parentElement.remove()"></div>
+    <div class="modal-content" style="max-width: 600px;">
+      <div class="modal-header" style="background: #10B981; color: white;">
+        <h3><i class="fas fa-check-circle"></i> تم نشر الصفحة بنجاح!</h3>
+        <button class="modal-close" onclick="this.closest('.modal').remove()" style="color: white;">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body" style="padding: 2rem; text-align: center;">
+        <i class="fas fa-check-circle" style="font-size: 4rem; color: #10B981; margin-bottom: 1rem; display: block;"></i>
+        <h2 style="margin-bottom: 1rem;">${page.title}</h2>
+        <p style="margin-bottom: 1.5rem; color: #6B7280;">الصفحة جاهزة للعرض!</p>
+
+        <div style="background: #F3F4F6; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+          <small style="display: block; margin-bottom: 0.5rem; color: #6B7280;">رابط الصفحة:</small>
+          <code style="font-size: 1.1rem; color: #059669; font-weight: 600;">${pageUrl}</code>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+          <button onclick="openPagePreview('${pageUrl}', \`${html.replace(/`/g, '\\`')}\`)" class="btn btn-success" style="flex: 1;">
+            <i class="fas fa-eye"></i> معاينة الصفحة
+          </button>
+          <button onclick="downloadPageHTML('${page.slug || 'index'}', \`${html.replace(/`/g, '\\`')}\`)" class="btn btn-primary" style="flex: 1;">
+            <i class="fas fa-download"></i> تحميل HTML
+          </button>
+        </div>
+
+        <p style="font-size: 0.9rem; color: #6B7280; margin-top: 1rem;">
+          <i class="fas fa-info-circle"></i> قم بتحميل ملف HTML ورفعه للخادم عبر FTP/cPanel
+        </p>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+function openPagePreview(url, html) {
+  const previewWindow = window.open('', '_blank');
+  previewWindow.document.write(html);
+  previewWindow.document.close();
+}
+
+function downloadPageHTML(slug, html) {
+  const filename = (slug === 'index' ? 'index' : slug) + '.html';
+  const blob = new Blob([html], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+
+  showToast(`تم تحميل ${filename} بنجاح!`, 'success');
 }
 
 // ==========================================
@@ -1309,5 +1378,152 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
+
+// ==========================================
+// PAGE MODAL FUNCTIONS (Integrated)
+// ==========================================
+
+function openPageModal(pageId = null) {
+  const modal = document.getElementById('pageModal');
+  const form = document.getElementById('pageForm');
+
+  if (!modal || !form) return;
+
+  form.reset();
+
+  if (pageId && window.pagesManager) {
+    const page = pagesManager.pages.find(p => p.id === pageId);
+    if (page) {
+      document.getElementById('pageModalTitle').textContent = 'تعديل الصفحة';
+      document.getElementById('pageId').value = page.id;
+      document.getElementById('pageTitle').value = page.title;
+      document.getElementById('pageSlug').value = page.slug;
+      document.getElementById('pageMetaTitle').value = page.metaTitle || '';
+      document.getElementById('pageMetaDescription').value = page.metaDescription || '';
+      document.getElementById('pageStatus').value = page.status || 'published';
+    }
+  } else {
+    document.getElementById('pageModalTitle').textContent = 'إضافة صفحة جديدة';
+    document.getElementById('pageId').value = '';
+  }
+
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePageModal() {
+  const modal = document.getElementById('pageModal');
+  if (modal) {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+}
+
+function savePage(event) {
+  event.preventDefault();
+
+  if (!window.pagesManager) {
+    showToast('نظام إدارة الصفحات غير متاح', 'error');
+    return;
+  }
+
+  const pageId = document.getElementById('pageId').value;
+  const title = document.getElementById('pageTitle').value.trim();
+  const slug = document.getElementById('pageSlug').value.trim() ||
+    (window.blogCMS ? blogCMS.generateSlug(title) : title.toLowerCase().replace(/\s+/g, '-'));
+  const metaTitle = document.getElementById('pageMetaTitle').value.trim() || title;
+  const metaDescription = document.getElementById('pageMetaDescription').value.trim();
+  const status = document.getElementById('pageStatus').value;
+
+  if (!title) {
+    showToast('يرجى إدخال عنوان الصفحة', 'error');
+    return;
+  }
+
+  if (pageId) {
+    // Update existing page
+    const index = pagesManager.pages.findIndex(p => p.id === pageId);
+    if (index >= 0) {
+      pagesManager.pages[index] = {
+        ...pagesManager.pages[index],
+        title,
+        slug,
+        metaTitle,
+        metaDescription,
+        status,
+        updatedAt: new Date().toISOString()
+      };
+
+      pagesManager.savePages();
+      showToast('تم تحديث الصفحة بنجاح!', 'success');
+
+      if (pageBuilderManager && pageBuilderManager.currentPage && pageBuilderManager.currentPage.id === pageId) {
+        pageBuilderManager.currentPage = pagesManager.pages[index];
+        document.getElementById('currentPageName').textContent = title;
+      }
+    }
+  } else {
+    // Create new page
+    const newPage = {
+      id: `page_${Date.now()}`,
+      title,
+      slug,
+      metaTitle,
+      metaDescription,
+      status,
+      layout: [],
+      date: new Date().toISOString().split('T')[0],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    pagesManager.pages.push(newPage);
+    pagesManager.savePages();
+
+    showToast('تم إضافة الصفحة بنجاح!', 'success');
+    closePageModal();
+
+    // CRITICAL: Auto-open Page Builder after creating page
+    setTimeout(() => {
+      openPageBuilderForNewPage(newPage.id);
+    }, 300);
+
+    return;
+  }
+
+  closePageModal();
+}
+
+function openPageBuilderForNewPage(pageId) {
+  if (!window.pagesManager) return;
+
+  const page = pagesManager.pages.find(p => p.id === pageId);
+  if (!page) return;
+
+  // Update page builder
+  if (pageBuilderManager) {
+    pageBuilderManager.currentPage = page;
+    pageBuilderManager.pageLayout = page.layout || [];
+    document.getElementById('currentPageName').textContent = page.title;
+    renderPageCanvas();
+  }
+
+  // Switch to page builder view
+  document.querySelectorAll('.admin-view').forEach(v => v.classList.remove('active'));
+  const builderView = document.getElementById('pagebuilderView');
+  if (builderView) builderView.classList.add('active');
+
+  document.querySelectorAll('.admin-nav li').forEach(li => li.classList.remove('active'));
+  const navItem = document.querySelector('[data-view="pagebuilder"]');
+  if (navItem) navItem.parentElement.classList.add('active');
+
+  const pageTitle = document.getElementById('pageTitle');
+  if (pageTitle) pageTitle.textContent = 'Page Builder';
+
+  const btnNewPost = document.getElementById('btnNewPost');
+  if (btnNewPost) btnNewPost.style.display = 'none';
+
+  showToast(`افتح Page Builder للصفحة: ${page.title}`, 'success');
+}
 
 console.log('✓ CMS Extended Functions Loaded');
