@@ -334,7 +334,43 @@ class CorePublisher {
     }
 
     const sortedLayout = [...page.layout].sort((a, b) => (a.order || 0) - (b.order || 0));
-    return sortedLayout.map(item => item.html || '').join('\n    ');
+    return sortedLayout.map(item => this.cleanHTMLForPublish(item.html || '')).join('\n    ');
+  }
+
+  /**
+   * Clean HTML before publishing - remove editor controls
+   */
+  cleanHTMLForPublish(html) {
+    if (!html) return '';
+
+    // Create a temporary div to parse HTML
+    const temp = document.createElement('div');
+    temp.innerHTML = html;
+
+    // Remove component-controls
+    const controls = temp.querySelectorAll('.component-controls, .component-toolbar');
+    controls.forEach(el => el.remove());
+
+    // Remove canvas-component wrappers
+    const canvasComponents = temp.querySelectorAll('.canvas-component');
+    canvasComponents.forEach(wrapper => {
+      // Get the content div
+      const content = wrapper.querySelector('.component-content');
+      if (content) {
+        // Replace wrapper with just the content
+        wrapper.replaceWith(...content.childNodes);
+      } else {
+        // If no content div, just get innerHTML
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = wrapper.innerHTML;
+        // Remove controls again
+        tempDiv.querySelectorAll('.component-controls, .component-toolbar').forEach(el => el.remove());
+        wrapper.replaceWith(...tempDiv.childNodes);
+      }
+    });
+
+    // Return cleaned HTML
+    return temp.innerHTML;
   }
 
   /**
