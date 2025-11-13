@@ -401,6 +401,58 @@ function initPageBuilder() {
   loadPageForBuilder();
 }
 
+/**
+ * Render page canvas with current layout
+ */
+function renderPageCanvas() {
+  const canvas = document.getElementById('pageCanvas');
+  if (!canvas) return;
+
+  if (!pageBuilderManager || !pageBuilderManager.currentPage) {
+    canvas.innerHTML = `
+      <div class="canvas-empty">
+        <i class="fas fa-plus-circle"></i>
+        <h3>ابدأ بإضافة عناصر إلى الصفحة</h3>
+        <p>اسحب العناصر من القائمة اليسرى وأفلتها هنا</p>
+      </div>
+    `;
+    return;
+  }
+
+  const layout = pageBuilderManager.currentPage.layout || [];
+
+  if (layout.length === 0) {
+    canvas.innerHTML = `
+      <div class="canvas-empty">
+        <i class="fas fa-plus-circle"></i>
+        <h3>لا توجد عناصر بعد</h3>
+        <p>اسحب العناصر من القائمة اليسرى وأفلتها هنا</p>
+      </div>
+    `;
+    return;
+  }
+
+  canvas.innerHTML = layout.map((item, index) => `
+    <div class="canvas-component" data-index="${index}" data-component-id="${item.id || 'comp_' + index}" data-component-type="${item.type || 'custom'}">
+      <div class="component-controls">
+        <button class="btn-icon" onclick="moveComponentUp(this)" title="تحريك لأعلى">
+          <i class="fas fa-arrow-up"></i>
+        </button>
+        <button class="btn-icon" onclick="moveComponentDown(this)" title="تحريك لأسفل">
+          <i class="fas fa-arrow-down"></i>
+        </button>
+        <button class="btn-icon" onclick="editComponent(this)" title="تعديل">
+          <i class="fas fa-edit"></i>
+        </button>
+        <button class="btn-icon btn-danger" onclick="deleteComponent(this)" title="حذف">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+      <div class="component-content">${item.html || ''}</div>
+    </div>
+  `).join('');
+}
+
 function loadPageForBuilder() {
   // Get pages from localStorage
   const pagesData = localStorage.getItem('techksa_pages');
